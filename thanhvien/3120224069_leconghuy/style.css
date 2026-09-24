@@ -1,268 +1,275 @@
+/* CSS riêng - Lê Công Huy| Nhóm 07 FastFood */
+
 :root {
-    --mau-chinh: #b5122b;
-    --mau-chinh-dam: #7d0d20;
-    --mau-nhan: #ffc928;
-    --chu: #292929;
-    --chu-phu: #555555;
-    --nen: #ffffff;
-    --nen-phu: #fff7df;
-    --vien: #d9d9d9;
-    --focus: #005fcc;
+  --mau-chinh: #b5122b;
+  --mau-chinh-dam: #7d0d20;
+  --mau-nhan: #ffc928;
+  --chu: #292929;
+  --chu-phu: #555555;
+  --nen: #ffffff;
+  --nen-phu: #fff7df;
+  --vien: #d9d9d9;
+  --focus: #005fcc;
+  --bo-goc: 14px;
+  --khoang-cach: 20px;
+  --bong-do: 0 6px 18px rgb(0 0 0 / 10%);
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html {
-    overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 body {
-    margin: 0;
-    color: var(--chu);
-    background: var(--nen);
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.6;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  color: var(--chu);
+  background: var(--nen-phu);
 }
 
-header {
-    padding: 20px;
-    color: var(--nen);
-    text-align: center;
-    background: var(--mau-chinh);
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
-header p {
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: bold;
+/* ===== BỐ CỤC TRANG ===== */
+
+.trang-ca-nhan {
+  min-width: 0;
+  min-height: 100vh;
+  display: grid;
+  grid-template-areas:
+    "dau"
+    "menu"
+    "chinh"
+    "chan";
+  grid-template-rows: auto auto 1fr auto;
 }
 
-nav {
-    background: var(--mau-nhan);
-    border-bottom: 1px solid var(--vien);
+.dau-trang {
+  grid-area: dau;
+  min-width: 0;
+  padding: 28px 16px;
+  text-align: center;
+  color: #ffffff;
+  background: var(--mau-chinh);
 }
 
-nav ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin: 0;
-    padding: 12px;
-    list-style: none;
+.dau-trang p {
+  margin: 0;
+  font-size: clamp(1.15rem, 4vw, 1.65rem);
+  font-weight: 700;
 }
 
-nav a {
-    display: inline-block;
-    padding: 8px 14px;
-    color: var(--mau-chinh);
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: 6px;
+.dieu-huong {
+  grid-area: menu;
+  min-width: 0;
+  background: var(--mau-nhan);
 }
 
-nav a:hover {
-    color: var(--nen);
-    background: var(--mau-chinh-dam);
+.dieu-huong ul {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 10px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 14px;
+  list-style: none;
 }
 
-nav a:focus-visible {
-    outline: 3px solid var(--focus);
-    outline-offset: 3px;
+.dieu-huong a {
+  display: inline-block;
+  padding: 9px 12px;
+  border-radius: 8px;
+  color: #1f1f1f;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
-main {
-    width: min(1100px, calc(100% - 24px));
-    margin: 24px auto;
+.dieu-huong a:hover {
+  color: #ffffff;
+  background: var(--mau-chinh);
 }
 
-h1 {
-    margin: 0 0 24px;
-    color: var(--mau-chinh);
-    text-align: center;
+.dieu-huong a:active {
+  transform: translateY(1px);
 }
 
-h2 {
-    margin-top: 0;
-    color: var(--mau-chinh-dam);
+.dieu-huong a:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
 }
 
-h3 {
-    color: var(--mau-chinh);
+/* ===== NỘI DUNG ===== */
+
+.noi-dung {
+  grid-area: chinh;
+  width: min(calc(100% - 28px), 1000px);
+  min-width: 0;
+  margin: 0 auto;
+  padding: 28px 0 40px;
+  display: grid;
+  gap: var(--khoang-cach);
 }
 
-section,
-article {
-    margin-bottom: 24px;
-    padding: 20px;
-    background: var(--nen);
-    border: 1px solid var(--vien);
-    border-radius: 10px;
+.tieu-de-chinh {
+  min-width: 0;
+  margin: 0;
+  padding: 20px 16px;
+  border-radius: var(--bo-goc);
+  text-align: center;
+  color: var(--mau-chinh);
+  background: #fff2cc;
+  font-size: clamp(1.65rem, 6vw, 2.35rem);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
-figure {
-    width: min(100%, 250px);
-    margin: 0 auto 20px;
-    text-align: center;
+.the {
+  min-width: 0;
+  max-width: 100%;
+  padding: 20px;
+  border: 1px solid var(--vien);
+  border-radius: var(--bo-goc);
+  background: var(--nen);
+  box-shadow: var(--bong-do);
 }
 
-figure img {
-    display: block;
-    width: 100%;
-    max-width: 200px;
-    height: auto;
-    margin: 0 auto;
-    border-radius: 8px;
+.the h2,
+.the h3 {
+  color: var(--mau-chinh-dam);
 }
 
-figcaption {
-    margin-top: 8px;
-    color: var(--chu-phu);
-    font-size: 0.9rem;
+.the h2 {
+  margin-top: 0;
 }
 
-section ul {
-    padding-left: 24px;
+.gioi-thieu-ban-than {
+  display: grid;
+  gap: 14px;
 }
 
-section li {
-    margin-bottom: 8px;
+.chan-dung {
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
 }
 
-article p {
-    color: var(--chu);
+.chan-dung__anh {
+  width: min(200px, 70vw);
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  margin: 0 auto 10px;
+  border: 4px solid var(--mau-nhan);
+  border-radius: 18px;
+  object-fit: cover;
 }
 
-code {
-    padding: 2px 5px;
-    color: var(--mau-chinh-dam);
-    background: var(--nen-phu);
-    border-radius: 4px;
+.chan-dung figcaption {
+  color: var(--chu-phu);
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
 }
 
-.khung-bang {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+.danh-sach-ky-nang,
+.danh-sach-so-thich {
+  margin: 0;
+  padding-left: 22px;
 }
 
-table {
-    width: 100%;
-    min-width: 650px;
-    border-collapse: collapse;
-    background: var(--nen);
+.danh-sach-ky-nang li,
+.danh-sach-so-thich li {
+  margin-block: 6px;
+  overflow-wrap: anywhere;
 }
 
-caption {
-    margin-bottom: 12px;
-    color: var(--mau-chinh-dam);
-    font-weight: bold;
-    text-align: left;
+/* ===== THỜI KHÓA BIỂU ===== */
+
+.khu-thoi-khoa-bieu {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
-th,
-td {
-    padding: 10px;
-    border: 1px solid var(--vien);
-    text-align: center;
-    vertical-align: middle;
+.thoi-khoa-bieu {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
 }
 
-th {
-    color: var(--mau-chinh-dam);
-    background: var(--nen-phu);
+.thoi-khoa-bieu caption {
+  padding: 0 0 12px;
+  color: var(--mau-chinh-dam);
+  font-weight: 700;
+  text-align: left;
 }
 
-tbody tr:nth-child(even) {
-    background: var(--nen-phu);
+.thoi-khoa-bieu th,
+.thoi-khoa-bieu td {
+  padding: 11px 10px;
+  border: 1px solid #cfcfcf;
+  text-align: left;
+  vertical-align: top;
 }
 
-footer {
-    padding: 20px;
-    color: var(--nen);
-    text-align: center;
-    background: #222;
+.thoi-khoa-bieu thead th {
+  color: #1f1f1f;
+  background: var(--mau-nhan);
 }
 
-footer p {
-    margin: 0;
+.thoi-khoa-bieu tbody tr:nth-child(even) {
+  background: #fff8e6;
 }
 
-a {
-    transition: color 0.2s ease, background-color 0.2s ease;
+/* ===== FOOTER ===== */
+
+.chan-trang {
+  grid-area: chan;
+  min-width: 0;
+  padding: 20px 16px;
+  text-align: center;
+  color: #ffffff;
+  background: #252525;
 }
 
-a:focus-visible {
-    outline: 3px solid var(--focus);
-    outline-offset: 3px;
-}
+/* ===== RESPONSIVE ===== */
 
 @media (min-width: 768px) {
-    main {
-        width: min(1100px, calc(100% - 48px));
-    }
+  .noi-dung {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
-    section:first-of-type {
-        display: grid;
-        grid-template-columns: 250px 1fr;
-        column-gap: 30px;
-        align-items: start;
-    }
+  .tieu-de-chinh,
+  .khu-thoi-khoa-bieu {
+    grid-column: 1 / -1;
+  }
 
-    section:first-of-type h2 {
-        grid-column: 1 / -1;
-    }
-
-    section:first-of-type figure {
-        grid-column: 1;
-        grid-row: 2 / span 3;
-        margin: 0 auto;
-    }
-
-    section:first-of-type p,
-    section:first-of-type h3,
-    section:first-of-type ul {
-        grid-column: 2;
-    }
-
-    nav ul {
-        justify-content: flex-start;
-        padding-left: 30px;
-    }
+  .gioi-thieu-ban-than,
+  .du-an-so-thich {
+    height: 100%;
+  }
 }
 
-@media (max-width: 767px) {
-    main {
-        width: calc(100% - 20px);
-    }
+@media (min-width: 1024px) {
+  .noi-dung {
+    padding-block: 36px 48px;
+    gap: 24px;
+  }
 
-    header p {
-        font-size: 1rem;
-    }
-
-    h1 {
-        font-size: 1.6rem;
-    }
-
-    section,
-    article {
-        padding: 16px;
-    }
-
-    nav ul {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    nav a {
-        display: block;
-        text-align: center;
-    }
-
-    figure {
-        margin-bottom: 16px;
-    }
+  .the {
+    padding: 26px;
+  }
 }

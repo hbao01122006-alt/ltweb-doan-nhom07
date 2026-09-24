@@ -1,84 +1,103 @@
 <!DOCTYPE html>
+
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Trang cá nhân giới thiệu bản thân, đóng góp dự án và thời khóa biểu của Lê Công Huy - Nhóm 07.">
+    <meta name="description"
+          content="Trang cá nhân giới thiệu bản thân, đóng góp dự án, sở thích và thời khóa biểu của Lê Công Huy - Nhóm 07.">
     <title>Giới thiệu cá nhân - Lê Công Huy | Foodspead</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="trang-ca-nhan">
 
-    <header>
-        <p>Trang cá nhân thành viên - Nhóm 07 Foodspead</p>
-    </header>
+```
+<header class="dau-trang">
+    <p>Trang cá nhân thành viên - Nhóm 07 Foodspead</p>
+</header>
 
-    <nav>
-        <ul>
-            <li>
-                <a href="../../index.html">Quay về Trang chủ Nhóm</a>
-            </li>
-            <li>
-                <a href="../../gioi-thieu.html">Quay về Giới thiệu Nhóm</a>
-            </li>
+<nav class="dieu-huong">
+    <ul>
+        <li>
+            <a href="../../index.html">Quay về Trang chủ Nhóm</a>
+        </li>
+        <li>
+            <a href="../../gioi-thieu.html">Quay về Giới thiệu Nhóm</a>
+        </li>
+    </ul>
+</nav>
+
+<main class="noi-dung">
+
+    <h1 class="tieu-de-chinh">Giới thiệu thành viên: Lê Công Huy</h1>
+
+    <section class="the gioi-thieu-ban-than">
+        <h2>Giới thiệu bản thân</h2>
+
+        <figure class="chan-dung">
+            <img src="images/chan-dung-huy.jpg"
+                 alt="Ảnh chân dung Lê Công Huy"
+                 width="200"
+                 height="250"
+                 class="chan-dung__anh">
+
+            <figcaption>
+                Chân dung Lê Công Huy - Thành viên Nhóm 07
+            </figcaption>
+        </figure>
+
+        <p>
+            <strong>Họ và tên:</strong> Lê Công Huy
+        </p>
+
+        <p>
+            <strong>Mã sinh viên:</strong> 3120224069
+        </p>
+
+        <p>
+            Xin chào! Tôi là Lê Công Huy, sinh viên Khoa Toán - Tin,
+            Trường Đại học Sư phạm - Đại học Đà Nẵng. Tôi có niềm đam mê lớn
+            với công nghệ thông tin và thiết kế giao diện web.
+        </p>
+
+        <h3>Danh sách kỹ năng cá nhân</h3>
+
+        <ul class="danh-sach-ky-nang">
+            <li>Lập trình web nền tảng: HTML5, CSS3, JavaScript</li>
+            <li>Tối ưu hóa mã nguồn và cấu trúc ngữ nghĩa HTML</li>
+            <li>Sử dụng thành thạo Git và quản lý kho lưu trữ GitHub</li>
+            <li>Kỹ năng giải quyết vấn đề và làm việc nhóm</li>
         </ul>
-    </nav>
+    </section>
 
-    <main>
+    <article class="the du-an-so-thich">
+        <h2>Đóng góp trong dự án Foodspead &amp; Sở thích</h2>
 
-        <h1>Giới thiệu thành viên: Lê Công Huy</h1>
+        <p>
+            Trong đồ án xây dựng website đặt đồ ăn nhanh Foodspead, tôi đảm nhận
+            việc biên soạn và tối ưu hóa file <code>danh-sach.html</code>
+            (Trang Thực đơn), đảm bảo cấu trúc bảng chuẩn accessibility và validation.
+        </p>
 
-        <section>
-            <h2>Giới thiệu bản thân</h2>
+        <h3>Sở thích</h3>
 
-            <figure>
-                <img src="images/chan-dung-huy.jpg"
-                     alt="Ảnh chân dung Lê Công Huy"
-                     width="200"
-                     height="250">
+        <ul class="danh-sach-so-thich">
+            <li>Chơi game</li>
+            <li>Đọc truyện anime</li>
+            <li>Nghe nhạc</li>
+        </ul>
+    </article>
 
-                <figcaption>
-                    Chân dung Lê Công Huy - Thành viên Nhóm 07
-                </figcaption>
-            </figure>
+    <section class="the khu-thoi-khoa-bieu">
+        <h2>Thời khóa biểu học tập trong tuần</h2>
 
-            <p>
-                Xin chào! Tôi là Lê Công Huy, sinh viên Khoa Toán - Tin,
-                Trường Đại học Sư phạm - Đại học Đà Nẵng. Tôi có niềm đam mê lớn
-                với công nghệ thông tin và thiết kế giao diện web.
-            </p>
+        <div class="khung-bang">
+            <table class="thoi-khoa-bieu">
 
-            <h3>Danh sách kỹ năng cá nhân</h3>
-
-            <ul>
-                <li>Lập trình web nền tảng: HTML5, CSS3, JavaScript</li>
-                <li>Tối ưu hóa mã nguồn và cấu trúc ngữ nghĩa HTML</li>
-                <li>Sử dụng thành thạo Git và quản lý kho lưu trữ GitHub</li>
-                <li>Kỹ năng giải quyết vấn đề và làm việc nhóm</li>
-            </ul>
-        </section>
-
-        <article>
-            <h2>Đóng góp trong dự án Foodspead &amp; Sở thích</h2>
-
-            <p>
-                Trong đồ án xây dựng website đặt đồ ăn nhanh Foodspead, tôi đảm nhận
-                việc biên soạn và tối ưu hóa file <code>danh-sach.html</code>
-                (Trang Thực đơn), đảm bảo cấu trúc bảng chuẩn accessibility và validation.
-            </p>
-
-            <p>
-                <strong>Sở thích:</strong>
-                Chơi game, đọc truyện anime và nghe nhạc.
-            </p>
-        </article>
-
-        <section>
-            <h2>Thời khóa biểu học tập trong tuần</h2>
-
-            <table>
                 <caption>
-                    Bảng 1: Thời khóa biểu học tập các ngày trong tuần của Lê Công Huy
+                    Thời khóa biểu học tập của Lê Công Huy
                 </caption>
 
                 <thead>
@@ -111,17 +130,21 @@
                         <td>Họp Nhóm 07</td>
                     </tr>
                 </tbody>
+
             </table>
-        </section>
+        </div>
+    </section>
 
-    </main>
+</main>
 
-    <footer>
-        <p>
-            &copy; 2026 Lê Công Huy — Nhóm 07, Khoa Toán - Tin,
-            Trường Đại học Sư phạm - Đại học Đà Nẵng
-        </p>
-    </footer>
+<footer class="chan-trang">
+    <p>
+        &copy; 2026 Lê Công Huy — MSSV: 3120224069 — Nhóm 07,
+        Khoa Toán - Tin, Trường Đại học Sư phạm - Đại học Đà Nẵng
+    </p>
+</footer>
+```
 
 </body>
+
 </html>
