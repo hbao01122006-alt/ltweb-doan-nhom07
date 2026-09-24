@@ -1,175 +1,97 @@
 <!DOCTYPE html>
+
 <html lang="vi">
-
 <head>
-  <meta charset="UTF-8">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <meta
-    name="description"
-    content="Mẫu đăng ký đặt món ăn trực tuyến và gửi thông tin phản hồi cho cửa hàng thức ăn nhanh Foodspead.">
-
-  <title>Liên hệ &amp; Đặt hàng | Foodspead</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Mẫu đăng ký đặt món ăn trực tuyến và gửi thông tin phản hồi cho cửa hàng thức ăn nhanh Foodspead." name="description"/>
+<title>Liên hệ &amp; Đặt hàng | Foodspead</title>
+<link href="css/style.css" rel="stylesheet"/>
 </head>
-
-<body>
-
-  <header>
-    <p>Foodspead - Ngon Mỗi Ngày, Giao Nhanh Tận Nơi</p>
-    <p>Hệ thống đặt đồ ăn nhanh trực tuyến hàng đầu</p>
-  </header>
-
-  <nav aria-label="Điều hướng chính">
-    <ul>
-      <li>
-        <a href="index.html">Trang chủ</a>
-      </li>
-
-      <li>
-        <a href="danh-sach.html">Thực đơn</a>
-      </li>
-
-      <li>
-        <a href="chi-tiet.html">Món nổi bật</a>
-      </li>
-
-      <li>
-        <a href="gioi-thieu.html">Giới thiệu</a>
-      </li>
-
-      <li>
-        <a href="lien-he.html">Liên hệ đặt hàng</a>
-      </li>
-    </ul>
-  </nav>
-
-  <main>
-
-    <h1>Mẫu đăng ký đặt món &amp; Gửi liên hệ</h1>
-
-    <form action="#" method="post">
-
-      <fieldset>
-
-        <legend>Thông tin người đặt hàng</legend>
-
-        <p>
-          <label for="ho-ten">Họ và tên (*):</label>
-          <br>
-
-          <input
-            type="text"
-            id="ho-ten"
-            name="ho-ten"
-            required
-            autocomplete="name"
-            placeholder="Nguyễn Văn A">
-        </p>
-
-        <p>
-          <label for="email">Địa chỉ Email (*):</label>
-          <br>
-
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            autocomplete="email"
-            placeholder="diachi@gmail.com">
-        </p>
-
-        <p>
-          <label for="so-dien-thoai">Số điện thoại nhận hàng (*):</label>
-          <br>
-
-          <input
-            type="tel"
-            id="so-dien-thoai"
-            name="so-dien-thoai"
-            pattern="[0-9]{10}"
-            required
-            autocomplete="tel"
-            placeholder="0375837734">
-        </p>
-
-      </fieldset>
-
-      <fieldset>
-
-        <legend>Thông tin chi tiết đơn hàng</legend>
-
-        <p>
-          <label for="mon-an">Chọn món ăn muốn đặt:</label>
-          <br>
-
-          <select id="mon-an" name="mon-an">
-            <option value="ga-ran">Gà Rán Giòn Tan</option>
-            <option value="burger-bo">Burger Bò Phô Mai</option>
-            <option value="combo-tiet-kiem">Combo Tiết Kiệm</option>
-            <option value="khoai-tay">Khoai Tây Chiên Lớn</option>
-          </select>
-        </p>
-
-        <p>
-          <label for="so-luong">Số lượng suất ăn (từ 1 đến 20):</label>
-          <br>
-
-          <input
-            type="number"
-            id="so-luong"
-            name="so-luong"
-            min="1"
-            max="20"
-            value="1"
-            required>
-        </p>
-
-        <p>
-          <label for="ngay-giao">Ngày muốn nhận hàng:</label>
-          <br>
-
-          <input
-            type="date"
-            id="ngay-giao"
-            name="ngay-giao"
-            required>
-        </p>
-
-        <p>
-          <label for="dia-chi">Địa chỉ giao hàng cụ thể:</label>
-          <br>
-
-          <textarea
-            id="dia-chi"
-            name="dia-chi"
-            rows="4"
-            cols="40"
-            required
-            autocomplete="street-address"
-            placeholder="Ghi rõ số nhà, tên đường, phường/xã..."></textarea>
-        </p>
-
-      </fieldset>
-
-      <p>
-        <button type="submit">Gửi đơn đặt hàng</button>
-
-        <button type="reset">Nhập lại</button>
-      </p>
-
-    </form>
-
-  </main>
-
-  <footer>
-    <p>
-      &copy; 2026 Nhóm 07 - Khoa Toán - Tin,
+<body class="trang trang--lien-he">
+<header class="trang__dau">
+<p>Foodspead - Ngon Mỗi Ngày, Giao Nhanh Tận Nơi</p>
+<p>Hệ thống đặt đồ ăn nhanh trực tuyến hàng đầu</p>
+</header>
+<nav aria-label="Điều hướng chính" class="trang__menu">
+<ul>
+<li>
+<a href="index.html">Trang chủ</a>
+</li>
+<li>
+<a href="danh-sach.html">Thực đơn</a>
+</li>
+<li>
+<a href="chi-tiet.html">Món nổi bật</a>
+</li>
+<li>
+<a href="gioi-thieu.html">Giới thiệu</a>
+</li>
+<li>
+<a href="lien-he.html">Liên hệ đặt hàng</a>
+</li>
+</ul>
+</nav>
+<main class="trang__chinh lien-he__luoi">
+<h1 class="lien-he__tieu-de">Mẫu đăng ký đặt món &amp; Gửi liên hệ</h1>
+<form action="#" class="lien-he__bieu-mau" method="post">
+<fieldset>
+<legend>Thông tin người đặt hàng</legend>
+<p>
+<label for="ho-ten">Họ và tên (*):</label>
+<br/>
+<input autocomplete="name" id="ho-ten" name="ho-ten" placeholder="Nguyễn Văn A" required="" type="text"/>
+</p>
+<p>
+<label for="email">Địa chỉ Email (*):</label>
+<br/>
+<input autocomplete="email" id="email" name="email" placeholder="diachi@gmail.com" required="" type="email"/>
+</p>
+<p>
+<label for="so-dien-thoai">Số điện thoại nhận hàng (*):</label>
+<br/>
+<input autocomplete="tel" id="so-dien-thoai" name="so-dien-thoai" pattern="[0-9]{10}" placeholder="0375837734" required="" type="tel"/>
+</p>
+</fieldset>
+<fieldset>
+<legend>Thông tin chi tiết đơn hàng</legend>
+<p>
+<label for="mon-an">Chọn món ăn muốn đặt:</label>
+<br/>
+<select id="mon-an" name="mon-an">
+<option value="ga-ran">Gà Rán Giòn Tan</option>
+<option value="burger-bo">Burger Bò Phô Mai</option>
+<option value="combo-tiet-kiem">Combo Tiết Kiệm</option>
+<option value="khoai-tay">Khoai Tây Chiên Lớn</option>
+</select>
+</p>
+<p>
+<label for="so-luong">Số lượng suất ăn (từ 1 đến 20):</label>
+<br/>
+<input id="so-luong" max="20" min="1" name="so-luong" required="" type="number" value="1"/>
+</p>
+<p>
+<label for="ngay-giao">Ngày muốn nhận hàng:</label>
+<br/>
+<input id="ngay-giao" name="ngay-giao" required="" type="date"/>
+</p>
+<p>
+<label for="dia-chi">Địa chỉ giao hàng cụ thể:</label>
+<br/>
+<textarea autocomplete="street-address" cols="40" id="dia-chi" name="dia-chi" placeholder="Ghi rõ số nhà, tên đường, phường/xã..." required="" rows="4"></textarea>
+</p>
+</fieldset>
+<p class="lien-he__nhom-nut">
+<button type="submit">Gửi đơn đặt hàng</button>
+<button type="reset">Nhập lại</button>
+</p>
+</form><aside aria-label="Thông tin liên hệ cửa hàng" class="lien-he__thong-tin"><h2>Thông tin liên hệ</h2><p>Foodspead - hệ thống đồ ăn nhanh trực tuyến</p><p>Điện thoại: 0375 837 734</p><p>Email: foodspead@example.com</p><p>Thời gian hỗ trợ: 08:00 - 22:00 mỗi ngày</p></aside>
+</main>
+<footer class="trang__chan">
+<p>
+      © 2026 Nhóm 07 - Khoa Toán - Tin,
       Trường Đại học Sư phạm - Đại học Đà Nẵng
     </p>
-  </footer>
-
+</footer>
 </body>
-
 </html>
