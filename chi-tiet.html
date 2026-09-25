@@ -4,10 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Meta SEO cơ bản -->
+    <title>Chi tiết món Gà Rán Giòn Tan | Foodspead</title>
     <meta name="description"
         content="Thông tin chi tiết về món Gà Rán Giòn Tan - Giá bán, thành phần dinh dưỡng và video hướng dẫn thưởng thức.">
-    <title>Chi tiết món Gà Rán Giòn Tan | Foodspead</title>
+    <link rel="canonical" href="https://foodspead.vn/chi-tiet.html">
+
+    <!-- Open Graph / Facebook SEO -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Chi tiết món Gà Rán Giòn Tan | Foodspead">
+    <meta property="og:description"
+        content="Thông tin chi tiết về món Gà Rán Giòn Tan - Giá bán, thành phần dinh dưỡng và video hướng dẫn thưởng thức.">
+    <meta property="og:image" content="images/ga-ran-gion-chi-tiet.jpg">
+    <meta property="og:url" content="https://foodspead.vn/chi-tiet.html">
+    <meta property="og:site_name" content="Foodspead">
+
+    <!-- Twitter Card SEO -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Chi tiết món Gà Rán Giòn Tan | Foodspead">
+    <meta name="twitter:description"
+        content="Thông tin chi tiết về món Gà Rán Giòn Tan - Giá bán, thành phần dinh dưỡng và video hướng dẫn thưởng thức.">
+    <meta name="twitter:image" content="images/ga-ran-gion-chi-tiet.jpg">
+
+    <!-- Tối ưu hiệu năng tải trang (Performance) -->
+    <link rel="preconnect" href="https://www.youtube.com">
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Dữ liệu cấu trúc Schema.org (Google Rich Snippet cho SEO món ăn / sản phẩm) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "Gà Rán Giòn Tan",
+      "image": ["images/ga-ran-gion-chi-tiet.jpg"],
+      "description": "Thông tin chi tiết về món Gà Rán Giòn Tan - Giá bán, thành phần dinh dưỡng và video hướng dẫn thưởng thức.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Foodspead"
+      },
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "VND",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+    </script>
 </head>
 
 <body class="trang trang--chi-tiet">
@@ -38,13 +80,15 @@
                 <h2>Hình ảnh sản phẩm</h2>
 
                 <figure>
+                    <!-- Bỏ loading="lazy" cho ảnh chính xuất hiện đầu tiên (LCP) và thêm fetchpriority="high" -->
                     <img
                         src="images/ga-ran-gion-chi-tiet.jpg"
                         alt="Mẹt gà rán giòn tan kèm sốt chấm và khoai tây chiên"
                         class="chi-tiet__anh"
                         width="450"
                         height="300"
-                        loading="lazy">
+                        fetchpriority="high"
+                        decoding="async">
 
                     <figcaption>
                         Hình 1: Món Gà Rán Giòn Tan đặc trưng của hệ thống cửa hàng Foodspead
@@ -104,12 +148,15 @@
                     Video quy trình chế biến đảm bảo an toàn thực phẩm
                 </h2>
 
+                <!-- Thêm loading="lazy" và quyền tương tác cho iframe để tránh làm chậm trang -->
                 <iframe
                     class="chi-tiet__video"
                     src="https://www.youtube.com/embed/C4Rkw7RTO-I"
                     title="Video giới thiệu quy trình chế biến món ăn tại Foodspead"
                     width="560"
                     height="315"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen>
                 </iframe>
             </section>
