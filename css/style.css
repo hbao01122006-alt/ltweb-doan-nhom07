@@ -889,3 +889,113 @@ tbody tr:nth-child(even) {
 #trang-thai {
   min-height: 1.5em;
 }
+/* ===== FIX RESPONSIVE 360PX CHO TRANG CHỦ ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Các khung chính không được vượt màn hình */
+.trang,
+.trang--chu,
+.trang__dau,
+.trang__noi-dung,
+main,
+header,
+nav,
+section,
+article,
+footer {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Header */
+.trang__dau,
+.trang-dau {
+  width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.trang__dau p,
+.trang-dau p {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* Menu */
+.menu,
+.menu ul,
+.dieu-huong,
+.dieu-huong ul {
+  max-width: 100%;
+}
+
+.menu ul,
+.dieu-huong ul {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.menu a,
+.dieu-huong a {
+  max-width: 100%;
+  white-space: normal;
+}
+
+/* Nội dung */
+main {
+  width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* Card / section */
+.the,
+.card,
+.khung {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Ảnh */
+figure,
+picture {
+  max-width: 100%;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .trang__noi-dung,
+  .noi-dung,
+  main {
+    width: calc(100% - 20px);
+    margin-inline: auto;
+  }
+
+  .trang__dau,
+  .trang-dau,
+  header {
+    padding-inline: 16px;
+  }
+
+  .trang__dau p,
+  .trang-dau p,
+  header p {
+    font-size: clamp(1rem, 6vw, 1.5rem);
+    line-height: 1.4;
+  }
+}
