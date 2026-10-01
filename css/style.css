@@ -1,0 +1,696 @@
+/* ============================================================
+   NHÓM 07 - FASTFOOD FOODSPEAD | A1.2 RESPONSIVE
+   PHÂN CÔNG THEO BẢNG 1:
+   1. Hoàng Gia Bảo     - index.html
+   2. Nguyễn Hữu Tài    - danh-sach.html
+   3. Lê Công Huy       - chi-tiet.html
+   4. Trần Hồ Trung Hậu - gioi-thieu.html
+   5. Phạm Hồng Phong   - lien-he.html
+   ============================================================ */
+
+
+/* 01-bien.css */
+:root {
+  --mau-chinh: #b5122b;
+  --mau-chinh-dam: #7d0d20;
+  --mau-nhan: #ffc928;
+  --chu: #292929;
+  --chu-phu: #555555;
+  --nen: #ffffff;
+  --nen-phu: #fff7df;
+  --vien: #d9d9d9;
+  --bo-goc: 12px;
+  --khoang-cach: 16px;
+  --rong-toi-da: 1180px;
+  --bong: 0 4px 14px rgb(0 0 0 / 10%);
+}
+
+
+/* 02-chuan-hoa.css */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, "Segoe UI", Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--chu);
+  background: var(--nen);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+iframe {
+  max-width: 100%;
+  border: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+a {
+  color: var(--mau-chinh);
+  text-decoration: none;
+  transition:
+    color .2s ease,
+    background-color .2s ease,
+    transform .2s ease;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:active,
+button:active {
+  transform: scale(.98);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #005fcc;
+  outline-offset: 3px;
+}
+
+
+/* 03-bo-cuc.css */
+.trang {
+  min-height: 100vh;
+  min-width: 0;
+  display: grid;
+  gap: 0;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "dau"
+    "menu"
+    "chinh"
+    "ben"
+    "chan";
+}
+
+.trang__dau {
+  grid-area: dau;
+  min-width: 0;
+  max-width: 100%;
+  padding: 24px 16px;
+  text-align: center;
+  color: #fff;
+  background: var(--mau-chinh);
+}
+
+.trang__menu {
+  grid-area: menu;
+  min-width: 0;
+  max-width: 100%;
+  padding: 8px 16px;
+  background: var(--mau-nhan);
+}
+
+.trang__chinh {
+  grid-area: chinh;
+  width: min(var(--rong-toi-da), calc(100% - 32px));
+  min-width: 0;
+  max-width: 100%;
+  margin-inline: auto;
+  padding-block: 28px;
+}
+
+.trang__ben {
+  grid-area: ben;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.trang__chan {
+  grid-area: chan;
+  min-width: 0;
+  max-width: 100%;
+  padding: 22px 16px;
+  text-align: center;
+  color: #fff;
+  background: #222;
+}
+
+.trang__dau p,
+.trang__chan p {
+  margin: 4px 0;
+}
+
+.trang__dau p:first-of-type {
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.trang__menu ul {
+  width: min(100%, var(--rong-toi-da));
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.trang__menu li {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.trang__menu a {
+  display: block;
+  max-width: 100%;
+  padding: 9px 11px;
+  border-radius: 8px;
+  color: #1f1f1f;
+  font-weight: 750;
+  overflow-wrap: anywhere;
+}
+
+.trang__menu a:hover {
+  color: #fff;
+  background: var(--mau-chinh);
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+h1 {
+  margin-top: 0;
+  color: var(--mau-chinh);
+  font-size: clamp(1.7rem, 6vw, 2.6rem);
+}
+
+h2 {
+  color: var(--mau-chinh-dam);
+}
+
+section {
+  margin-bottom: 28px;
+}
+
+figure {
+  margin-inline: 0;
+  max-width: 100%;
+}
+
+
+/* 04-thanh-phan.css */
+.the,
+.the-san-pham,
+fieldset,
+.thanh-vien,
+.chi-tiet__muc {
+  border: 1px solid var(--vien);
+  border-radius: var(--bo-goc);
+  background: #fff;
+  box-shadow: var(--bong);
+}
+
+.the {
+  min-width: 0;
+  max-width: 100%;
+  padding: 20px;
+}
+
+
+/* ============================================================
+   1. HOÀNG GIA BẢO - index.html
+   Bắt buộc:
+   Grid khung trang + hero + hàng 3 thẻ tự xuống dòng.
+   ============================================================ */
+
+.trang-chu__hero {
+  grid-column: 1 / -1;
+  min-width: 0;
+  max-width: 100%;
+  padding: 30px 20px;
+  border-radius: var(--bo-goc);
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    var(--nen-phu),
+    #fff
+  );
+}
+
+.trang-chu__luoi-the {
+  min-width: 0;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 18px;
+}
+
+.trang-chu__the {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.trang-chu__the:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px rgb(0 0 0 / 15%);
+}
+
+.the__anh {
+  width: 100%;
+  max-width: 100%;
+  max-height: 230px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+
+/* ============================================================
+   2. NGUYỄN HỮU TÀI - danh-sach.html
+   Bắt buộc:
+   repeat(auto-fit, minmax(..., 1fr)) + object-fit: cover.
+   ============================================================ */
+
+.danh-sach__tieu-de {
+  grid-column: 1 / -1;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 0 4px;
+  text-align: center;
+}
+
+.danh-sach__khoi.luoi-the {
+  min-width: 0;
+  max-width: 100%;
+  display: grid;
+  gap: 20px;
+  grid-template-columns:
+    repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+}
+
+.the-san-pham {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.the-san-pham:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px rgb(0 0 0 / 15%);
+}
+
+.the-san-pham__tieu-de {
+  margin: 0 0 10px;
+  overflow-wrap: anywhere;
+}
+
+.the-san-pham__anh {
+  width: 100%;
+  max-width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.the-san-pham p:last-child {
+  margin-top: auto;
+}
+
+.bang-boc {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+caption {
+  padding: 10px;
+  font-weight: 700;
+  color: var(--mau-chinh-dam);
+}
+
+th,
+td {
+  padding: 10px;
+  border: 1px solid var(--vien);
+  text-align: left;
+}
+
+thead {
+  color: #fff;
+  background: var(--mau-chinh);
+}
+
+tbody tr:nth-child(even) {
+  background: var(--nen-phu);
+}
+
+
+/* ============================================================
+   3. LÊ CÔNG HUY - chi-tiet.html
+   Bắt buộc:
+   1 cột trên điện thoại, 2 cột màn hình rộng.
+   ============================================================ */
+
+.chi-tiet__luoi {
+  min-width: 0;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+
+.chi-tiet__tieu-de {
+  min-width: 0;
+  max-width: 100%;
+  margin-bottom: 0;
+}
+
+.chi-tiet__muc {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  padding: 18px;
+  overflow-wrap: anywhere;
+}
+
+.chi-tiet__muc--phu {
+  background: var(--nen-phu);
+}
+
+.chi-tiet__anh {
+  width: 100%;
+  max-width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.chi-tiet__video {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+}
+
+
+/* ============================================================
+   4. TRẦN HỒ TRUNG HẬU - gioi-thieu.html
+   Bắt buộc:
+   đoạn văn <= khoảng 65ch + Flexbox danh sách thành viên.
+   ============================================================ */
+
+.gioi-thieu__doan {
+  max-width: 65ch;
+  overflow-wrap: anywhere;
+}
+
+.gioi-thieu__banner {
+  width: 100%;
+  max-width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: var(--bo-goc);
+}
+
+.danh-sach-thanh-vien {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.thanh-vien {
+  flex: 1 1 210px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}
+
+.thanh-vien img {
+  width: 100px;
+  max-width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+
+/* ============================================================
+   5. PHẠM HỒNG PHONG - lien-he.html
+   Bắt buộc:
+   label/input/nút + focus-visible + form mobile
+   + khối thông tin liên hệ.
+   ============================================================ */
+
+.lien-he__tieu-de {
+  grid-column: 1 / -1;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.lien-he__luoi {
+  min-width: 0;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+
+.lien-he__bieu-mau {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.lien-he__bieu-mau fieldset {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 0 18px;
+  padding: 18px;
+}
+
+.lien-he__bieu-mau legend {
+  max-width: 100%;
+  padding-inline: 8px;
+  color: var(--mau-chinh-dam);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.lien-he__bieu-mau label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+
+.lien-he__bieu-mau input,
+.lien-he__bieu-mau select,
+.lien-he__bieu-mau textarea {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #666;
+  border-radius: 8px;
+  background: #fff;
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.lien-he__bieu-mau input:focus-visible,
+.lien-he__bieu-mau select:focus-visible,
+.lien-he__bieu-mau textarea:focus-visible {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px;
+  border-color: var(--mau-chinh);
+}
+
+.lien-he__nhom-nut {
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.lien-he__bieu-mau button {
+  min-height: 44px;
+  max-width: 100%;
+  padding: 10px 18px;
+  border: 2px solid var(--mau-chinh);
+  border-radius: 8px;
+  color: #fff;
+  background: var(--mau-chinh);
+  font-weight: 750;
+  transition:
+    background-color .2s ease,
+    color .2s ease,
+    transform .2s ease;
+}
+
+.lien-he__bieu-mau button:hover {
+  color: #1f1f1f;
+  background: var(--mau-nhan);
+}
+
+.lien-he__thong-tin {
+  min-width: 0;
+  max-width: 100%;
+  padding: 18px;
+  border: 1px solid var(--vien);
+  border-radius: var(--bo-goc);
+  background: var(--nen-phu);
+  overflow-wrap: anywhere;
+}
+
+
+/* ==================== BREAKPOINT 1: TABLET >= 768px ==================== */
+@media (min-width: 768px) {
+
+  .trang__dau {
+    padding: 30px 24px;
+  }
+
+  .trang__menu ul {
+    gap: 10px;
+  }
+
+  .trang__chinh {
+    padding-block: 38px;
+  }
+
+  .chi-tiet__luoi {
+    grid-template-columns:
+      minmax(0, 2fr)
+      minmax(240px, 1fr);
+    align-items: start;
+  }
+
+  .chi-tiet__tieu-de {
+    grid-column: 1 / -1;
+  }
+
+  .chi-tiet__muc--rong {
+    grid-column: 1 / -1;
+  }
+
+  .lien-he__luoi {
+    grid-template-columns:
+      minmax(0, 2fr)
+      minmax(220px, 1fr);
+    align-items: start;
+  }
+}
+
+
+/* ==================== BREAKPOINT 2: DESKTOP >= 1024px ==================== */
+@media (min-width: 1024px) {
+
+  .trang__dau p:first-of-type {
+    font-size: 1.7rem;
+  }
+
+  .trang__menu a {
+    padding: 10px 16px;
+  }
+
+  .danh-sach__khoi.luoi-the {
+    gap: 24px;
+  }
+}
+
+
+/* 05-tien-ich.css */
+.bao {
+  width: min(var(--rong-toi-da), calc(100% - 32px));
+  min-width: 0;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.can-giua {
+  text-align: center;
+}
+
+.chi-hien-tren-may-tinh {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .chi-hien-tren-may-tinh {
+    display: block;
+  }
+}
+
+
+/* Điều chỉnh phần tử tiêu đề chiếm toàn hàng
+   trong các Grid nội dung */
+.trang-chu__hero {
+  grid-column: 1 / -1;
+}
+
+.lien-he__tieu-de {
+  grid-column: 1 / -1;
+}
+
+
+/* Footer là một cụm nội dung dàn bằng Flexbox
+   theo yêu cầu chung. */
+.trang__chan {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}

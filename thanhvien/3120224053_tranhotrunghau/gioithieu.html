@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+          content="Trang cá nhân giới thiệu Trần Hồ Trung Hậu, sở thích và thời khóa biểu học tập của thành viên Nhóm 07.">
+    <title>Giới thiệu cá nhân - Trần Hồ Trung Hậu | FastFood</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="trang-ca-nhan">
+
+    <header class="dau-trang">
+        <p>Trang cá nhân thành viên - Nhóm 07 FastFood</p>
+    </header>
+
+    <nav class="dieu-huong">
+        <ul>
+            <li>
+                <a href="../../index.html">Quay về Trang chủ Nhóm</a>
+            </li>
+            <li>
+                <a href="../../gioi-thieu.html">Quay về Giới thiệu Nhóm</a>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="noi-dung">
+
+        <h1 class="tieu-de-chinh">Giới thiệu thành viên: Trần Hồ Trung Hậu</h1>
+
+        <!-- TIỆN ÍCH TƯƠNG TÁC CỦA HẬU -->
+        <section class="the tien-ich-hau">
+            <h2>🎮 Tiện ích tương tác &amp; Đếm ngược ngày thi</h2>
+
+            <!-- Tính năng 1: Đếm ngược ngày thi -->
+            <div class="khu-vuc-dem-nguoc">
+                <div class="dong-chon-ngay">
+                    <label for="input-ngay-thi" class="nhan-chon-ngay">📅 Chọn ngày thi giữa kỳ / cuối kỳ:</label>
+                    <input type="date" id="input-ngay-thi" class="input-ngay">
+                </div>
+                <div id="ket-qua-dem-nguoc" class="ket-qua-dem-nguoc">
+                    ⏳ Vui lòng chọn ngày thi trên lịch để bắt đầu đếm ngược.
+                </div>
+            </div>
+
+            <hr class="duong-phan-cach">
+
+            <!-- Tính năng 2: Bảng nút điều khiển Thả bọ & Linh vật Rồng -->
+            <div class="khu-vuc-tro-choi">
+                <p class="mo-ta-tro-choi">🐉 Linh vật Rồng &amp; Trò chơi thả bọ (Phím H - A - U):</p>
+                <div class="nhom-nut-chuc-nang">
+                    <button id="btn-tha-bo" type="button" class="btn-tuong-tac btn-bo">🐛 Thả con bọ</button>
+                    <button id="btn-rong-h" type="button" class="btn-tuong-tac btn-rong">H (Xin chào)</button>
+                    <button id="btn-rong-a" type="button" class="btn-tuong-tac btn-rong">A (Phun lửa 🔥)</button>
+                    <button id="btn-rong-u" type="button" class="btn-tuong-tac btn-rong">U (Phóng to/Thu nhỏ &amp; Bay về)</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="the gioi-thieu-ban-than">
+            <h2>Giới thiệu bản thân</h2>
+
+            <figure class="chan-dung">
+                <img src="images/chan-dung-hau.jpg"
+                     alt="Ảnh chân dung Trần Hồ Trung Hậu"
+                     width="200"
+                     height="250" class="chan-dung__anh">
+
+                <figcaption>
+                    Chân dung Trần Hồ Trung Hậu - Thành viên Nhóm 07
+                </figcaption>
+            </figure>
+
+            <h3>Danh sách kỹ năng cá nhân</h3>
+
+            <!-- Ô tìm kiếm / lọc kỹ năng -->
+            <div class="khu-tim-kiem-ky-nang">
+                <label for="o-tim-kiem-ky-nang" class="nhan-tim-kiem">🔍 Tìm kiếm kỹ năng:</label>
+                <input type="search" id="o-tim-kiem-ky-nang" class="input-tim-kiem" placeholder="Nhập tên kỹ năng (vd: HTML, Python)...">
+                <p id="thong-bao-ky-nang" role="status" aria-live="polite" class="thong-bao-tim-kiem"></p>
+            </div>
+
+            <ul class="danh-sach-ky-nang">
+                <li>HTML5</li>
+                <li>Sử dụng Git và GitHub</li>
+                <li>Làm việc nhóm</li>
+                <li>Lập trình web</li>
+                <li>Lập trình ứng dụng</li>
+                <li>Python</li>
+            </ul>
+        </section>
+
+        <article class="the du-an-so-thich">
+            <h2>Dự án và sở thích</h2>
+
+            <p>
+                Tôi tham gia thực hiện đồ án xây dựng website FastFood
+                của Nhóm 07 (Trang giới thiệu).
+            </p>
+
+            <h3>Sở thích</h3>
+
+            <ul class="danh-sach-so-thich">
+                <li>Ngủ</li>
+                <li>Chơi cầu lông</li>
+                <li>Chơi game</li>
+                <li>Xem phim</li>
+                <li>Đọc sách</li>
+                <li>Tìm hiểu web</li>
+            </ul>
+        </article>
+
+        <section class="the khu-thoi-khoa-bieu">
+            <h2>Thời khóa biểu học tập trong tuần</h2>
+
+            <table class="thoi-khoa-bieu">
+
+                <caption>
+                    Thời khóa biểu học tập của Trần Hồ Trung Hậu
+                </caption>
+
+                <thead>
+                    <tr>
+                        <th scope="col">Thứ</th>
+                        <th scope="col">Tiết</th>
+                        <th scope="col">Mã học phần</th>
+                        <th scope="col">Môn học</th>
+                        <th scope="col">Phòng</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <th scope="row">Thứ 2</th>
+                        <td>7 - 9</td>
+                        <td>31221010 - 24-0102</td>
+                        <td>An toàn thông tin</td>
+                        <td>A6-401</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Thứ 3</th>
+                        <td>8 - 10</td>
+                        <td>31241283 - 24-0103</td>
+                        <td>Hệ quản trị cơ sở dữ liệu</td>
+                        <td>B3-304</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Thứ 5</th>
+                        <td>4 - 6</td>
+                        <td>31231330 - 24-0102</td>
+                        <td>Khai phá dữ liệu</td>
+                        <td>A5-404B</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Thứ 5</th>
+                        <td>7 - 9</td>
+                        <td>31231016 - 24-0102</td>
+                        <td>Công nghệ phần mềm</td>
+                        <td>B3-303</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Thứ 7</th>
+                        <td>1 - 3</td>
+                        <td>31231755 - 24-0102</td>
+                        <td>Thiết kế và lập trình web</td>
+                        <td>B3-303</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Thứ 7</th>
+                        <td>7 - 9</td>
+                        <td>21221904 - 25-0332</td>
+                        <td>Lịch sử Đảng Cộng sản Việt Nam</td>
+                        <td>B3-302</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </section>
+
+    </main>
+
+    <footer class="chan-trang">
+        © 2026 Nhóm 07 – Khoa Toán - Tin
+    </footer>
+
+    <!-- Nhúng tệp JavaScript cá nhân -->
+    <script src="js/canhan.js"></script>
+</body>
+
+</html>

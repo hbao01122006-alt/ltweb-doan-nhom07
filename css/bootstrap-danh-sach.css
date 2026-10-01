@@ -1,0 +1,34 @@
+/* CSS tùy biến Bootstrap - FastFood */
+
+:root {
+    --bs-primary: #bd1230;
+    --bs-primary-rgb: 189, 18, 48;
+
+    --bs-warning: #ffc72c;
+    --bs-warning-rgb: 255, 199, 44;
+}
+
+/* Header */
+.dau-bootstrap {
+    background-color: var(--bs-primary);
+    color: #ffffff;
+}
+
+/* Tiêu đề */
+.tieu-de-bootstrap {
+    color: var(--bs-primary);
+}
+
+/* Ảnh sản phẩm */
+.anh-san-pham {
+    width: 100%;
+    height: 235px;
+    object-fit: cover;
+}
+
+/* Focus bàn phím */
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 3px;
+}
