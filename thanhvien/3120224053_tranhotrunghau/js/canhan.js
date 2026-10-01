@@ -1,7 +1,7 @@
 /**
  * Script trang cá nhân - Trần Hồ Trung Hậu
  * Chức năng:
- * 1. Lọc danh sách kỹ năng theo từ khóa.
+ * 1. Developer Terminal CLI Mini (Thay thế tìm kiếm kỹ năng).
  * 2. Đếm ngược thời gian thi giữa kỳ/cuối kỳ dựa theo ngày chọn trên lịch.
  * 3. Linh vật Con Rồng (🐉) với phím H - A - U.
  * 4. Hệ thống Thả Bọ (bò chậm), bắt bọ bằng click hoặc kéo thả Rồng lại gần.
@@ -10,31 +10,56 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================
-    // 1. TÌM KIẾM / LỌC KỸ NĂNG CÁ NHÂN
+    // 1. DEVELOPER TERMINAL CLI MINI
     // ==========================================
-    const oTimKiem = document.getElementById('o-tim-kiem-ky-nang');
-    const danhSachKyNang = document.querySelectorAll('.danh-sach-ky-nang li');
-    const thongBaoKyNang = document.getElementById('thong-bao-ky-nang');
+    const termInput = document.getElementById('terminal-input');
+    const termOutput = document.getElementById('terminal-output');
 
-    if (oTimKiem) {
-        oTimKiem.addEventListener('input', (e) => {
-            const tuKhoa = e.target.value.toLowerCase().trim();
-            let soLuongKhop = 0;
+    if (termInput && termOutput) {
+        termInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = termInput.value.trim().toLowerCase();
+                termInput.value = '';
 
-            danhSachKyNang.forEach((li) => {
-                const noiDung = li.textContent.toLowerCase();
-                if (noiDung.includes(tuKhoa)) {
-                    li.style.display = '';
-                    soLuongKhop++;
-                } else {
-                    li.style.display = 'none';
+                if (cmd === '') return;
+
+                let res = '';
+                switch (cmd) {
+                    case 'help':
+                        res = '📌 Danh sách lệnh khả dụng:\n' +
+                              ' • <b style="color:#00ff00;">skills</b>   : Xem kỹ năng lập trình\n' +
+                              ' • <b style="color:#00ff00;">projects</b> : Xem danh sách dự án\n' +
+                              ' • <b style="color:#00ff00;">contact</b>  : Thông tin liên hệ\n' +
+                              ' • <b style="color:#00ff00;">matrix</b>   : Bật hiệu ứng Hacker Matrix\n' +
+                              ' • <b style="color:#00ff00;">clear</b>    : Xóa màn hình terminal';
+                        break;
+                    case 'skills':
+                        res = '🚀 Kỹ năng: HTML5, CSS3, JavaScript, Python, C++, Java, Git & GitHub, Làm việc nhóm.';
+                        break;
+                    case 'projects':
+                        res = '🍔 FastFood Website (Nhóm 07) | 🐍 Snake Game (OpenGL) | 🛒 Shopping Online (C++)';
+                        break;
+                    case 'contact':
+                        res = '📧 Email: trunghautranho5@gmail.com | MSSV: 312024053';
+                        break;
+                    case 'matrix':
+                        res = '🟢 [MATRIX ACTIVATED] Đã bật chế độ Hacker thành công!';
+                        document.body.style.transition = 'background 0.5s ease';
+                        document.body.style.background = '#001100';
+                        setTimeout(() => {
+                            document.body.style.background = '';
+                        }, 3000);
+                        break;
+                    case 'clear':
+                        termOutput.innerHTML = '';
+                        return;
+                    default:
+                        res = `❌ Lệnh '${cmd}' không tồn tại. Gõ <b style="color:#00ff00;">help</b> để xem danh sách câu lệnh.`;
                 }
-            });
 
-            if (thongBaoKyNang) {
-                thongBaoKyNang.textContent = (soLuongKhop === 0 && tuKhoa !== '') 
-                    ? 'Không tìm thấy kỹ năng phù hợp.' 
-                    : '';
+                termOutput.innerHTML += `<div><span class="prompt">hau@dev:~$</span> ${cmd}</div>`;
+                termOutput.innerHTML += `<div style="color: #aaaaaa; margin-bottom: 8px; white-space: pre-line;">${res}</div>`;
+                termOutput.scrollTop = termOutput.scrollHeight;
             }
         });
     }
@@ -117,13 +142,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const hanhDongRong = {
         H: () => {
-            // H - Xin chào
             pet.classList.add('rong-nhay');
             showPetBubble('Rồng chào bạn Hậu nha! 👋🐉');
             setTimeout(() => pet.classList.remove('rong-nhay'), 500);
         },
         A: () => {
-            // A - Phun lửa
             pet.textContent = '🐉🔥';
             showPetBubble('Rồng phun lửa phè phè! 🔥🔥🔥');
             setTimeout(() => {
@@ -131,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1200);
         },
         U: () => {
-            // U - Phóng to/Thu nhỏ rồi bay về góc trái
             pet.style.transform = 'scale(1.8)';
             showPetBubble('Biến to nè!... 🐲');
 
@@ -149,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Lắng nghe phím H - A - U
     document.addEventListener('keydown', (e) => {
         if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
 
@@ -159,7 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Lắng nghe 3 nút bấm tương ứng
     const mapNutRong = {
         'btn-rong-h': hanhDongRong.H,
         'btn-rong-a': hanhDongRong.A,
@@ -193,7 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
         activeBug.className = 'con-bo-target';
         activeBug.textContent = '🐛';
 
-        // Tọa độ ngẫu nhiên
         bugX = Math.floor(Math.random() * (window.innerWidth - 80)) + 20;
         bugY = Math.floor(Math.random() * (window.innerHeight - 80)) + 20;
 
@@ -203,17 +222,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         showPetBubble('Có bọ kìa! Bắt nó đi Hậu ơi! 🐛');
 
-        // Bắt bọ bằng cách CLICK CHUỘT trực tiếp vào con bọ
         activeBug.addEventListener('click', batBoThanhCong);
 
-        // Bọ di chuyển với TỐC ĐỘ CHẬM
         bugInterval = setInterval(() => {
             if (!activeBug) return;
-            // Di chuyển nhẹ từ 8px - 15px
             bugX += (Math.random() - 0.5) * 20;
             bugY += (Math.random() - 0.5) * 20;
 
-            // Giới hạn trong màn hình
             bugX = Math.max(20, Math.min(window.innerWidth - 60, bugX));
             bugY = Math.max(20, Math.min(window.innerHeight - 60, bugY));
 
@@ -221,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
             activeBug.style.top = `${bugY}px`;
 
             kiemTraRongGầnBo();
-        }, 300); // Cập nhật chậm 300ms/lần
+        }, 300);
     }
 
     if (btnThaBo) {
@@ -240,14 +255,12 @@ document.addEventListener('DOMContentLoaded', () => {
         showPetBubble('Đã bắt được bọ rồi! Giỏi quá! 🎉🐛');
     }
 
-    // Kiểm tra khoảng cách khi kéo thả Rồng lại gần Bọ
     function kiemTraRongGầnBo() {
         if (!activeBug) return;
         const dx = (rongX + 30) - (bugX + 20);
         const dy = (rongY + 30) - (bugY + 20);
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // Khoảng cách dưới 50px là Rồng ăn bọ
         if (distance < 50) {
             batBoThanhCong();
         }
@@ -271,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rongX = e.clientX - offsetX;
         rongY = e.clientY - offsetY;
         capNhatViTriRong();
-        kiemTraRongGầnBo(); // Kiểm tra va chạm với Bọ khi đang kéo thả
+        kiemTraRongGầnBo();
     });
 
     const ngungKeoTho = (e) => {

@@ -1,13 +1,13 @@
 ﻿/* CSS riêng - Trần Hồ Trung Hậu | Nhóm 07 FastFood */
 
 :root {
-  --mau-chinh: #b5122b;
+  --mau-chinh: #b5122b;        /* Đỏ FastFood đặc trưng */
   --mau-chinh-dam: #7d0d20;
-  --mau-nhan: #ffc928;
+  --mau-nhan: #ffc928;         /* Vàng FastFood nổi bật */
   --chu: #292929;
   --chu-phu: #555555;
   --nen: #ffffff;
-  --nen-phu: #fff7df;
+  --nen-phu: #fff7df;          /* Nền kem nhạt chuẩn giao diện cũ */
   --vien: #d9d9d9;
   --focus: #005fcc;
   --bo-goc: 14px;
@@ -130,6 +130,7 @@ img {
   font-size: clamp(1.65rem, 6vw, 2.35rem);
   line-height: 1.25;
   overflow-wrap: anywhere;
+  border: 2px solid var(--mau-nhan);
 }
 
 .the {
@@ -265,31 +266,83 @@ img {
   background-color: #27ae60;
 }
 
-/* ===== Ô TÌM KIẾM KỸ NĂNG ===== */
+/* ===== DEVELOPER TERMINAL CLI MINI (Tích hợp hài hòa) ===== */
 
-.khu-tim-kiem-ky-nang {
-  margin-bottom: 12px;
+.terminal-container {
+  margin-top: 15px;
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  font-family: 'Courier New', Courier, monospace;
+  color: #cccccc;
+  border: 2px solid var(--mau-nhan);
 }
 
-.nhan-tim-kiem {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
-}
-
-.input-tim-kiem {
-  width: 100%;
+.terminal-header {
+  background-color: #323232;
   padding: 8px 12px;
-  border: 1px solid var(--vien);
-  border-radius: 8px;
-  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.thong-bao-tim-kiem {
-  margin: 6px 0 0;
-  font-size: 0.9rem;
-  color: var(--mau-chinh);
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.red { background-color: #ff5f56; }
+.dot.yellow { background-color: #ffbd2e; }
+.dot.green { background-color: #27c93f; }
+
+.terminal-title {
+  color: #aaaaaa;
+  font-size: 0.8rem;
+  margin-left: 8px;
   font-weight: bold;
+}
+
+.terminal-output {
+  padding: 12px;
+  max-height: 180px;
+  overflow-y: auto;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.terminal-output div {
+  margin-bottom: 4px;
+  word-break: break-word;
+}
+
+.prompt {
+  color: #00ff00;
+  font-weight: bold;
+  margin-right: 6px;
+}
+
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px 10px;
+  background-color: #1e1e1e;
+}
+
+#terminal-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.88rem;
+  outline: none;
+}
+
+#terminal-input::placeholder {
+  color: #666666;
 }
 
 /* ===== THỜI KHÓA BIỂU ===== */
@@ -375,7 +428,6 @@ img {
   white-space: nowrap;
 }
 
-/* Con bọ bò chậm */
 .con-bo-target {
   position: fixed;
   font-size: 32px;
@@ -390,7 +442,6 @@ img {
   touch-action: none;
 }
 
-/* Hiệu ứng nhảy mừng */
 .rong-nhay {
   animation: nhayChao 0.5s ease-in-out;
 }
