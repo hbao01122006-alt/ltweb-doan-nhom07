@@ -4,52 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Meta SEO cơ bản -->
-    <title>Chi tiết món Gà Rán Giòn Tan | Foodspead</title>
     <meta name="description"
         content="Thông tin chi tiết về món Gà Rán Giòn Tan - Giá bán, thành phần dinh dưỡng và video hướng dẫn thưởng thức.">
-    <link rel="canonical" href="https://foodspead.vn/chi-tiet.html">
-
-    <!-- Open Graph / Facebook SEO -->
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="Chi tiết món Gà Rán Giòn Tan | Foodspead">
-    <meta property="og:description"
-        content="Thông tin chi tiết về món Gà Rán Giòn Tan - Giá bán, thành phần dinh dưỡng và video hướng dẫn thưởng thức.">
-    <meta property="og:image" content="images/ga-ran-gion-chi-tiet.jpg">
-    <meta property="og:url" content="https://foodspead.vn/chi-tiet.html">
-    <meta property="og:site_name" content="Foodspead">
-
-    <!-- Twitter Card SEO -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Chi tiết món Gà Rán Giòn Tan | Foodspead">
-    <meta name="twitter:description"
-        content="Thông tin chi tiết về món Gà Rán Giòn Tan - Giá bán, thành phần dinh dưỡng và video hướng dẫn thưởng thức.">
-    <meta name="twitter:image" content="images/ga-ran-gion-chi-tiet.jpg">
-
-    <!-- Tối ưu hiệu năng tải trang (Performance) -->
-    <link rel="preconnect" href="https://www.youtube.com">
-    <link rel="stylesheet" href="css/style.css">
-
-    <!-- Dữ liệu cấu trúc Schema.org (Google Rich Snippet cho SEO món ăn / sản phẩm) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org/",
-      "@type": "Product",
-      "name": "Gà Rán Giòn Tan",
-      "image": ["images/ga-ran-gion-chi-tiet.jpg"],
-      "description": "Thông tin chi tiết về món Gà Rán Giòn Tan - Giá bán, thành phần dinh dưỡng và video hướng dẫn thưởng thức.",
-      "brand": {
-        "@type": "Brand",
-        "name": "Foodspead"
-      },
-      "offers": {
-        "@type": "Offer",
-        "priceCurrency": "VND",
-        "availability": "https://schema.org/InStock"
-      }
-    }
-    </script>
+    <title>Chi tiết món Gà Rán Giòn Tan | Foodspead</title>
+    <script>document.documentElement.classList.add('js');</script>
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body class="trang trang--chi-tiet">
@@ -57,20 +16,23 @@
     <header class="trang__dau">
         <p>Foodspead - Ngon Mỗi Ngày, Giao Nhanh Tận Nơi</p>
         <p>Hệ thống đặt đồ ăn nhanh trực tuyến hàng đầu</p>
-    </header>
+    <p class="trang__yeu-thich"><a href="danh-sach.html?yeu-thich=1">♥ Yêu thích (<span data-dem-yeu-thich="">0</span>)</a></p>
+</header>
 
-    <nav class="trang__menu">
-        <ul>
+    <nav aria-label="Điều hướng chính" class="trang__menu">
+<button aria-controls="menu-chinh" aria-expanded="false" class="nut-menu" type="button">☰ Menu</button>
+<ul class="menu" id="menu-chinh">
             <li><a href="index.html">Trang chủ</a></li>
             <li><a href="danh-sach.html">Thực đơn</a></li>
-            <li><a href="chi-tiet.html">Món nổi bật</a></li>
+            <li><a href="chi-tiet.html?id=1">Món nổi bật</a></li>
             <li><a href="gioi-thieu.html">Giới thiệu</a></li>
             <li><a href="lien-he.html">Liên hệ đặt hàng</a></li>
         </ul>
     </nav>
 
     <main class="trang__chinh">
-        <article class="chi-tiet__luoi">
+        <p aria-live="polite" class="trang-thai" id="chi-tiet-trang-thai"></p>
+        <article class="chi-tiet__luoi" id="chi-tiet">
 
             <h1 class="chi-tiet__tieu-de">
                 Thông tin chi tiết: Gà Rán Giòn Tan
@@ -80,15 +42,13 @@
                 <h2>Hình ảnh sản phẩm</h2>
 
                 <figure>
-                    <!-- Bỏ loading="lazy" cho ảnh chính xuất hiện đầu tiên (LCP) và thêm fetchpriority="high" -->
                     <img
                         src="images/ga-ran-gion-chi-tiet.jpg"
                         alt="Mẹt gà rán giòn tan kèm sốt chấm và khoai tây chiên"
                         class="chi-tiet__anh"
                         width="450"
                         height="300"
-                        fetchpriority="high"
-                        decoding="async">
+                        loading="lazy">
 
                     <figcaption>
                         Hình 1: Món Gà Rán Giòn Tan đặc trưng của hệ thống cửa hàng Foodspead
@@ -98,6 +58,7 @@
 
             <section class="chi-tiet__muc chi-tiet__muc--phu">
                 <h2>Thông số chi tiết và thành phần dinh dưỡng</h2>
+                <p class="chi-tiet__hanh-dong"><button aria-pressed="false" class="nut-yeu-thich" type="button">♡ Thêm vào yêu thích</button> <a href="danh-sach.html">← Quay lại thực đơn</a></p>
 
                 <table class="chi-tiet__bang">
                     <caption>
@@ -148,17 +109,14 @@
                     Video quy trình chế biến đảm bảo an toàn thực phẩm
                 </h2>
 
-                <!-- Thêm loading="lazy" và quyền tương tác cho iframe để tránh làm chậm trang -->
-                <iframe
-                    class="chi-tiet__video"
-                    src="https://www.youtube.com/embed/C4Rkw7RTO-I"
-                    title="Video giới thiệu quy trình chế biến món ăn tại Foodspead"
-                    width="560"
-                    height="315"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
+                <p>
+                    <a class="nut-video"
+                       href="https://www.youtube.com/watch?v=C4Rkw7RTO-I"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Xem video quy trình chế biến trên YouTube
+                    </a>
+                </p>
             </section>
 
         </article>
@@ -170,7 +128,8 @@
             Trường Đại học Sư phạm - Đại học Đà Nẵng
         </p>
     </footer>
-
+<script src="js/main.js" type="module"></script>
+<script src="js/trang-chi-tiet.js" type="module"></script>
 </body>
 
 </html>
