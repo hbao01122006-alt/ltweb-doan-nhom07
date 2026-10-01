@@ -694,3 +694,198 @@ tbody tr:nth-child(even) {
   align-items: center;
   gap: 8px;
 }
+
+/* ============================================================
+   BÀI TẬP NHÓM 4 - JAVASCRIPT: các lớp phục vụ chức năng mới
+   Mặc định (không JavaScript): menu luôn hiện, nút ☰ và công cụ lọc ẩn.
+   ============================================================ */
+.nut-menu,
+.cong-cu-loc,
+.trang__yeu-thich {
+  display: none;
+}
+
+.js .trang__yeu-thich {
+  display: block;
+}
+
+.trang__dau .trang__yeu-thich {
+  margin: 8px 0 0;
+}
+
+.trang__yeu-thich a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.nut-menu {
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 2px solid #1f1f1f;
+  border-radius: 8px;
+  color: #1f1f1f;
+  font-weight: 750;
+  background: #fff;
+}
+
+.js .cong-cu-loc {
+  display: grid;
+  gap: 4px 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  margin-bottom: 12px;
+}
+
+.cong-cu-loc p {
+  margin: 4px 0;
+}
+
+.cong-cu-loc input[type="search"],
+.cong-cu-loc select {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid #767676;
+  border-radius: 8px;
+}
+
+.cong-cu-loc__chon {
+  align-self: end;
+}
+
+.trang-thai {
+  min-height: 1.6em;
+  margin: 8px 0 16px;
+  color: var(--chu-phu);
+  font-weight: 600;
+}
+
+.nut-thu-lai,
+.nut-yeu-thich {
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 2px solid var(--mau-chinh);
+  border-radius: 8px;
+  color: var(--mau-chinh-dam);
+  font-weight: 700;
+  background: #fff;
+}
+
+.nut-yeu-thich[aria-pressed="true"] {
+  color: #fff;
+  background: var(--mau-chinh);
+}
+
+.the-san-pham__hanh-dong {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.het-hang {
+  color: #b00020;
+  font-weight: 700;
+}
+
+.js [aria-busy="true"] .chi-tiet__muc {
+  visibility: hidden;
+}
+
+.thoi-tiet__nhiet-do {
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.loi {
+  display: block;
+  min-height: 1.2em;
+  color: #b00020;
+  font-size: .9rem;
+}
+
+.lien-he__bieu-mau input[aria-invalid="true"],
+.lien-he__bieu-mau textarea[aria-invalid="true"] {
+  border-color: #b00020;
+}
+
+.lien-he__bieu-mau button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 767px) {
+  .js .nut-menu {
+    display: inline-block;
+  }
+
+  .js .menu {
+    display: none;
+  }
+
+  .js .menu.mo {
+    display: flex;
+  }
+}
+
+/* Bài 4: giữ ổn định bố cục khi danh sách JSON đang tải (giảm CLS). */
+.the-san-pham {
+  min-height: 430px;
+}
+
+.the-san-pham--dang-tai {
+  pointer-events: none;
+}
+
+.khung-tai {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+  background: #eeeeee;
+}
+
+.khung-tai--tieu-de {
+  width: 65%;
+  height: 28px;
+  margin-bottom: 10px;
+}
+
+.khung-tai--anh {
+  height: 200px;
+  margin-bottom: 16px;
+}
+
+.khung-tai--dong {
+  height: 20px;
+  margin: 10px 0;
+}
+
+/* Liên kết video thay cho iframe bên thứ ba: không tạo cookie khi tải trang. */
+.nut-video {
+  display: inline-block;
+  padding: 12px 16px;
+  border: 2px solid var(--mau-chinh);
+  border-radius: 8px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+
+/* Bài 4 - ổn định kích thước thẻ trước/sau khi dữ liệu JSON render. */
+@media (max-width: 767px) {
+  #luoi-san-pham .the-san-pham {
+    min-height: 520px;
+  }
+}
+
+#luoi-san-pham .the-san-pham__anh,
+#luoi-san-pham .khung-tai--anh {
+  aspect-ratio: 3 / 2;
+  height: auto;
+  min-height: 200px;
+}
+
+/* Bài 4 - giữ chiều cao dòng trạng thái ổn định khi đổi từ "Đang tải" sang kết quả. */
+#trang-thai {
+  min-height: 1.5em;
+}
