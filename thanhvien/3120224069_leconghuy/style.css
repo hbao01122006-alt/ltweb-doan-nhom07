@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 /* CSS riêng - Lê Công Huy | Nhóm 07 FastFood */
-=======
-/* CSS riêng - Lê Công Huy| Nhóm 07 FastFood */
->>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
 
 :root {
   --mau-chinh: #b5122b;
@@ -94,14 +90,7 @@ img {
   color: #1f1f1f;
   font-weight: 700;
   text-decoration: none;
-<<<<<<< HEAD
   transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-=======
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
->>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
 }
 
 .dieu-huong a:hover {
@@ -202,7 +191,6 @@ img {
   overflow-wrap: anywhere;
 }
 
-<<<<<<< HEAD
 /* ===== TIỆN ÍCH LÊ CÔNG HUY ===== */
 
 .tien-ich-huy {
@@ -372,8 +360,6 @@ img {
   100% { transform: translateY(0); }
 }
 
-=======
->>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
 /* ===== THỜI KHÓA BIỂU ===== */
 
 .khu-thoi-khoa-bieu {
