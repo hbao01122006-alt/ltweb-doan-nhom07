@@ -6,18 +6,21 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="Foodspead - Website đặt đồ ăn nhanh uy tín, giao hàng tận nơi nhanh chóng với menu gà rán, burger, combo tiết kiệm hấp dẫn." name="description"/>
 <title>Trang chủ | Foodspead - Đồ Ăn Nhanh Nhanh Chóng &amp; Tiện Lợi</title>
+<script>document.documentElement.classList.add('js');</script>
 <link href="css/style.css" rel="stylesheet"/>
 </head>
 <body class="trang trang--chu">
 <header class="trang__dau">
 <p>Foodspead - Ngon Mỗi Ngày, Giao Nhanh Tận Nơi</p>
 <p>Hệ thống đặt đồ ăn nhanh trực tuyến hàng đầu</p>
+<p class="trang__yeu-thich"><a href="danh-sach.html?yeu-thich=1">♥ Yêu thích (<span data-dem-yeu-thich="">0</span>)</a></p>
 </header>
-<nav class="trang__menu">
-<ul>
+<nav aria-label="Điều hướng chính" class="trang__menu">
+<button aria-controls="menu-chinh" aria-expanded="false" class="nut-menu" type="button">☰ Menu</button>
+<ul class="menu" id="menu-chinh">
 <li><a href="index.html">Trang chủ</a></li>
 <li><a href="danh-sach.html">Thực đơn</a></li>
-<li><a href="chi-tiet.html">Món nổi bật</a></li>
+<li><a href="chi-tiet.html?id=1">Món nổi bật</a></li>
 <li><a href="gioi-thieu.html">Giới thiệu</a></li>
 <li><a href="lien-he.html">Liên hệ đặt hàng</a></li>
 </ul>
@@ -51,9 +54,14 @@
           thịt mềm ngọt mọng nước bên trong.
         </p>
 <p>
-<a href="chi-tiet.html">Xem chi tiết món gà rán giòn</a>
+<a href="chi-tiet.html?id=5">Xem chi tiết món gà rán giòn</a>
 </p>
 </article>
+</section>
+<section class="the the--noi-bat trang-chu__the">
+<h2>Thời tiết Đà Nẵng hôm nay</h2>
+<div aria-live="polite" id="thoi-tiet-noi-dung"></div>
+<noscript><p>Trình duyệt đang tắt JavaScript nên không hiện được thời tiết. Bạn vẫn có thể xem thực đơn ở mục Thực đơn.</p></noscript>
 </section>
 </main>
 <footer class="trang__chan">
@@ -62,6 +70,7 @@
       Trường Đại học Sư phạm - Đại học Đà Nẵng
     </p>
 </footer>
+<script src="js/main.js" type="module"></script>
+<script src="js/trang-chu.js" type="module"></script>
 </body>
 </html>
-
