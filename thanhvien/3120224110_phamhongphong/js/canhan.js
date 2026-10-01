@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 nutDoiGiaoDien.textContent = '☀️ Chế độ Sáng';
             }
         } catch (err) {
-            console.warn('Khởi tạo giao diện:', err);
+            console.warn('Khởi tạo giao diện: - canhan.js:20', err);
         }
 
         nutDoiGiaoDien.addEventListener('click', () => {
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 localStorage.setItem('giao-dien-phong', laGiaoDienToi ? 'dark' : 'light');
             } catch (err) {
-                console.warn('Lưu giao diện thất bại:', err);
+                console.warn('Lưu giao diện thất bại: - canhan.js:29', err);
             }
         });
     }
