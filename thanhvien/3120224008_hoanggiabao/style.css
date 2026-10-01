@@ -251,3 +251,721 @@ img { display: block; max-width: 100%; height: auto; }
   .noi-dung { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tieu-de-chinh, .khu-thoi-khoa-bieu, .khu-vuc-game { grid-column: 1 / -1; }
 }
+/* ==================================================
+   FIX RESPONSIVE 360PX - HOÀNG GIA BẢO
+   ================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+body {
+  overflow-x: clip;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===== KHUNG CHÍNH ===== */
+
+.trang-ca-nhan,
+.dau-trang,
+.dieu-huong,
+.noi-dung,
+.the,
+.du-an-so-thich,
+.khu-vuc-todo,
+.khu-vuc-game,
+.khu-thoi-khoa-bieu,
+.chan-trang {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.noi-dung {
+  width: min(calc(100% - 24px), 1000px);
+  margin-inline: auto;
+}
+
+.dau-trang,
+.tieu-de-chinh,
+.the,
+.chan-trang {
+  overflow-wrap: anywhere;
+}
+
+/* ===== MENU ===== */
+
+.dieu-huong {
+  width: 100%;
+}
+
+.dieu-huong ul {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 10px 12px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dieu-huong li {
+  min-width: 0;
+}
+
+.dieu-huong a {
+  display: block;
+  max-width: 100%;
+  white-space: normal;
+}
+
+/* ===== ẢNH CHÂN DUNG ===== */
+
+.chan-dung {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.chan-dung__anh {
+  width: min(200px, 70vw);
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+/* ===== TODO ===== */
+
+#form-todo {
+  width: 100%;
+  max-width: 100%;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#input-todo {
+  flex: 1 1 180px;
+
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.btn-them-todo,
+.btn-del-todo {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+#danh-sach-todo {
+  max-width: 100%;
+  padding-left: 22px;
+}
+
+#danh-sach-todo li {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* Label chỉ dành cho trình đọc màn hình */
+
+.nhan-an {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== MINI GAME ===== */
+
+.khu-vuc-game {
+  overflow: hidden;
+}
+
+#game-container {
+  position: relative;
+
+  width: 100%;
+  max-width: 100%;
+  height: 280px;
+
+  overflow: hidden;
+
+  border-radius: 12px;
+}
+
+#game-score {
+  max-width: 100%;
+}
+
+#game-burger,
+#game-panda {
+  position: absolute;
+}
+
+.btn-game-start {
+  max-width: 100%;
+  white-space: normal;
+}
+
+/* ===== THỜI KHÓA BIỂU ===== */
+
+.khu-thoi-khoa-bieu {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  overflow: hidden;
+}
+
+.bang-cuon {
+  width: 100%;
+  max-width: 100%;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-inline: contain;
+}
+
+.thoi-khoa-bieu {
+  width: 100%;
+  min-width: 700px;
+
+  border-collapse: collapse;
+}
+
+.thoi-khoa-bieu th,
+.thoi-khoa-bieu td {
+  overflow-wrap: normal;
+}
+
+/* ===== PHƯỢNG HOÀNG ===== */
+
+#phoenix-container {
+  position: fixed;
+
+  right: 8px;
+  bottom: 8px;
+
+  width: auto;
+  max-width: calc(100vw - 16px);
+
+  z-index: 999;
+
+  pointer-events: auto;
+}
+
+#phoenix-avatar {
+  text-align: right;
+  font-size: clamp(2rem, 12vw, 4rem);
+}
+
+#phoenix-speech {
+  width: max-content;
+  max-width: min(250px, calc(100vw - 20px));
+
+  margin-left: auto;
+
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+#phoenix-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  gap: 4px;
+
+  width: max-content;
+  max-width: calc(100vw - 16px);
+
+  margin-left: auto;
+}
+
+#phoenix-controls button {
+  min-width: 0;
+  max-width: 100%;
+
+  white-space: normal;
+}
+
+/* ===== LỬA TRANG TRÍ ===== */
+
+.flicker-flame {
+  position: fixed;
+  z-index: 998;
+
+  pointer-events: none;
+
+  max-width: 40px;
+}
+
+.flame-top-left {
+  top: 5px;
+  left: 5px;
+}
+
+.flame-top-right {
+  top: 5px;
+  right: 5px;
+}
+
+.flame-bottom-left {
+  bottom: 5px;
+  left: 5px;
+}
+
+.flame-bottom-right {
+  right: 5px;
+  bottom: 5px;
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 767px) {
+
+  .noi-dung {
+    width: calc(100% - 20px);
+    padding-inline: 0;
+  }
+
+  .the {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .dieu-huong ul {
+    padding-inline: 8px;
+  }
+
+  #form-todo {
+    flex-direction: column;
+  }
+
+  #input-todo,
+  .btn-them-todo {
+    width: 100%;
+  }
+
+  #phoenix-container {
+    right: 4px;
+    bottom: 4px;
+
+    max-width: calc(100vw - 8px);
+
+    transform: scale(0.78);
+    transform-origin: right bottom;
+  }
+
+  #phoenix-controls {
+    max-width: 280px;
+  }
+
+  #game-container {
+    height: 230px;
+  }
+}
+
+/* ===== TABLET / DESKTOP ===== */
+
+@media (min-width: 768px) {
+
+  .noi-dung {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .tieu-de-chinh,
+  .khu-thoi-khoa-bieu,
+  .khu-vuc-game {
+    grid-column: 1 / -1;
+  }
+}
+/* ==================================================
+   FIX RESPONSIVE 360PX - HOÀNG GIA BẢO
+   ================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+body {
+  overflow-x: clip;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===== KHUNG CHÍNH ===== */
+
+.trang-ca-nhan,
+.dau-trang,
+.dieu-huong,
+.noi-dung,
+.the,
+.du-an-so-thich,
+.khu-vuc-todo,
+.khu-vuc-game,
+.khu-thoi-khoa-bieu,
+.chan-trang {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.noi-dung {
+  width: min(calc(100% - 24px), 1000px);
+  margin-inline: auto;
+}
+
+.dau-trang,
+.tieu-de-chinh,
+.the,
+.chan-trang {
+  overflow-wrap: anywhere;
+}
+
+/* ===== MENU ===== */
+
+.dieu-huong {
+  width: 100%;
+}
+
+.dieu-huong ul {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 10px 12px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dieu-huong li {
+  min-width: 0;
+}
+
+.dieu-huong a {
+  display: block;
+  max-width: 100%;
+  white-space: normal;
+}
+
+/* ===== ẢNH CHÂN DUNG ===== */
+
+.chan-dung {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.chan-dung__anh {
+  width: min(200px, 70vw);
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+/* ===== TODO ===== */
+
+#form-todo {
+  width: 100%;
+  max-width: 100%;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#input-todo {
+  flex: 1 1 180px;
+
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.btn-them-todo,
+.btn-del-todo {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+#danh-sach-todo {
+  max-width: 100%;
+  padding-left: 22px;
+}
+
+#danh-sach-todo li {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* Label chỉ dành cho trình đọc màn hình */
+
+.nhan-an {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== MINI GAME ===== */
+
+.khu-vuc-game {
+  overflow: hidden;
+}
+
+#game-container {
+  position: relative;
+
+  width: 100%;
+  max-width: 100%;
+  height: 280px;
+
+  overflow: hidden;
+
+  border-radius: 12px;
+}
+
+#game-score {
+  max-width: 100%;
+}
+
+#game-burger,
+#game-panda {
+  position: absolute;
+}
+
+.btn-game-start {
+  max-width: 100%;
+  white-space: normal;
+}
+
+/* ===== THỜI KHÓA BIỂU ===== */
+
+.khu-thoi-khoa-bieu {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  overflow: hidden;
+}
+
+.bang-cuon {
+  width: 100%;
+  max-width: 100%;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-inline: contain;
+}
+
+.thoi-khoa-bieu {
+  width: 100%;
+  min-width: 700px;
+
+  border-collapse: collapse;
+}
+
+.thoi-khoa-bieu th,
+.thoi-khoa-bieu td {
+  overflow-wrap: normal;
+}
+
+/* ===== PHƯỢNG HOÀNG ===== */
+
+#phoenix-container {
+  position: fixed;
+
+  right: 8px;
+  bottom: 8px;
+
+  width: auto;
+  max-width: calc(100vw - 16px);
+
+  z-index: 999;
+
+  pointer-events: auto;
+}
+
+#phoenix-avatar {
+  text-align: right;
+  font-size: clamp(2rem, 12vw, 4rem);
+}
+
+#phoenix-speech {
+  width: max-content;
+  max-width: min(250px, calc(100vw - 20px));
+
+  margin-left: auto;
+
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+#phoenix-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  gap: 4px;
+
+  width: max-content;
+  max-width: calc(100vw - 16px);
+
+  margin-left: auto;
+}
+
+#phoenix-controls button {
+  min-width: 0;
+  max-width: 100%;
+
+  white-space: normal;
+}
+
+/* ===== LỬA TRANG TRÍ ===== */
+
+.flicker-flame {
+  position: fixed;
+  z-index: 998;
+
+  pointer-events: none;
+
+  max-width: 40px;
+}
+
+.flame-top-left {
+  top: 5px;
+  left: 5px;
+}
+
+.flame-top-right {
+  top: 5px;
+  right: 5px;
+}
+
+.flame-bottom-left {
+  bottom: 5px;
+  left: 5px;
+}
+
+.flame-bottom-right {
+  right: 5px;
+  bottom: 5px;
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 767px) {
+
+  .noi-dung {
+    width: calc(100% - 20px);
+    padding-inline: 0;
+  }
+
+  .the {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .dieu-huong ul {
+    padding-inline: 8px;
+  }
+
+  #form-todo {
+    flex-direction: column;
+  }
+
+  #input-todo,
+  .btn-them-todo {
+    width: 100%;
+  }
+
+  #phoenix-container {
+    right: 4px;
+    bottom: 4px;
+
+    max-width: calc(100vw - 8px);
+
+    transform: scale(0.78);
+    transform-origin: right bottom;
+  }
+
+  #phoenix-controls {
+    max-width: 280px;
+  }
+
+  #game-container {
+    height: 230px;
+  }
+}
+
+/* ===== TABLET / DESKTOP ===== */
+
+@media (min-width: 768px) {
+
+  .noi-dung {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .tieu-de-chinh,
+  .khu-thoi-khoa-bieu,
+  .khu-vuc-game {
+    grid-column: 1 / -1;
+  }
+}
