@@ -1,13 +1,25 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
 <html lang="vi">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <meta name="description"
           content="Trang cá nhân giới thiệu bản thân, đóng góp dự án, sở thích và thời khóa biểu của Lê Công Huy - Nhóm 07.">
     <title>Giới thiệu cá nhân - Lê Công Huy | Foodspead</title>
+=======
+
+    <meta name="description"
+          content="Trang cá nhân giới thiệu bản thân, đóng góp dự án, sở thích và thời khóa biểu của Lê Công Huy - Nhóm 07.">
+
+    <title>Giới thiệu cá nhân - Lê Công Huy | Foodspead</title>
+
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -39,6 +51,7 @@
             <!-- Tính năng 1: Bộ phát nhạc -->
             <div class="khu-vuc-lofi">
                 <h3>🎵 Bộ phát âm thanh nền tập trung học tập</h3>
+<<<<<<< HEAD
                 <div class="bo-phat-nhac">
                     <button id="btn-phat-nhac" type="button" class="btn-lofi">▶️ Bật âm thanh thư giãn (White Noise)</button>
                     <div class="dieu-chinh-am-luong">
@@ -47,6 +60,31 @@
                     </div>
                 </div>
                 <p id="trang-thai-nhac" class="ghi-chu-lofi">Âm thanh đang tắt.</p>
+=======
+
+                <div class="bo-phat-nhac">
+                    <button id="btn-phat-nhac"
+                            type="button"
+                            class="btn-lofi">
+                        ▶️ Bật âm thanh thư giãn (White Noise)
+                    </button>
+
+                    <div class="dieu-chinh-am-luong">
+                        <label for="thanh-am-luong">🔊 Âm lượng:</label>
+
+                        <input type="range"
+                               id="thanh-am-luong"
+                               min="0"
+                               max="1"
+                               step="0.1"
+                               value="0.5">
+                    </div>
+                </div>
+
+                <p id="trang-thai-nhac" class="ghi-chu-lofi">
+                    Âm thanh đang tắt.
+                </p>
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
             </div>
 
             <hr class="duong-phan-cach">
@@ -54,6 +92,7 @@
             <!-- Tính năng 2: Bộ tính điểm GPA -->
             <div class="khu-vuc-gpa">
                 <h3>🧮 Máy tính điểm môn học dự kiến (Hệ 10 &amp; Hệ 4)</h3>
+<<<<<<< HEAD
                 <form id="form-tinh-gpa" class="form-gpa" onsubmit="return false;">
                     <div class="hang-nhap">
                         <label for="diem-chuyen-can">Điểm chuyên cần (10%):</label>
@@ -69,6 +108,59 @@
                     </div>
                     <button id="btn-tinh-gpa" type="button" class="btn-tinh">Tính kết quả</button>
                 </form>
+=======
+
+                <form id="form-tinh-gpa"
+                      class="form-gpa"
+                      onsubmit="return false;">
+
+                    <div class="hang-nhap">
+                        <label for="diem-chuyen-can">
+                            Điểm chuyên cần (10%):
+                        </label>
+
+                        <input type="number"
+                               id="diem-chuyen-can"
+                               min="0"
+                               max="10"
+                               step="0.1"
+                               placeholder="Ví dụ: 9">
+                    </div>
+
+                    <div class="hang-nhap">
+                        <label for="diem-giua-ky">
+                            Điểm giữa kỳ (30%):
+                        </label>
+
+                        <input type="number"
+                               id="diem-giua-ky"
+                               min="0"
+                               max="10"
+                               step="0.1"
+                               placeholder="Ví dụ: 8">
+                    </div>
+
+                    <div class="hang-nhap">
+                        <label for="diem-cuoi-ky">
+                            Điểm cuối kỳ (60%):
+                        </label>
+
+                        <input type="number"
+                               id="diem-cuoi-ky"
+                               min="0"
+                               max="10"
+                               step="0.1"
+                               placeholder="Ví dụ: 8.5">
+                    </div>
+
+                    <button id="btn-tinh-gpa"
+                            type="button"
+                            class="btn-tinh">
+                        Tính kết quả
+                    </button>
+                </form>
+
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
                 <div id="ket-qua-gpa" class="ket-qua-gpa-box">
                     Nhập điểm các thành phần để xem điểm tổng kết môn!
                 </div>
@@ -79,15 +171,46 @@
             <!-- Bổ sung: Điều khiển Gấu trúc -->
             <div class="khu-vuc-tro-choi">
                 <h3>🐼 Điều khiển Linh vật Gấu trúc</h3>
+<<<<<<< HEAD
                 <p class="mo-ta-tro-choi">Dùng <strong>4 phím mũi tên (⬅️ ➡️ ⬆️ ⬇️)</strong> để di chuyển Gấu trúc trên màn hình hoặc nhấn các phím tương ứng:</p>
                 <div class="nhom-nut-chuc-nang">
                     <button id="btn-panda-h" type="button" class="btn-tuong-tac btn-panda">H (Chào hỏi 👋)</button>
                     <button id="btn-panda-u" type="button" class="btn-tuong-tac btn-panda">U (Lời chúc ✨)</button>
                     <button id="btn-panda-y" type="button" class="btn-tuong-tac btn-panda">Y (Động lực 💪)</button>
+=======
+
+                <p class="mo-ta-tro-choi">
+                    Dùng <strong>4 phím mũi tên (⬅️ ➡️ ⬆️ ⬇️)</strong>
+                    để di chuyển Gấu trúc trên màn hình hoặc nhấn các phím tương ứng:
+                </p>
+
+                <div class="nhom-nut-chuc-nang">
+                    <button id="btn-panda-h"
+                            type="button"
+                            class="btn-tuong-tac btn-panda">
+                        H (Chào hỏi 👋)
+                    </button>
+
+                    <button id="btn-panda-u"
+                            type="button"
+                            class="btn-tuong-tac btn-panda">
+                        U (Lời chúc ✨)
+                    </button>
+
+                    <button id="btn-panda-y"
+                            type="button"
+                            class="btn-tuong-tac btn-panda">
+                        Y (Động lực 💪)
+                    </button>
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
                 </div>
             </div>
         </section>
 
+<<<<<<< HEAD
+=======
+        <!-- GIỚI THIỆU BẢN THÂN -->
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
         <section class="the gioi-thieu-ban-than">
             <h2>Giới thiệu bản thân</h2>
 
@@ -95,7 +218,11 @@
                 <img src="images/chan-dung-huy.jpg"
                      alt="Ảnh chân dung Lê Công Huy"
                      width="200"
+<<<<<<< HEAD
                      height="250"
+=======
+                     height="271"
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
                      class="chan-dung__anh">
 
                 <figcaption>
@@ -127,6 +254,10 @@
             </ul>
         </section>
 
+<<<<<<< HEAD
+=======
+        <!-- DỰ ÁN VÀ SỞ THÍCH -->
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
         <article class="the du-an-so-thich">
             <h2>Đóng góp trong dự án Foodspead &amp; Sở thích</h2>
 
@@ -145,6 +276,10 @@
             </ul>
         </article>
 
+<<<<<<< HEAD
+=======
+        <!-- THỜI KHÓA BIỂU -->
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
         <section class="the khu-thoi-khoa-bieu">
             <h2>Thời khóa biểu học tập trong tuần</h2>
 

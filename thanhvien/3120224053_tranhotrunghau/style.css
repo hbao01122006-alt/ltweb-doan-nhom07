@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿/* CSS riêng - Trần Hồ Trung Hậu | Nhóm 07 FastFood */
 
 :root {
@@ -8,6 +9,18 @@
   --chu-phu: #555555;
   --nen: #ffffff;
   --nen-phu: #fff7df;          /* Nền kem nhạt chuẩn giao diện cũ */
+=======
+﻿/* CSS riêng - Trần Hồ Trung Hậu (3120224053) | Nhóm 07 FastFood */
+
+:root {
+  --mau-chinh: #b5122b;
+  --mau-chinh-dam: #7d0d20;
+  --mau-nhan: #ffc928;
+  --chu: #292929;
+  --chu-phu: #555555;
+  --nen: #ffffff;
+  --nen-phu: #fff7df;
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
   --vien: #d9d9d9;
   --focus: #005fcc;
   --bo-goc: 14px;
@@ -90,7 +103,14 @@ img {
   color: #1f1f1f;
   font-weight: 700;
   text-decoration: none;
+<<<<<<< HEAD
   transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+=======
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
 }
 
 .dieu-huong a:hover {
@@ -130,7 +150,10 @@ img {
   font-size: clamp(1.65rem, 6vw, 2.35rem);
   line-height: 1.25;
   overflow-wrap: anywhere;
+<<<<<<< HEAD
   border: 2px solid var(--mau-nhan);
+=======
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
 }
 
 .the {
@@ -192,6 +215,7 @@ img {
   overflow-wrap: anywhere;
 }
 
+<<<<<<< HEAD
 /* ===== TIỆN ÍCH TRẦN HỒ TRUNG HẬU ===== */
 
 .tien-ich-hau {
@@ -345,6 +369,8 @@ img {
   color: #666666;
 }
 
+=======
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
 /* ===== THỜI KHÓA BIỂU ===== */
 
 .khu-thoi-khoa-bieu {
@@ -396,6 +422,7 @@ img {
   background: #252525;
 }
 
+<<<<<<< HEAD
 /* ===== LINH VẬT RỒNG & CON BỌ ===== */
 
 #pet-thu-cung {
@@ -452,6 +479,8 @@ img {
   100% { transform: translateY(0); }
 }
 
+=======
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
 /* ===== RESPONSIVE ===== */
 
 @media (min-width: 768px) {
@@ -479,4 +508,8 @@ img {
   .the {
     padding: 26px;
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa

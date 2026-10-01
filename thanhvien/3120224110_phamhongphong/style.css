@@ -4,6 +4,7 @@
   --mau-chinh: #b5122b;
   --mau-chinh-dam: #7d0d20;
   --mau-nhan: #ffc928;
+<<<<<<< HEAD
   --chu: #292929;
   --chu-phu: #555555;
   --nen: #ffffff;
@@ -16,6 +17,31 @@
 }
 
 * {
+=======
+
+  --chu: #292929;
+  --chu-phu: #555555;
+
+  --nen: #ffffff;
+  --nen-phu: #fff7df;
+
+  --vien: #d9d9d9;
+  --focus: #005fcc;
+
+  --bo-goc: 14px;
+  --khoang-cach: 20px;
+
+  --bong-do: 0 6px 18px rgb(0 0 0 / 10%);
+}
+
+/* =========================
+   THIẾT LẬP CHUNG
+   ========================= */
+
+*,
+*::before,
+*::after {
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
   box-sizing: border-box;
 }
 
@@ -24,20 +50,38 @@ html {
 }
 
 body {
+<<<<<<< HEAD
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.6;
   color: var(--chu);
   background: var(--nen-phu);
   transition: background-color 0.3s ease, color 0.3s ease;
+=======
+  min-width: 0;
+  min-height: 100vh;
+
+  margin: 0;
+
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+
+  color: var(--chu);
+  background: var(--nen-phu);
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
 }
 
 img {
   display: block;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
   max-width: 100%;
   height: auto;
 }
 
+<<<<<<< HEAD
 /* ===== BỐ CỤC TRANG ===== */
 
 .trang-ca-nhan {
@@ -57,16 +101,36 @@ img {
   min-width: 0;
   padding: 28px 16px;
   text-align: center;
+=======
+/* =========================
+   HEADER
+   ========================= */
+
+.personal-header {
+  min-width: 0;
+
+  padding: 28px 16px;
+
+  text-align: center;
+
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
   color: #ffffff;
   background: var(--mau-chinh);
 }
 
+<<<<<<< HEAD
 .dau-trang p {
   margin: 0;
+=======
+.personal-header p {
+  margin: 0;
+
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
   font-size: clamp(1.15rem, 4vw, 1.65rem);
   font-weight: 700;
 }
 
+<<<<<<< HEAD
 .dieu-huong {
   grid-area: menu;
   min-width: 0;
@@ -95,19 +159,74 @@ img {
 }
 
 .dieu-huong a:hover {
+=======
+/* =========================
+   THANH ĐIỀU HƯỚNG
+   ========================= */
+
+.personal-nav {
+  min-width: 0;
+
+  background: var(--mau-nhan);
+}
+
+.personal-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  gap: 8px 14px;
+
+  max-width: 1100px;
+
+  margin: 0 auto;
+  padding: 10px 14px;
+
+  list-style: none;
+}
+
+.personal-nav a {
+  display: inline-block;
+
+  padding: 9px 12px;
+
+  color: #1f1f1f;
+
+  font-weight: 700;
+  text-decoration: none;
+
+  border-radius: 8px;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.personal-nav a:hover {
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
   color: #ffffff;
   background: var(--mau-chinh);
 }
 
+<<<<<<< HEAD
 .dieu-huong a:active {
   transform: translateY(1px);
 }
 
 .dieu-huong a:focus-visible {
+=======
+.personal-nav a:active {
+  transform: translateY(1px);
+}
+
+.personal-nav a:focus-visible {
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
   outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
 
+<<<<<<< HEAD
 /* ===== NỘI DUNG MAIN ===== */
 
 .noi-dung {
@@ -203,17 +322,192 @@ img {
 .thoi-khoa-bieu caption {
   padding: 0 0 12px;
   color: var(--mau-chinh-dam);
+=======
+/* =========================
+   NỘI DUNG CHÍNH
+   ========================= */
+
+main {
+  width: min(calc(100% - 28px), 1000px);
+  min-width: 0;
+
+  margin: 0 auto;
+  padding: 28px 0 40px;
+}
+
+/* TIÊU ĐỀ LỚN */
+
+h1 {
+  min-width: 0;
+
+  margin: 0 0 var(--khoang-cach);
+  padding: 20px 16px;
+
+  color: var(--mau-chinh);
+  background: #fff2cc;
+
+  font-size: clamp(1.65rem, 6vw, 2.35rem);
+  line-height: 1.25;
+
+  text-align: center;
+
+  border-radius: var(--bo-goc);
+
+  overflow-wrap: anywhere;
+}
+
+/* =========================
+   BỐ CỤC GRID
+   ========================= */
+
+.profile-layout {
+  display: grid;
+
+  min-width: 0;
+
+  gap: var(--khoang-cach);
+}
+
+/* =========================
+   CARD
+   ========================= */
+
+.card {
+  min-width: 0;
+  max-width: 100%;
+
+  padding: 20px;
+
+  background: var(--nen);
+
+  border: 1px solid var(--vien);
+  border-radius: var(--bo-goc);
+
+  box-shadow: var(--bong-do);
+}
+
+.card h2,
+.card h3 {
+  color: var(--mau-chinh-dam);
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+/* =========================
+   ẢNH CHÂN DUNG
+   ========================= */
+
+.profile-figure {
+  max-width: 100%;
+
+  margin: 0 auto 20px;
+
+  text-align: center;
+}
+
+.profile-figure img {
+  width: min(200px, 70vw);
+  max-width: 100%;
+  height: auto;
+
+  aspect-ratio: 4 / 5;
+
+  margin: 0 auto 10px;
+
+  object-fit: cover;
+
+  border: 4px solid var(--mau-nhan);
+  border-radius: 18px;
+}
+
+.profile-figure figcaption {
+  color: var(--chu-phu);
+
+  font-size: 0.95rem;
+
+  overflow-wrap: anywhere;
+}
+
+/* =========================
+   DANH SÁCH KỸ NĂNG
+   VÀ SỞ THÍCH
+   ========================= */
+
+.skills-list {
+  margin: 0;
+
+  padding-left: 22px;
+}
+
+.skills-list li {
+  margin-block: 6px;
+
+  overflow-wrap: anywhere;
+}
+
+/* =========================
+   THỜI KHÓA BIỂU
+   ========================= */
+
+.schedule-section {
+  margin-top: var(--khoang-cach);
+}
+
+.table-scroll {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+
+  overflow-x: auto;
+
+  overscroll-behavior-inline: contain;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-scroll:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+table {
+  width: 100%;
+  min-width: 700px;
+
+  border-collapse: collapse;
+
+  background: var(--nen);
+}
+
+caption {
+  padding: 0 0 12px;
+
+  color: var(--mau-chinh-dam);
+
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
   font-weight: 700;
   text-align: left;
 }
 
+<<<<<<< HEAD
 .thoi-khoa-bieu th, .thoi-khoa-bieu td {
   padding: 11px 10px;
   border: 1px solid #cfcfcf;
+=======
+th,
+td {
+  padding: 11px 10px;
+
+  border: 1px solid #cfcfcf;
+
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
   text-align: left;
   vertical-align: top;
 }
 
+<<<<<<< HEAD
 .thoi-khoa-bieu thead th {
   color: #1f1f1f;
   background: var(--mau-nhan);
@@ -464,4 +758,65 @@ body.dark-mode #pet-bubble {
   .du-an-so-thich {
     height: 100%;
   }
+=======
+thead th {
+  color: #1f1f1f;
+
+  background: var(--mau-nhan);
+}
+
+tbody tr:nth-child(even) {
+  background: #fff8e6;
+}
+
+/* =========================
+   FOOTER
+   ========================= */
+
+.personal-footer {
+  min-width: 0;
+
+  padding: 20px 16px;
+
+  color: #ffffff;
+  background: #252525;
+
+  text-align: center;
+}
+
+.personal-footer p {
+  margin: 0;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (min-width: 768px) {
+
+  main {
+    padding-block: 36px 48px;
+  }
+
+  .profile-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .profile-layout .card {
+    height: 100%;
+  }
+
+}
+
+@media (min-width: 1024px) {
+
+  .profile-layout {
+    gap: 24px;
+  }
+
+  .card {
+    padding: 26px;
+  }
+
+>>>>>>> 9b0d6e6e1de1e92c32b22c8a38f796badbba7cfa
 }
