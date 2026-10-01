@@ -6,6 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="Trang giới thiệu thành viên Nhóm 07 và mục tiêu xây dựng hệ thống website bán đồ ăn nhanh Foodspead." name="description"/>
 <title>Giới thiệu nhóm &amp; Dự án | Foodspead</title>
+<script>document.documentElement.classList.add('js');</script>
 <link href="css/style.css" rel="stylesheet"/>
 </head>
 <body class="trang trang--gioi-thieu">
@@ -13,12 +14,14 @@
 <img alt="Logo Foodspead" height="80" src="images/logo.png" width="80"/>
 <p>Foodspead - Ngon Mỗi Ngày, Giao Nhanh Tận Nơi</p>
 <p>Hệ thống đặt đồ ăn nhanh trực tuyến hàng đầu</p>
+<p class="trang__yeu-thich"><a href="danh-sach.html?yeu-thich=1">♥ Yêu thích (<span data-dem-yeu-thich="">0</span>)</a></p>
 </header>
 <nav aria-label="Điều hướng chính" class="trang__menu">
-<ul>
+<button aria-controls="menu-chinh" aria-expanded="false" class="nut-menu" type="button">☰ Menu</button>
+<ul class="menu" id="menu-chinh">
 <li><a href="index.html">Trang chủ</a></li>
 <li><a href="danh-sach.html">Thực đơn</a></li>
-<li><a href="chi-tiet.html">Món nổi bật</a></li>
+<li><a href="chi-tiet.html?id=1">Món nổi bật</a></li>
 <li><a href="gioi-thieu.html">Giới thiệu</a></li>
 <li><a href="lien-he.html">Liên hệ đặt hàng</a></li>
 </ul>
@@ -98,5 +101,6 @@
       Trường Đại học Sư phạm - Đại học Đà Nẵng
     </p>
 </footer>
+<script src="js/main.js" type="module"></script>
 </body>
 </html>
