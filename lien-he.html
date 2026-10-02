@@ -2,21 +2,31 @@
 
 <html lang="vi">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="Mẫu đăng ký đặt món ăn trực tuyến và gửi thông tin phản hồi cho cửa hàng thức ăn nhanh Foodspead." name="description"/>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="Mẫu đăng ký đặt món ăn trực tuyến và gửi thông tin phản hồi cho cửa hàng thức ăn nhanh Foodspead." name="description">
 <title>Liên hệ &amp; Đặt hàng | Foodspead</title>
 <script>document.documentElement.classList.add('js');</script>
-<link href="css/style.css" rel="stylesheet"/>
+<link href="css/style.css" rel="stylesheet">
 </head>
+
 <body class="trang trang--lien-he">
+
 <header class="trang__dau">
 <p>Foodspead - Ngon Mỗi Ngày, Giao Nhanh Tận Nơi</p>
 <p>Hệ thống đặt đồ ăn nhanh trực tuyến hàng đầu</p>
-<p class="trang__yeu-thich"><a href="danh-sach.html?yeu-thich=1">♥ Yêu thích (<span data-dem-yeu-thich="">0</span>)</a></p>
+<p class="trang__yeu-thich">
+<a href="danh-sach.html?yeu-thich=1">
+♥ Yêu thích (<span data-dem-yeu-thich="">0</span>)
+</a>
+</p>
 </header>
+
 <nav aria-label="Điều hướng chính" class="trang__menu">
-<button aria-controls="menu-chinh" aria-expanded="false" class="nut-menu" type="button">☰ Menu</button>
+<button aria-controls="menu-chinh" aria-expanded="false" class="nut-menu" type="button">
+☰ Menu
+</button>
+
 <ul class="menu" id="menu-chinh">
 <li>
 <a href="index.html">Trang chủ</a>
@@ -35,35 +45,80 @@
 </li>
 </ul>
 </nav>
+
 <main class="trang__chinh lien-he__luoi">
-<h1 class="lien-he__tieu-de">Mẫu đăng ký đặt món &amp; Gửi liên hệ</h1>
-<form action="https://jsonplaceholder.typicode.com/posts" class="lien-he__bieu-mau" id="bieu-mau-lien-he" method="post" novalidate="">
+
+<h1 class="lien-he__tieu-de">
+Mẫu đăng ký đặt món &amp; Gửi liên hệ
+</h1>
+
+<form
+action="https://jsonplaceholder.typicode.com/posts"
+class="lien-he__bieu-mau"
+id="bieu-mau-lien-he"
+method="post"
+novalidate
+
+
 <fieldset>
+
 <legend>Thông tin người đặt hàng</legend>
+
 <p>
 <label for="ho-ten">Họ và tên (*):</label>
-<br/>
-<input autocomplete="name" id="ho-ten" aria-describedby="loi-ho-ten" name="ho-ten" placeholder="Nguyễn Văn A" required="" type="text"/>
+<br>
+<input
+autocomplete="name"
+id="ho-ten"
+aria-describedby="loi-ho-ten"
+name="ho-ten"
+placeholder="Nguyễn Văn A"
+required
+type="text"
+
 <span class="loi" id="loi-ho-ten"></span>
 </p>
+
 <p>
 <label for="email">Địa chỉ Email (*):</label>
-<br/>
-<input autocomplete="email" id="email" aria-describedby="loi-email" name="email" placeholder="diachi@gmail.com" required="" type="email"/>
+<br>
+<input
+autocomplete="email"
+id="email"
+aria-describedby="loi-email"
+name="email"
+placeholder="diachi@gmail.com"
+required
+type="email"
+
 <span class="loi" id="loi-email"></span>
 </p>
+
 <p>
 <label for="so-dien-thoai">Số điện thoại nhận hàng (*):</label>
-<br/>
-<input autocomplete="tel" id="so-dien-thoai" aria-describedby="loi-so-dien-thoai" name="so-dien-thoai" pattern="[0-9]{10}" placeholder="0375837734" required="" type="tel"/>
+<br>
+<input
+autocomplete="tel"
+id="so-dien-thoai"
+aria-describedby="loi-so-dien-thoai"
+name="so-dien-thoai"
+pattern="[0-9]{10}"
+placeholder="0375837734"
+required
+type="tel"
+
 <span class="loi" id="loi-so-dien-thoai"></span>
 </p>
+
 </fieldset>
+
 <fieldset>
+
 <legend>Thông tin chi tiết đơn hàng</legend>
+
 <p>
 <label for="mon-an">Chọn món ăn muốn đặt:</label>
-<br/>
+<br>
 <select id="mon-an" name="mon-an">
 <option value="1">Gà Rán Giòn Tan</option>
 <option value="2">Burger Bò Phô Mai</option>
@@ -71,40 +126,95 @@
 <option value="4">Khoai Tây Chiên Lớn</option>
 </select>
 </p>
+
 <p>
 <label for="so-luong">Số lượng suất ăn (từ 1 đến 20):</label>
-<br/>
-<input id="so-luong" aria-describedby="loi-so-luong" max="20" min="1" name="so-luong" required="" type="number" value="1"/>
+<br>
+<input
+id="so-luong"
+aria-describedby="loi-so-luong"
+max="20"
+min="1"
+name="so-luong"
+required
+type="number"
+value="1"
+
 <span class="loi" id="loi-so-luong"></span>
 </p>
+
 <p>
 <label for="ngay-giao">Ngày muốn nhận hàng:</label>
-<br/>
-<input id="ngay-giao" aria-describedby="loi-ngay-giao" name="ngay-giao" required="" type="date"/>
+<br>
+<input
+id="ngay-giao"
+aria-describedby="loi-ngay-giao"
+name="ngay-giao"
+required
+type="date"
+
 <span class="loi" id="loi-ngay-giao"></span>
 </p>
+
 <p>
 <label for="dia-chi">Địa chỉ giao hàng cụ thể:</label>
-<br/>
-<textarea autocomplete="street-address" cols="40" id="dia-chi" aria-describedby="loi-dia-chi" name="dia-chi" placeholder="Ghi rõ số nhà, tên đường, phường/xã..." required="" rows="4"></textarea>
+<br>
+<textarea
+autocomplete="street-address"
+cols="40"
+id="dia-chi"
+aria-describedby="loi-dia-chi"
+name="dia-chi"
+placeholder="Ghi rõ số nhà, tên đường, phường/xã..."
+required
+rows="4"
+</textarea>
+
 <span class="loi" id="loi-dia-chi"></span>
 </p>
+
 </fieldset>
-<p aria-live="polite" class="trang-thai" id="ket-qua-gui"></p>
+
+<p
+aria-live="polite"
+class="trang-thai"
+id="ket-qua-gui"
+</p>
+
+
 <p class="lien-he__nhom-nut">
 <button type="submit">Gửi đơn đặt hàng</button>
 <button type="reset">Nhập lại</button>
 </p>
-</form><aside aria-label="Thông tin liên hệ cửa hàng" class="lien-he__thong-tin"><h2>Thông tin liên hệ</h2><p>Foodspead - hệ thống đồ ăn nhanh trực tuyến</p><p>Điện thoại: 0375 837 734</p><p>Email: foodspead@example.com</p><p>Thời gian hỗ trợ: 08:00 - 22:00 mỗi ngày</p></aside>
+
+</form>
+
+<aside
+aria-label="Thông tin liên hệ cửa hàng"
+class="lien-he__thong-tin"
+
+
+<h2>Thông tin liên hệ</h2>
+
+<p>Foodspead - hệ thống đồ ăn nhanh trực tuyến</p>
+<p>Điện thoại: 0375 837 734</p>
+<p>Email: foodspead@example.com</p>
+<p>Thời gian hỗ trợ: 08:00 - 22:00 mỗi ngày</p>
+
+</aside>
+
 </main>
+
 <footer class="trang__chan">
 <p>
-      © 2026 Nhóm 07 - Khoa Toán - Tin,
-      Trường Đại học Sư phạm - Đại học Đà Nẵng
-    </p>
+© 2026 Nhóm 07 - Khoa Toán - Tin,
+Trường Đại học Sư phạm - Đại học Đà Nẵng
+</p>
 </footer>
+
 <script src="js/main.js" type="module"></script>
 <script src="js/trang-lien-he.js" type="module"></script>
+
 </body>
 </html>
 jsonplaceholder.typicode.com
