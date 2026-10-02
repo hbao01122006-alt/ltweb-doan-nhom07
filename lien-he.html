@@ -6,15 +6,18 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="Mẫu đăng ký đặt món ăn trực tuyến và gửi thông tin phản hồi cho cửa hàng thức ăn nhanh Foodspead." name="description"/>
 <title>Liên hệ &amp; Đặt hàng | Foodspead</title>
+<script>document.documentElement.classList.add('js');</script>
 <link href="css/style.css" rel="stylesheet"/>
 </head>
 <body class="trang trang--lien-he">
 <header class="trang__dau">
 <p>Foodspead - Ngon Mỗi Ngày, Giao Nhanh Tận Nơi</p>
 <p>Hệ thống đặt đồ ăn nhanh trực tuyến hàng đầu</p>
+<p class="trang__yeu-thich"><a href="danh-sach.html?yeu-thich=1">♥ Yêu thích (<span data-dem-yeu-thich="">0</span>)</a></p>
 </header>
 <nav aria-label="Điều hướng chính" class="trang__menu">
-<ul>
+<button aria-controls="menu-chinh" aria-expanded="false" class="nut-menu" type="button">☰ Menu</button>
+<ul class="menu" id="menu-chinh">
 <li>
 <a href="index.html">Trang chủ</a>
 </li>
@@ -22,7 +25,7 @@
 <a href="danh-sach.html">Thực đơn</a>
 </li>
 <li>
-<a href="chi-tiet.html">Món nổi bật</a>
+<a href="chi-tiet.html?id=1">Món nổi bật</a>
 </li>
 <li>
 <a href="gioi-thieu.html">Giới thiệu</a>
@@ -34,23 +37,26 @@
 </nav>
 <main class="trang__chinh lien-he__luoi">
 <h1 class="lien-he__tieu-de">Mẫu đăng ký đặt món &amp; Gửi liên hệ</h1>
-<form action="#" class="lien-he__bieu-mau" method="post">
+<form action="https://jsonplaceholder.typicode.com/posts" class="lien-he__bieu-mau" id="bieu-mau-lien-he" method="post" novalidate="">
 <fieldset>
 <legend>Thông tin người đặt hàng</legend>
 <p>
 <label for="ho-ten">Họ và tên (*):</label>
 <br/>
-<input autocomplete="name" id="ho-ten" name="ho-ten" placeholder="Nguyễn Văn A" required="" type="text"/>
+<input autocomplete="name" id="ho-ten" aria-describedby="loi-ho-ten" name="ho-ten" placeholder="Nguyễn Văn A" required="" type="text"/>
+<span class="loi" id="loi-ho-ten"></span>
 </p>
 <p>
 <label for="email">Địa chỉ Email (*):</label>
 <br/>
-<input autocomplete="email" id="email" name="email" placeholder="diachi@gmail.com" required="" type="email"/>
+<input autocomplete="email" id="email" aria-describedby="loi-email" name="email" placeholder="diachi@gmail.com" required="" type="email"/>
+<span class="loi" id="loi-email"></span>
 </p>
 <p>
 <label for="so-dien-thoai">Số điện thoại nhận hàng (*):</label>
 <br/>
-<input autocomplete="tel" id="so-dien-thoai" name="so-dien-thoai" pattern="[0-9]{10}" placeholder="0375837734" required="" type="tel"/>
+<input autocomplete="tel" id="so-dien-thoai" aria-describedby="loi-so-dien-thoai" name="so-dien-thoai" pattern="[0-9]{10}" placeholder="0375837734" required="" type="tel"/>
+<span class="loi" id="loi-so-dien-thoai"></span>
 </p>
 </fieldset>
 <fieldset>
@@ -59,28 +65,32 @@
 <label for="mon-an">Chọn món ăn muốn đặt:</label>
 <br/>
 <select id="mon-an" name="mon-an">
-<option value="ga-ran">Gà Rán Giòn Tan</option>
-<option value="burger-bo">Burger Bò Phô Mai</option>
-<option value="combo-tiet-kiem">Combo Tiết Kiệm</option>
-<option value="khoai-tay">Khoai Tây Chiên Lớn</option>
+<option value="1">Gà Rán Giòn Tan</option>
+<option value="2">Burger Bò Phô Mai</option>
+<option value="3">Combo Tiết Kiệm</option>
+<option value="4">Khoai Tây Chiên Lớn</option>
 </select>
 </p>
 <p>
 <label for="so-luong">Số lượng suất ăn (từ 1 đến 20):</label>
 <br/>
-<input id="so-luong" max="20" min="1" name="so-luong" required="" type="number" value="1"/>
+<input id="so-luong" aria-describedby="loi-so-luong" max="20" min="1" name="so-luong" required="" type="number" value="1"/>
+<span class="loi" id="loi-so-luong"></span>
 </p>
 <p>
 <label for="ngay-giao">Ngày muốn nhận hàng:</label>
 <br/>
-<input id="ngay-giao" name="ngay-giao" required="" type="date"/>
+<input id="ngay-giao" aria-describedby="loi-ngay-giao" name="ngay-giao" required="" type="date"/>
+<span class="loi" id="loi-ngay-giao"></span>
 </p>
 <p>
 <label for="dia-chi">Địa chỉ giao hàng cụ thể:</label>
 <br/>
-<textarea autocomplete="street-address" cols="40" id="dia-chi" name="dia-chi" placeholder="Ghi rõ số nhà, tên đường, phường/xã..." required="" rows="4"></textarea>
+<textarea autocomplete="street-address" cols="40" id="dia-chi" aria-describedby="loi-dia-chi" name="dia-chi" placeholder="Ghi rõ số nhà, tên đường, phường/xã..." required="" rows="4"></textarea>
+<span class="loi" id="loi-dia-chi"></span>
 </p>
 </fieldset>
+<p aria-live="polite" class="trang-thai" id="ket-qua-gui"></p>
 <p class="lien-he__nhom-nut">
 <button type="submit">Gửi đơn đặt hàng</button>
 <button type="reset">Nhập lại</button>
@@ -93,5 +103,8 @@
       Trường Đại học Sư phạm - Đại học Đà Nẵng
     </p>
 </footer>
+<script src="js/main.js" type="module"></script>
+<script src="js/trang-lien-he.js" type="module"></script>
 </body>
 </html>
+jsonplaceholder.typicode.com
