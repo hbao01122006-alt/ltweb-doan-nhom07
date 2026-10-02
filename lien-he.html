@@ -1,219 +1,287 @@
 <!DOCTYPE html>
-
 <html lang="vi">
+
 <head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<meta content="Mẫu đăng ký đặt món ăn trực tuyến và gửi thông tin phản hồi cho cửa hàng thức ăn nhanh Foodspead." name="description">
-<title>Liên hệ &amp; Đặt hàng | Foodspead</title>
-<script>document.documentElement.classList.add('js');</script>
-<link href="css/style.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="description"
+    content="Mẫu đăng ký đặt món ăn trực tuyến và gửi thông tin phản hồi cho cửa hàng thức ăn nhanh Foodspead."
+  >
+
+  <title>Liên hệ &amp; Đặt hàng | Foodspead</title>
+
+  <script>
+    document.documentElement.classList.add('js');
+  </script>
+
+  <link href="css/style.css" rel="stylesheet">
 </head>
 
 <body class="trang trang--lien-he">
 
-<header class="trang__dau">
-<p>Foodspead - Ngon Mỗi Ngày, Giao Nhanh Tận Nơi</p>
-<p>Hệ thống đặt đồ ăn nhanh trực tuyến hàng đầu</p>
-<p class="trang__yeu-thich">
-<a href="danh-sach.html?yeu-thich=1">
-♥ Yêu thích (<span data-dem-yeu-thich="">0</span>)
-</a>
-</p>
-</header>
+  <header class="trang__dau">
+    <p>Foodspead - Ngon Mỗi Ngày, Giao Nhanh Tận Nơi</p>
+    <p>Hệ thống đặt đồ ăn nhanh trực tuyến hàng đầu</p>
 
-<nav aria-label="Điều hướng chính" class="trang__menu">
-<button aria-controls="menu-chinh" aria-expanded="false" class="nut-menu" type="button">
-☰ Menu
-</button>
+    <p class="trang__yeu-thich">
+      <a href="danh-sach.html?yeu-thich=1">
+        ♥ Yêu thích (<span data-dem-yeu-thich="">0</span>)
+      </a>
+    </p>
+  </header>
 
-<ul class="menu" id="menu-chinh">
-<li>
-<a href="index.html">Trang chủ</a>
-</li>
-<li>
-<a href="danh-sach.html">Thực đơn</a>
-</li>
-<li>
-<a href="chi-tiet.html?id=1">Món nổi bật</a>
-</li>
-<li>
-<a href="gioi-thieu.html">Giới thiệu</a>
-</li>
-<li>
-<a href="lien-he.html">Liên hệ đặt hàng</a>
-</li>
-</ul>
-</nav>
+  <nav aria-label="Điều hướng chính" class="trang__menu">
 
-<main class="trang__chinh lien-he__luoi">
+    <button
+      aria-controls="menu-chinh"
+      aria-expanded="false"
+      class="nut-menu"
+      type="button"
+    >
+      ☰ Menu
+    </button>
 
-<h1 class="lien-he__tieu-de">
-Mẫu đăng ký đặt món &amp; Gửi liên hệ
-</h1>
+    <ul class="menu" id="menu-chinh">
+      <li>
+        <a href="index.html">Trang chủ</a>
+      </li>
 
-<form
-action="https://jsonplaceholder.typicode.com/posts"
-class="lien-he__bieu-mau"
-id="bieu-mau-lien-he"
-method="post"
-novalidate
+      <li>
+        <a href="danh-sach.html">Thực đơn</a>
+      </li>
 
+      <li>
+        <a href="chi-tiet.html?id=1">Món nổi bật</a>
+      </li>
 
-<fieldset>
+      <li>
+        <a href="gioi-thieu.html">Giới thiệu</a>
+      </li>
 
-<legend>Thông tin người đặt hàng</legend>
+      <li>
+        <a href="lien-he.html">Liên hệ đặt hàng</a>
+      </li>
+    </ul>
 
-<p>
-<label for="ho-ten">Họ và tên (*):</label>
-<br>
-<input
-autocomplete="name"
-id="ho-ten"
-aria-describedby="loi-ho-ten"
-name="ho-ten"
-placeholder="Nguyễn Văn A"
-required
-type="text"
+  </nav>
 
-<span class="loi" id="loi-ho-ten"></span>
-</p>
+  <main class="trang__chinh lien-he__luoi">
 
-<p>
-<label for="email">Địa chỉ Email (*):</label>
-<br>
-<input
-autocomplete="email"
-id="email"
-aria-describedby="loi-email"
-name="email"
-placeholder="diachi@gmail.com"
-required
-type="email"
+    <h1 class="lien-he__tieu-de">
+      Mẫu đăng ký đặt món &amp; Gửi liên hệ
+    </h1>
 
-<span class="loi" id="loi-email"></span>
-</p>
+    <form
+      action="https://jsonplaceholder.typicode.com/posts"
+      class="lien-he__bieu-mau"
+      id="bieu-mau-lien-he"
+      method="post"
+      novalidate
+    >
 
-<p>
-<label for="so-dien-thoai">Số điện thoại nhận hàng (*):</label>
-<br>
-<input
-autocomplete="tel"
-id="so-dien-thoai"
-aria-describedby="loi-so-dien-thoai"
-name="so-dien-thoai"
-pattern="[0-9]{10}"
-placeholder="0375837734"
-required
-type="tel"
+      <fieldset>
 
-<span class="loi" id="loi-so-dien-thoai"></span>
-</p>
+        <legend>Thông tin người đặt hàng</legend>
 
-</fieldset>
+        <p>
+          <label for="ho-ten">
+            Họ và tên (*):
+          </label>
 
-<fieldset>
+          <br>
 
-<legend>Thông tin chi tiết đơn hàng</legend>
+          <input
+            autocomplete="name"
+            id="ho-ten"
+            aria-describedby="loi-ho-ten"
+            name="ho-ten"
+            placeholder="Nguyễn Văn A"
+            required
+            type="text"
+          >
 
-<p>
-<label for="mon-an">Chọn món ăn muốn đặt:</label>
-<br>
-<select id="mon-an" name="mon-an">
-<option value="1">Gà Rán Giòn Tan</option>
-<option value="2">Burger Bò Phô Mai</option>
-<option value="3">Combo Tiết Kiệm</option>
-<option value="4">Khoai Tây Chiên Lớn</option>
-</select>
-</p>
+          <span class="loi" id="loi-ho-ten"></span>
+        </p>
 
-<p>
-<label for="so-luong">Số lượng suất ăn (từ 1 đến 20):</label>
-<br>
-<input
-id="so-luong"
-aria-describedby="loi-so-luong"
-max="20"
-min="1"
-name="so-luong"
-required
-type="number"
-value="1"
+        <p>
+          <label for="email">
+            Địa chỉ Email (*):
+          </label>
 
-<span class="loi" id="loi-so-luong"></span>
-</p>
+          <br>
 
-<p>
-<label for="ngay-giao">Ngày muốn nhận hàng:</label>
-<br>
-<input
-id="ngay-giao"
-aria-describedby="loi-ngay-giao"
-name="ngay-giao"
-required
-type="date"
+          <input
+            autocomplete="email"
+            id="email"
+            aria-describedby="loi-email"
+            name="email"
+            placeholder="diachi@gmail.com"
+            required
+            type="email"
+          >
 
-<span class="loi" id="loi-ngay-giao"></span>
-</p>
+          <span class="loi" id="loi-email"></span>
+        </p>
 
-<p>
-<label for="dia-chi">Địa chỉ giao hàng cụ thể:</label>
-<br>
-<textarea
-autocomplete="street-address"
-cols="40"
-id="dia-chi"
-aria-describedby="loi-dia-chi"
-name="dia-chi"
-placeholder="Ghi rõ số nhà, tên đường, phường/xã..."
-required
-rows="4"
-</textarea>
+        <p>
+          <label for="so-dien-thoai">
+            Số điện thoại nhận hàng (*):
+          </label>
 
-<span class="loi" id="loi-dia-chi"></span>
-</p>
+          <br>
 
-</fieldset>
+          <input
+            autocomplete="tel"
+            id="so-dien-thoai"
+            aria-describedby="loi-so-dien-thoai"
+            name="so-dien-thoai"
+            pattern="[0-9]{10}"
+            placeholder="0375837734"
+            required
+            type="tel"
+          >
 
-<p
-aria-live="polite"
-class="trang-thai"
-id="ket-qua-gui"
-</p>
+          <span class="loi" id="loi-so-dien-thoai"></span>
+        </p>
 
+      </fieldset>
 
-<p class="lien-he__nhom-nut">
-<button type="submit">Gửi đơn đặt hàng</button>
-<button type="reset">Nhập lại</button>
-</p>
+      <fieldset>
 
-</form>
+        <legend>Thông tin chi tiết đơn hàng</legend>
 
-<aside
-aria-label="Thông tin liên hệ cửa hàng"
-class="lien-he__thong-tin"
+        <p>
+          <label for="mon-an">
+            Chọn món ăn muốn đặt:
+          </label>
 
+          <br>
 
-<h2>Thông tin liên hệ</h2>
+          <select id="mon-an" name="mon-an">
+            <option value="1">Gà Rán Giòn Tan</option>
+            <option value="2">Burger Bò Phô Mai</option>
+            <option value="3">Combo Tiết Kiệm</option>
+            <option value="4">Khoai Tây Chiên Lớn</option>
+          </select>
+        </p>
 
-<p>Foodspead - hệ thống đồ ăn nhanh trực tuyến</p>
-<p>Điện thoại: 0375 837 734</p>
-<p>Email: foodspead@example.com</p>
-<p>Thời gian hỗ trợ: 08:00 - 22:00 mỗi ngày</p>
+        <p>
+          <label for="so-luong">
+            Số lượng suất ăn (từ 1 đến 20):
+          </label>
 
-</aside>
+          <br>
 
-</main>
+          <input
+            id="so-luong"
+            aria-describedby="loi-so-luong"
+            max="20"
+            min="1"
+            name="so-luong"
+            required
+            type="number"
+            value="1"
+          >
 
-<footer class="trang__chan">
-<p>
-© 2026 Nhóm 07 - Khoa Toán - Tin,
-Trường Đại học Sư phạm - Đại học Đà Nẵng
-</p>
-</footer>
+          <span class="loi" id="loi-so-luong"></span>
+        </p>
 
-<script src="js/main.js" type="module"></script>
-<script src="js/trang-lien-he.js" type="module"></script>
+        <p>
+          <label for="ngay-giao">
+            Ngày muốn nhận hàng:
+          </label>
+
+          <br>
+
+          <input
+            id="ngay-giao"
+            aria-describedby="loi-ngay-giao"
+            name="ngay-giao"
+            required
+            type="date"
+          >
+
+          <span class="loi" id="loi-ngay-giao"></span>
+        </p>
+
+        <p>
+          <label for="dia-chi">
+            Địa chỉ giao hàng cụ thể:
+          </label>
+
+          <br>
+
+          <textarea
+            autocomplete="street-address"
+            cols="40"
+            id="dia-chi"
+            aria-describedby="loi-dia-chi"
+            name="dia-chi"
+            placeholder="Ghi rõ số nhà, tên đường, phường/xã..."
+            required
+            rows="4"
+          ></textarea>
+
+          <span class="loi" id="loi-dia-chi"></span>
+        </p>
+
+      </fieldset>
+
+      <p
+        aria-live="polite"
+        class="trang-thai"
+        id="ket-qua-gui"
+      ></p>
+
+      <p class="lien-he__nhom-nut">
+        <button type="submit">
+          Gửi đơn đặt hàng
+        </button>
+
+        <button type="reset">
+          Nhập lại
+        </button>
+      </p>
+
+    </form>
+
+    <aside
+      aria-label="Thông tin liên hệ cửa hàng"
+      class="lien-he__thong-tin"
+    >
+
+      <h2>Thông tin liên hệ</h2>
+
+      <p>
+        Foodspead - hệ thống đồ ăn nhanh trực tuyến
+      </p>
+
+      <p>
+        Điện thoại: 0375 837 734
+      </p>
+
+      <p>
+        Email: foodspead@example.com
+      </p>
+
+      <p>
+        Thời gian hỗ trợ: 08:00 - 22:00 mỗi ngày
+      </p>
+
+    </aside>
+
+  </main>
+
+  <footer class="trang__chan">
+    <p>
+      © 2026 Nhóm 07 - Khoa Toán - Tin,
+      Trường Đại học Sư phạm - Đại học Đà Nẵng
+    </p>
+  </footer>
+
+  <script src="js/main.js" type="module"></script>
+  <script src="js/trang-lien-he.js" type="module"></script>
 
 </body>
 </html>
