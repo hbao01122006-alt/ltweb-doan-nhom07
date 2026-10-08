@@ -1,0 +1,6 @@
+{
+  "name": "nhom07/ltweb-doan",
+  "description": "Bai tap thuc hanh nhom so 5 - Foodspead",
+  "require": {"php": ">=8.1"},
+  "autoload": {"psr-4": {"App\\": "src/"}}
+}
