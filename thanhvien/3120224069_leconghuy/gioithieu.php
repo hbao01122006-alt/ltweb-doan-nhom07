@@ -1,36 +1,35 @@
-<!DOCTYPE html>
-<html lang="vi">
+<?php
+// gioithieu.php - trang ca nhan PHP cho Bai tap thuc hanh nhom so 5.
+// Dung header/footer chung cua nhom, giu CSS/JavaScript rieng va them 2 chuc nang server-side.
+require __DIR__ . '/../../inc/config.php';
+$goc = '../../';
+$lopTrang = 'trang-ca-nhan';
+$cssRien = 'style.css';
+$jsRien = 'js/canhan.js';
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+// Chuc nang 1: may tinh diem hoc phan he 10 o may chu, PRG qua flash.
+if ($_SERVER['REQUEST_METHOD']==='POST' && ($_POST['chuc_nang']??'')==='gpa') {
+    $a1=filter_var($_POST['a1']??null,FILTER_VALIDATE_FLOAT); $a2=filter_var($_POST['a2']??null,FILTER_VALIDATE_FLOAT); $a3=filter_var($_POST['a3']??null,FILTER_VALIDATE_FLOAT);
+    $ok=$a1!==false&&$a2!==false&&$a3!==false&&$a1>=0&&$a1<=10&&$a2>=0&&$a2<=10&&$a3>=0&&$a3<=10;
+    flash('huy_gpa',$ok?'Điểm tổng kết: '.number_format(0.2*$a1+0.3*$a2+0.5*$a3,2):'Điểm phải nằm trong khoảng 0 đến 10.');
+    chuyenHuong('gioithieu.php');
+}
+// Chuc nang 2: muc tieu hoc tap luu trong session.
+if ($_SERVER['REQUEST_METHOD']==='POST' && ($_POST['chuc_nang']??'')==='muc-tieu') {
+    $mt=trim((string)($_POST['muc_tieu']??''));
+    if (mb_strlen($mt)<3 || mb_strlen($mt)>120) flash('huy_mt','Mục tiêu phải từ 3 đến 120 ký tự.');
+    else { $_SESSION['huy_muc_tieu']=$mt; flash('huy_mt','Đã lưu mục tiêu cho phiên hiện tại.'); }
+    chuyenHuong('gioithieu.php');
+}
+$kqGpa=flash('huy_gpa'); $tbMt=flash('huy_mt'); $mucTieu=(string)($_SESSION['huy_muc_tieu']??'');
 
-    <meta name="description"
-          content="Trang cá nhân giới thiệu bản thân, đóng góp dự án, sở thích và thời khóa biểu của Lê Công Huy - Nhóm 07.">
+$tieuDe = 'Lê Công Huy';
+$trang = '';
+require __DIR__ . '/../../inc/header.php';
+?>
+<main class="noi-dung">
+<section class="the php-box"><h2>PHP server-side: Tính điểm & mục tiêu session</h2><?php if($kqGpa):?><p role="status"><?=e($kqGpa)?></p><?php endif;?><form method="post"><input type="hidden" name="chuc_nang" value="gpa"><label>A1 <input name="a1" type="number" min="0" max="10" step="0.1" required></label> <label>A2 <input name="a2" type="number" min="0" max="10" step="0.1" required></label> <label>A3 <input name="a3" type="number" min="0" max="10" step="0.1" required></label> <button>Tính 0,2×A1 + 0,3×A2 + 0,5×A3</button></form><?php if($tbMt):?><p role="status"><?=e($tbMt)?></p><?php endif;?><form method="post"><input type="hidden" name="chuc_nang" value="muc-tieu"><label for="mt">Mục tiêu học tập</label><br><input id="mt" name="muc_tieu" maxlength="120" value="<?=e($mucTieu)?>" required> <button>Lưu trong session</button></form></section>
 
-    <title>Giới thiệu cá nhân - Lê Công Huy | Foodspead</title>
-
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body class="trang-ca-nhan">
-
-    <header class="dau-trang">
-        <p>Trang cá nhân thành viên - Nhóm 07 Foodspead</p>
-    </header>
-
-    <nav class="dieu-huong">
-        <ul>
-            <li>
-                <a href="../../index.html">Quay về Trang chủ Nhóm</a>
-            </li>
-            <li>
-                <a href="../../gioi-thieu.html">Quay về Giới thiệu Nhóm</a>
-            </li>
-        </ul>
-    </nav>
-
-    <main class="noi-dung">
 
         <h1 class="tieu-de-chinh">Giới thiệu thành viên: Lê Công Huy</h1>
 
@@ -206,7 +205,7 @@
 
             <p>
                 Trong đồ án xây dựng website đặt đồ ăn nhanh Foodspead, tôi đảm nhận
-                việc biên soạn và tối ưu hóa file <code>danh-sach.html</code>
+                việc biên soạn và tối ưu hóa file <code>danh-sach.php</code>
                 (Trang Thực đơn), đảm bảo cấu trúc bảng chuẩn accessibility và validation.
             </p>
 
@@ -265,18 +264,6 @@
             </div>
         </section>
 
-    </main>
-
-    <footer class="chan-trang">
-        <p>
-            &copy; 2026 Lê Công Huy — MSSV: 3120224069 — Nhóm 07,
-            Khoa Toán - Tin, Trường Đại học Sư phạm - Đại học Đà Nẵng
-        </p>
-    </footer>
-
-    <!-- Script cá nhân Lê Công Huy -->
-    <script src="js/canhan.js"></script>
-
-</body>
-
-</html>
+    
+</main>
+<?php require __DIR__ . '/../../inc/footer.php'; ?>
