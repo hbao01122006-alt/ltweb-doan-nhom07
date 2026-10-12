@@ -480,3 +480,84 @@ img {
     padding: 26px;
   }
 }
+
+/* =========================================
+   DONG BO GIAO DIEN CHUNG - FOODSPEAD
+   THANH VIEN: TRAN HO TRUNG HAU
+   ========================================= */
+
+/* Bo cuc 4 khu vuc */
+body.trang-ca-nhan {
+    min-width: 0;
+    min-height: 100vh;
+    display: grid;
+    grid-template-areas:
+        "dau"
+        "menu"
+        "ca-nhan"
+        "chinh"
+        "chan";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto 1fr auto;
+}
+
+/* Header chung */
+.trang-ca-nhan > .trang__dau {
+    grid-area: dau;
+    min-width: 0;
+}
+
+/* Menu chung */
+.trang-ca-nhan > .trang__menu {
+    grid-area: menu;
+    min-width: 0;
+}
+
+/* Menu quay ve trang nhom */
+.trang-ca-nhan > .dieu-huong {
+    grid-area: ca-nhan;
+}
+
+/* Noi dung ca nhan */
+.trang-ca-nhan > .noi-dung {
+    grid-area: chinh;
+    width: min(calc(100% - 28px), 1000px);
+    min-width: 0;
+    margin: 0 auto;
+}
+
+/* Footer chung */
+.trang-ca-nhan > .trang__chan {
+    grid-area: chan;
+    min-width: 0;
+    text-align: center;
+}
+
+/* Chuan hoa lien ket va anh */
+.trang-ca-nhan img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Khong cho noi dung tran man hinh */
+.trang-ca-nhan .the {
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* Ho tro man hinh dien thoai */
+@media (max-width: 600px) {
+    .trang-ca-nhan > .noi-dung {
+        width: calc(100% - 20px);
+        padding: 20px 0;
+    }
+
+    .trang-ca-nhan > .dieu-huong ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .trang-ca-nhan .thoi-khoa-bieu {
+        font-size: 0.85rem;
+    }
+}
