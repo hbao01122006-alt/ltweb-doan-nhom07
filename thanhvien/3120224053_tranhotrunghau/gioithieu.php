@@ -1,174 +1,342 @@
 <?php
-declare(strict_types=1);
-require_once __DIR__ . '/../../inc/config.php';
+// gioithieu.php - trang cá nhân của Trần Hồ Trung Hậu (3120224053), Bài tập nhóm 5 - Phần B.
+// Dùng chung inc/header.php và inc/footer.php của nhóm; giữ nguyên style.css và js/canhan.js riêng.
+// Chức năng 1: trắc nghiệm PHP - đề lấy từ mảng PHP, chấm ở máy chủ, kết quả lưu trong session, PRG.
+// Chức năng 2: ghi nhớ ngày thi bằng cookie (kiểm tra lại khi đọc) và tính số ngày còn lại.
+// Cách thử: php -S localhost:8000, mở /thanhvien/3120224053_tranhotrunghau/gioithieu.php rồi làm bài.
+require __DIR__ . '/../../inc/config.php';
 $goc = '../../';
+$lopTrang = 'trang-ca-nhan';
 $cssRien = 'style.css';
 $jsRien = 'js/canhan.js';
-$tieuDe = 'Giới thiệu cá nhân - Trần Hồ Trung Hậu';
-$trang = 'gioi-thieu';
 
-// Chuc nang 1: Tim kiem, loc, sap xep ky nang bang GET.
-$kyNang = [
-    ['ten' => 'HTML5', 'nhom' => ['web'], 'mo_ta' => 'Xây dựng cấu trúc trang web.'],
-    ['ten' => 'Sử dụng Git và GitHub', 'nhom' => ['cong-cu'], 'mo_ta' => 'Quản lý phiên bản và làm việc với kho mã nguồn.'],
-    ['ten' => 'Làm việc nhóm', 'nhom' => ['ky-nang-mem'], 'mo_ta' => 'Phối hợp thực hiện dự án.'],
-    ['ten' => 'Lập trình web', 'nhom' => ['web', 'lap-trinh'], 'mo_ta' => 'Phát triển trang web và các chức năng tương tác.'],
-    ['ten' => 'Lập trình ứng dụng', 'nhom' => ['lap-trinh'], 'mo_ta' => 'Xây dựng ứng dụng giải quyết bài toán.'],
-    ['ten' => 'Python', 'nhom' => ['lap-trinh'], 'mo_ta' => 'Lập trình và xử lý dữ liệu bằng Python.'],
-];
-$dsNhom = ['tat-ca' => 'Tất cả', 'web' => 'Web', 'lap-trinh' => 'Lập trình', 'cong-cu' => 'Công cụ', 'ky-nang-mem' => 'Kỹ năng mềm'];
-$dsSapXep = ['ten-az' => 'Tên A → Z', 'ten-za' => 'Tên Z → A'];
-$nhom = is_string($_GET['nhom'] ?? null) && isset($dsNhom[$_GET['nhom']]) ? $_GET['nhom'] : 'tat-ca';
-$sapXep = is_string($_GET['sx'] ?? null) && isset($dsSapXep[$_GET['sx']]) ? $_GET['sx'] : 'ten-az';
-$tuKhoa = is_string($_GET['q'] ?? null) ? mb_substr(trim($_GET['q']), 0, 50) : '';
-$kyNangLoc = array_values(array_filter($kyNang, static function (array $k) use ($nhom, $tuKhoa): bool {
-    if ($nhom !== 'tat-ca' && !in_array($nhom, $k['nhom'], true)) return false;
-    return $tuKhoa === '' || mb_stripos($k['ten'] . ' ' . $k['mo_ta'], $tuKhoa) !== false;
-}));
-usort($kyNangLoc, static fn(array $a, array $b): int => $sapXep === 'ten-za'
-    ? strcmp($b['ten'], $a['ten']) : strcmp($a['ten'], $b['ten']));
-$truyVan = http_build_query(['nhom' => $nhom, 'q' => $tuKhoa, 'sx' => $sapXep]);
-
-// Chuc nang 2: Giao dien sang/toi luu cookie, xu ly POST truoc khi in HTML.
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 $lay = static fn(string $khoa): string => is_string($_POST[$khoa] ?? null) ? trim($_POST[$khoa]) : '';
-if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && $lay('chuc_nang') === 'theme') {
-    $chon = $lay('theme');
-    if (in_array($chon, ['sang', 'toi'], true)) {
-        setcookie('hau_theme', $chon, ['expires' => time() + 30 * 86400, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax']);
-        flash('hau_theme', $chon === 'toi' ? 'Đã chuyển sang giao diện tối.' : 'Đã chuyển sang giao diện sáng.');
+$hanhDong = $_SERVER['REQUEST_METHOD'] === 'POST' ? $lay('chuc_nang') : '';
+$homNay = new DateTimeImmutable('today');
+
+// Đọc một chuỗi Y-m-d; trả về null nếu sai định dạng hoặc ngày không có thật (ví dụ 2026-02-31).
+$docNgay = static function (string $chuoi): ?DateTimeImmutable {
+    $d = DateTimeImmutable::createFromFormat('!Y-m-d', $chuoi);
+    return ($d !== false && $d->format('Y-m-d') === $chuoi) ? $d : null;
+};
+$tuyChonCookie = ['path' => '/', 'httponly' => true, 'samesite' => 'Lax'];
+
+// ---------- Chức năng 2 (xử lý trước vì dùng setcookie): ngày thi ----------
+$duNgayThi = '';
+$loiNgayThi = '';
+if ($hanhDong === 'ngay-thi') {
+    $duNgayThi = $lay('ngay_thi');
+    $dt = $docNgay($duNgayThi);
+    if ($duNgayThi === '') {
+        $loiNgayThi = 'Hãy chọn ngày thi.';
+    } elseif ($dt === null) {
+        $loiNgayThi = 'Ngày thi không hợp lệ (cần dạng năm-tháng-ngày, ngày có thật).';
+    } elseif ($dt < $homNay) {
+        $loiNgayThi = 'Ngày thi phải từ hôm nay trở đi.';
+    } elseif ($dt > $homNay->modify('+2 years')) {
+        $loiNgayThi = 'Chỉ nhận ngày thi trong vòng 2 năm tới.';
     } else {
-        flash('hau_theme', 'Giá trị giao diện không hợp lệ.');
+        setcookie('hau_ngay_thi', $duNgayThi, $tuyChonCookie + ['expires' => time() + 30 * 86400]);
+        flash('hau_thi', 'Đã ghi nhớ ngày thi.');
+        chuyenHuong('gioithieu.php');
     }
-    chuyenHuong('gioithieu.php?' . $truyVan);
-    exit;
 }
-$theme = is_string($_COOKIE['hau_theme'] ?? null) && in_array($_COOKIE['hau_theme'], ['sang', 'toi'], true)
-    ? $_COOKIE['hau_theme'] : 'sang';
-$tbTheme = flash('hau_theme');
-$lopTrang = 'trang-ca-nhan theme-' . $theme;
+if ($hanhDong === 'xoa-ngay-thi') {
+    setcookie('hau_ngay_thi', '', $tuyChonCookie + ['expires' => time() - 3600]);
+    flash('hau_thi', 'Đã xóa ngày thi đã lưu.');
+    chuyenHuong('gioithieu.php');
+}
+// Đọc cookie: không tin giá trị, kiểm tra lại từng lần; giá trị lạ thì bỏ qua.
+$ngayThi = null;
+$soNgayCon = null;
+$giaTriCookie = $_COOKIE['hau_ngay_thi'] ?? '';
+if (is_string($giaTriCookie) && ($d = $docNgay($giaTriCookie)) !== null) {
+    $ngayThi = $d;
+    $soNgayCon = (int)$homNay->diff($d)->format('%r%a');
+}
+$tbNgayThi = flash('hau_thi');
+
+// ---------- Chức năng 1: trắc nghiệm PHP ----------
+$cauHoi = [
+    'q1' => [
+        'noi_dung' => 'Hàm nào mã hóa ký tự đặc biệt trước khi in dữ liệu người dùng ra HTML?',
+        'lua_chon' => ['a' => 'strip_tags()', 'b' => 'htmlspecialchars()', 'c' => 'addslashes()', 'd' => 'trim()'],
+        'dap_an' => 'b',
+    ],
+    'q2' => [
+        'noi_dung' => 'Sau khi xử lý POST thành công, nên làm gì để bấm F5 không gửi lại biểu mẫu?',
+        'lua_chon' => ['a' => 'In thông báo bằng echo', 'b' => 'Chuyển hướng bằng header(\'Location\') rồi exit', 'c' => 'Gọi sleep()', 'd' => 'Gọi session_destroy()'],
+        'dap_an' => 'b',
+    ],
+    'q3' => [
+        'noi_dung' => 'Hàm nào dùng để lưu mật khẩu dưới dạng băm an toàn?',
+        'lua_chon' => ['a' => 'md5()', 'b' => 'base64_encode()', 'c' => 'password_hash()', 'd' => 'sha1()'],
+        'dap_an' => 'c',
+    ],
+    'q4' => [
+        'noi_dung' => 'setcookie() phải được gọi vào lúc nào?',
+        'lua_chon' => ['a' => 'Sau thẻ đóng </html>', 'b' => 'Trước khi có bất kỳ output nào', 'c' => 'Chỉ trong vòng lặp foreach', 'd' => 'Sau session_destroy()'],
+        'dap_an' => 'b',
+    ],
+];
+$traLoi = [];
+$loiQuiz = [];
+if ($hanhDong === 'quiz') {
+    foreach ($cauHoi as $ma => $ch) {
+        $v = $_POST[$ma] ?? null;
+        if (is_string($v) && array_key_exists($v, $ch['lua_chon'])) {   // chỉ nhận a, b, c, d
+            $traLoi[$ma] = $v;
+        } else {
+            $loiQuiz[$ma] = 'Hãy chọn một đáp án.';
+        }
+    }
+    if (!$loiQuiz) {
+        $dung = [];
+        foreach ($cauHoi as $ma => $ch) {
+            $dung[$ma] = $traLoi[$ma] === $ch['dap_an'];
+        }
+        $_SESSION['hau_quiz'] = [
+            'diem' => count(array_filter($dung)),
+            'tong' => count($cauHoi),
+            'dung' => $dung,
+            'luc' => date('H:i d/m/Y'),
+        ];
+        chuyenHuong('gioithieu.php#php-quiz');
+    }
+}
+$kqQuiz = is_array($_SESSION['hau_quiz'] ?? null) ? $_SESSION['hau_quiz'] : null;
+
+$tieuDe = 'Trần Hồ Trung Hậu';
+$trang = '';
 require __DIR__ . '/../../inc/header.php';
 ?>
 <main class="noi-dung">
-    <nav class="dieu-huong" aria-label="Điều hướng cá nhân">
-        <ul>
-            <li><a href="../../index.php">Quay về Trang chủ Nhóm</a></li>
-            <li><a href="../../gioi-thieu.php">Quay về Giới thiệu Nhóm</a></li>
-        </ul>
-    </nav>
 
-    <h1 class="tieu-de-chinh">Giới thiệu thành viên: Trần Hồ Trung Hậu</h1>
 
-    <section class="the php-box" aria-labelledby="php-tieu-de">
-        <h2 id="php-tieu-de">Lọc kỹ năng và giao diện sáng / tối</h2>
-        <h3>Lọc danh sách kỹ năng</h3>
-        <form method="get" action="gioithieu.php">
-            <p><label for="php-q">Từ khóa</label><br>
-                <input id="php-q" name="q" type="search" maxlength="50" value="<?= e($tuKhoa) ?>"></p>
-            <p><label for="php-nhom">Nhóm kỹ năng</label><br>
-                <select id="php-nhom" name="nhom">
-                    <?php foreach ($dsNhom as $ma => $nhan): ?>
-                        <option value="<?= e($ma) ?>"<?= $ma === $nhom ? ' selected' : '' ?>><?= e($nhan) ?></option>
-                    <?php endforeach; ?>
-                </select></p>
-            <p><label for="php-sx">Sắp xếp</label><br>
-                <select id="php-sx" name="sx">
-                    <?php foreach ($dsSapXep as $ma => $nhan): ?>
-                        <option value="<?= e($ma) ?>"<?= $ma === $sapXep ? ' selected' : '' ?>><?= e($nhan) ?></option>
-                    <?php endforeach; ?>
-                </select></p>
-            <button type="submit">Lọc</button>
-            <a href="gioithieu.php">Xóa bộ lọc</a>
-        </form>
-        <p role="status">Tìm thấy <strong><?= count($kyNangLoc) ?></strong> kỹ năng.</p>
-        <?php if (!$kyNangLoc): ?>
-            <p>Không có kỹ năng nào khớp với bộ lọc hiện tại.</p>
-        <?php else: ?>
-            <ul>
-                <?php foreach ($kyNangLoc as $k): ?>
-                    <li><strong><?= e($k['ten']) ?></strong> — <?= e($k['mo_ta']) ?></li>
-                <?php endforeach; ?>
+        <h1 class="tieu-de-chinh">Giới thiệu thành viên: Trần Hồ Trung Hậu</h1>
+
+<section class="the php-box" aria-labelledby="php-tieu-de">
+  <h2 id="php-tieu-de">Trắc nghiệm PHP và ngày thi</h2>
+
+  <h3 id="php-quiz">Trắc nghiệm nhanh về PHP</h3>
+  <?php if ($kqQuiz): ?>
+    <div role="status">
+      <p class="tb-ok">Lần làm gần nhất (<?= e($kqQuiz['luc'] ?? '') ?>): đúng <strong><?= (int)($kqQuiz['diem'] ?? 0) ?>/<?= (int)($kqQuiz['tong'] ?? 0) ?></strong> câu.</p>
+      <ul>
+      <?php foreach ($cauHoi as $ma => $ch): ?>
+        <li>Câu <?= (int)substr($ma, 1) ?>: <?= !empty($kqQuiz['dung'][$ma]) ? 'đúng' : 'sai' ?></li>
+      <?php endforeach; ?>
+      </ul>
+    </div>
+  <?php endif; ?>
+  <form method="post" action="gioithieu.php#php-quiz">
+    <input type="hidden" name="chuc_nang" value="quiz">
+    <?php foreach ($cauHoi as $ma => $ch): ?>
+      <fieldset>
+        <legend>Câu <?= (int)substr($ma, 1) ?>. <?= e($ch['noi_dung']) ?></legend>
+        <?php foreach ($ch['lua_chon'] as $khoa => $nhan): ?>
+          <p><label><input type="radio" name="<?= e($ma) ?>" value="<?= e($khoa) ?>"<?= ($traLoi[$ma] ?? '') === $khoa ? ' checked' : '' ?>> <?= e(strtoupper($khoa)) ?>. <?= e($nhan) ?></label></p>
+        <?php endforeach; ?>
+        <?php if (isset($loiQuiz[$ma])): ?><p class="loi" role="alert"><?= e($loiQuiz[$ma]) ?></p><?php endif; ?>
+      </fieldset>
+    <?php endforeach; ?>
+    <button type="submit">Nộp bài</button>
+  </form>
+
+  <h3>Ghi nhớ ngày thi</h3>
+  <?php if ($tbNgayThi): ?><p class="tb-ok" role="status"><?= e($tbNgayThi) ?></p><?php endif; ?>
+  <?php if ($ngayThi !== null): ?>
+    <p role="status">Ngày thi đã lưu: <strong><?= e($ngayThi->format('d/m/Y')) ?></strong> —
+    <?php if ($soNgayCon === 0): ?>hôm nay là ngày thi!
+    <?php elseif ($soNgayCon > 0): ?>còn <strong><?= (int)$soNgayCon ?></strong> ngày.
+    <?php else: ?>đã qua <?= abs((int)$soNgayCon) ?> ngày.
+    <?php endif; ?></p>
+    <form method="post" action="gioithieu.php">
+      <input type="hidden" name="chuc_nang" value="xoa-ngay-thi">
+      <button type="submit">Xóa ngày thi đã lưu</button>
+    </form>
+  <?php endif; ?>
+  <form method="post" action="gioithieu.php">
+    <input type="hidden" name="chuc_nang" value="ngay-thi">
+    <p>
+      <label for="php-ngay-thi">Ngày thi</label><br>
+      <input id="php-ngay-thi" name="ngay_thi" type="date" required value="<?= e($duNgayThi) ?>"<?= $loiNgayThi !== '' ? ' aria-invalid="true" aria-describedby="php-loi-ngay-thi"' : '' ?>>
+    </p>
+    <?php if ($loiNgayThi !== ''): ?><p class="loi" id="php-loi-ngay-thi"><?= e($loiNgayThi) ?></p><?php endif; ?>
+    <button type="submit">Lưu ngày thi</button>
+  </form>
+</section>
+
+
+        <!-- TIỆN ÍCH TƯƠNG TÁC CỦA HẬU -->
+        <section class="the tien-ich-hau">
+            <h2>🎮 Tiện ích tương tác &amp; Đếm ngược ngày thi</h2>
+
+            <!-- Tính năng 1: Đếm ngược ngày thi -->
+            <div class="khu-vuc-dem-nguoc">
+                <div class="dong-chon-ngay">
+                    <label for="input-ngay-thi" class="nhan-chon-ngay">📅 Chọn ngày thi giữa kỳ / cuối kỳ:</label>
+                    <input type="date" id="input-ngay-thi" class="input-ngay">
+                </div>
+                <div id="ket-qua-dem-nguoc" class="ket-qua-dem-nguoc">
+                    ⏳ Vui lòng chọn ngày thi trên lịch để bắt đầu đếm ngược.
+                </div>
+            </div>
+
+            <hr class="duong-phan-cach">
+
+            <!-- Tính năng 2: Bảng nút điều khiển Thả bọ & Linh vật Rồng -->
+            <div class="khu-vuc-tro-choi">
+                <p class="mo-ta-tro-choi">🐉 Linh vật Rồng &amp; Trò chơi thả bọ (Phím H - A - U):</p>
+                <div class="nhom-nut-chuc-nang">
+                    <button id="btn-tha-bo" type="button" class="btn-tuong-tac btn-bo">🐛 Thả con bọ</button>
+                    <button id="btn-rong-h" type="button" class="btn-tuong-tac btn-rong">H (Xin chào)</button>
+                    <button id="btn-rong-a" type="button" class="btn-tuong-tac btn-rong">A (Phun lửa 🔥)</button>
+                    <button id="btn-rong-u" type="button" class="btn-tuong-tac btn-rong">U (Phóng to/Thu nhỏ &amp; Bay về)</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="the gioi-thieu-ban-than">
+            <h2>Giới thiệu bản thân</h2>
+
+            <figure class="chan-dung">
+                <img src="images/chan-dung-hau.jpg"
+                     alt="Ảnh chân dung Trần Hồ Trung Hậu"
+                     width="200"
+                     height="250" class="chan-dung__anh">
+
+                <figcaption>
+                    Chân dung Trần Hồ Trung Hậu - Thành viên Nhóm 07
+                </figcaption>
+            </figure>
+
+            <h3>Danh sách kỹ năng cá nhân</h3>
+
+            <ul class="danh-sach-ky-nang">
+                <li>HTML5</li>
+                <li>Sử dụng Git và GitHub</li>
+                <li>Làm việc nhóm</li>
+                <li>Lập trình web</li>
+                <li>Lập trình ứng dụng</li>
+                <li>Python</li>
             </ul>
-        <?php endif; ?>
-        <h3>Giao diện</h3>
-        <?php if ($tbTheme): ?><p class="tb-ok" role="status"><?= e($tbTheme) ?></p><?php endif; ?>
-        <p>Giao diện đang ghi nhớ: <strong><?= $theme === 'toi' ? 'Tối' : 'Sáng' ?></strong></p>
-        <form method="post" action="gioithieu.php?<?= e($truyVan) ?>">
-            <input type="hidden" name="chuc_nang" value="theme">
-            <button type="submit" name="theme" value="sang">Giao diện sáng</button>
-            <button type="submit" name="theme" value="toi">Giao diện tối</button>
-        </form>
-    </section>
 
-    <section class="the tien-ich-hau">
-        <h2>🎮 Tiện ích tương tác &amp; Đếm ngược ngày thi</h2>
-        <div class="khu-vuc-dem-nguoc">
-            <div class="dong-chon-ngay">
-                <label for="input-ngay-thi" class="nhan-chon-ngay">📅 Chọn ngày thi giữa kỳ / cuối kỳ:</label>
-                <input type="date" id="input-ngay-thi" class="input-ngay">
+            <!-- MỚI: DEVELOPER TERMINAL CLI MINI (Thay thế phần tìm kiếm cũ) -->
+            <div class="terminal-container">
+                <div class="terminal-header">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                    <span class="terminal-title">bash - hau@dev-console</span>
+                </div>
+                <div id="terminal-output" class="terminal-output">
+                    <div><span class="prompt">hau@dev:~$</span> welcome</div>
+                    <div style="color: #ffc928;">💻 Chào mừng bạn! Gõ <b style="color:#00ff00;">help</b> để xem danh sách câu lệnh.</div>
+                </div>
+                <div class="terminal-input-line">
+                    <span class="prompt">hau@dev:~$</span>
+                    <input type="text" id="terminal-input" placeholder="Gõ lệnh ở đây (vd: help, skills, projects)..." autocomplete="off">
+                </div>
             </div>
-            <div id="ket-qua-dem-nguoc" class="ket-qua-dem-nguoc">⏳ Vui lòng chọn ngày thi trên lịch để bắt đầu đếm ngược.</div>
-        </div>
-        <hr class="duong-phan-cach">
-        <div class="khu-vuc-tro-choi">
-            <p class="mo-ta-tro-choi">🐉 Linh vật Rồng &amp; Trò chơi thả bọ (Phím H - A - U):</p>
-            <div class="nhom-nut-chuc-nang">
-                <button id="btn-tha-bo" type="button" class="btn-tuong-tac btn-bo">🐛 Thả con bọ</button>
-                <button id="btn-rong-h" type="button" class="btn-tuong-tac btn-rong">H (Xin chào)</button>
-                <button id="btn-rong-a" type="button" class="btn-tuong-tac btn-rong">A (Phun lửa 🔥)</button>
-                <button id="btn-rong-u" type="button" class="btn-tuong-tac btn-rong">U (Phóng to/Thu nhỏ &amp; Bay về)</button>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="the gioi-thieu-ban-than">
-        <h2>Giới thiệu bản thân</h2>
-        <figure class="chan-dung">
-            <img src="images/chan-dung-hau.jpg" alt="Ảnh chân dung Trần Hồ Trung Hậu" width="200" height="250" class="chan-dung__anh">
-            <figcaption>Chân dung Trần Hồ Trung Hậu - Thành viên Nhóm 07</figcaption>
-        </figure>
-        <h3>Danh sách kỹ năng cá nhân</h3>
-        <ul class="danh-sach-ky-nang">
-            <?php foreach ($kyNang as $k): ?><li><?= e($k['ten']) ?></li><?php endforeach; ?>
-        </ul>
-        <div class="terminal-container">
-            <div class="terminal-header">
-                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
-                <span class="terminal-title">bash - hau@dev-console</span>
-            </div>
-            <div id="terminal-output" class="terminal-output">
-                <div><span class="prompt">hau@dev:~$</span> welcome</div>
-                <div class="terminal-welcome">💻 Chào mừng bạn! Gõ <b>help</b> để xem danh sách câu lệnh.</div>
-            </div>
-            <div class="terminal-input-line">
-                <span class="prompt">hau@dev:~$</span>
-                <input type="text" id="terminal-input" aria-label="Nhập lệnh terminal" placeholder="Gõ lệnh ở đây (vd: help, skills, projects)..." autocomplete="off">
-            </div>
-        </div>
-    </section>
+        <article class="the du-an-so-thich">
+            <h2>Dự án và sở thích</h2>
 
-    <article class="the du-an-so-thich">
-        <h2>Dự án và sở thích</h2>
-        <p>Tôi tham gia thực hiện đồ án xây dựng website Foodspead của Nhóm 07 (Trang giới thiệu).</p>
-        <h3>Sở thích</h3>
-        <ul class="danh-sach-so-thich">
-            <li>Ngủ</li><li>Chơi cầu lông</li><li>Chơi game</li><li>Xem phim</li><li>Đọc sách</li><li>Tìm hiểu web</li>
-        </ul>
-    </article>
+            <p>
+                Tôi tham gia thực hiện đồ án xây dựng website FastFood
+                của Nhóm 07 (Trang giới thiệu).
+                của Nhóm 07(Trang giới thiệu).
+            </p>
 
-    <section class="the khu-thoi-khoa-bieu">
-        <h2>Thời khóa biểu học tập trong tuần</h2>
-        <table class="thoi-khoa-bieu">
-            <caption>Thời khóa biểu học tập của Trần Hồ Trung Hậu</caption>
-            <thead><tr><th scope="col">Thứ</th><th scope="col">Tiết</th><th scope="col">Mã học phần</th><th scope="col">Môn học</th><th scope="col">Phòng</th></tr></thead>
-            <tbody>
-                <tr><th scope="row">Thứ 2</th><td>7 - 9</td><td>31221010 - 24-0102</td><td>An toàn thông tin</td><td>A6-401</td></tr>
-                <tr><th scope="row">Thứ 3</th><td>8 - 10</td><td>31241283 - 24-0103</td><td>Hệ quản trị cơ sở dữ liệu</td><td>B3-304</td></tr>
-                <tr><th scope="row">Thứ 5</th><td>4 - 6</td><td>31231330 - 24-0102</td><td>Khai phá dữ liệu</td><td>A5-404B</td></tr>
-                <tr><th scope="row">Thứ 5</th><td>7 - 9</td><td>31231016 - 24-0102</td><td>Công nghệ phần mềm</td><td>B3-303</td></tr>
-                <tr><th scope="row">Thứ 7</th><td>1 - 3</td><td>31231755 - 24-0102</td><td>Thiết kế và lập trình web</td><td>B3-303</td></tr>
-                <tr><th scope="row">Thứ 7</th><td>7 - 9</td><td>21221904 - 25-0332</td><td>Lịch sử Đảng Cộng sản Việt Nam</td><td>B3-302</td></tr>
-            </tbody>
-        </table>
-    </section>
+            <h3>Sở thích</h3>
+
+            <ul class="danh-sach-so-thich">
+                <li>Ngủ</li>
+                <li>Chơi cầu lông</li>
+                <li>Chơi game</li>
+                <li>Xem phim</li>
+                <li>Đọc sách</li>
+                <li>Tìm hiểu web</li>
+            </ul>
+        </article>
+
+        <section class="the khu-thoi-khoa-bieu">
+            <h2>Thời khóa biểu học tập trong tuần</h2>
+
+            <table class="thoi-khoa-bieu">
+
+                <caption>
+                    Thời khóa biểu học tập của Trần Hồ Trung Hậu
+                </caption>
+
+                <thead>
+                    <tr>
+                        <th scope="col">Thứ</th>
+                        <th scope="col">Tiết</th>
+                        <th scope="col">Mã học phần</th>
+                        <th scope="col">Môn học</th>
+                        <th scope="col">Phòng</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <th scope="row">Thứ 2</th>
+                        <td>7 - 9</td>
+                        <td>31221010 - 24-0102</td>
+                        <td>An toàn thông tin</td>
+                        <td>A6-401</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Thứ 3</th>
+                        <td>8 - 10</td>
+                        <td>31241283 - 24-0103</td>
+                        <td>Hệ quản trị cơ sở dữ liệu</td>
+                        <td>B3-304</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Thứ 5</th>
+                        <td>4 - 6</td>
+                        <td>31231330 - 24-0102</td>
+                        <td>Khai phá dữ liệu</td>
+                        <td>A5-404B</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Thứ 5</th>
+                        <td>7 - 9</td>
+                        <td>31231016 - 24-0102</td>
+                        <td>Công nghệ phần mềm</td>
+                        <td>B3-303</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Thứ 7</th>
+                        <td>1 - 3</td>
+                        <td>31231755 - 24-0102</td>
+                        <td>Thiết kế và lập trình web</td>
+                        <td>B3-303</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Thứ 7</th>
+                        <td>7 - 9</td>
+                        <td>21221904 - 25-0332</td>
+                        <td>Lịch sử Đảng Cộng sản Việt Nam</td>
+                        <td>B3-302</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </section>
+
+    
 </main>
 <?php require __DIR__ . '/../../inc/footer.php'; ?>

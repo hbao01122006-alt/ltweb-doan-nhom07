@@ -481,83 +481,15 @@ img {
   }
 }
 
-/* =========================================
-   DONG BO GIAO DIEN CHUNG - FOODSPEAD
-   THANH VIEN: TRAN HO TRUNG HAU
-   ========================================= */
+/* BAI 5 - khu vuc PHP server-side */
+.php-box{grid-column:1/-1}.php-box input,.php-box select,.php-box textarea{max-width:100%;padding:8px;border:1px solid #767676;border-radius:6px}.php-box button{min-height:40px;padding:8px 12px;border:0;border-radius:6px;background:var(--mau-chinh,#b5122b);color:#fff;font-weight:700}.php-box form{margin-block:10px}.php-box img{object-fit:cover;border-radius:10px}
 
-/* Bo cuc 4 khu vuc */
-body.trang-ca-nhan {
-    min-width: 0;
-    min-height: 100vh;
-    display: grid;
-    grid-template-areas:
-        "dau"
-        "menu"
-        "ca-nhan"
-        "chinh"
-        "chan";
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto 1fr auto;
-}
-
-/* Header chung */
-.trang-ca-nhan > .trang__dau {
-    grid-area: dau;
-    min-width: 0;
-}
-
-/* Menu chung */
-.trang-ca-nhan > .trang__menu {
-    grid-area: menu;
-    min-width: 0;
-}
-
-/* Menu quay ve trang nhom */
-.trang-ca-nhan > .dieu-huong {
-    grid-area: ca-nhan;
-}
-
-/* Noi dung ca nhan */
-.trang-ca-nhan > .noi-dung {
-    grid-area: chinh;
-    width: min(calc(100% - 28px), 1000px);
-    min-width: 0;
-    margin: 0 auto;
-}
-
-/* Footer chung */
-.trang-ca-nhan > .trang__chan {
-    grid-area: chan;
-    min-width: 0;
-    text-align: center;
-}
-
-/* Chuan hoa lien ket va anh */
-.trang-ca-nhan img {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Khong cho noi dung tran man hinh */
-.trang-ca-nhan .the {
-    min-width: 0;
-    max-width: 100%;
-}
-
-/* Ho tro man hinh dien thoai */
-@media (max-width: 600px) {
-    .trang-ca-nhan > .noi-dung {
-        width: calc(100% - 20px);
-        padding: 20px 0;
-    }
-
-    .trang-ca-nhan > .dieu-huong ul {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .trang-ca-nhan .thoi-khoa-bieu {
-        font-size: 0.85rem;
-    }
-}
+/* Phần B (PHP): thông báo và lỗi biểu mẫu */
+.php-box input,.php-box textarea,.php-box select{box-sizing:border-box}
+.php-box .loi{color:#b00020;margin:4px 0 10px;font-weight:600}
+.php-box .tb-ok{color:#0b6b2a;font-weight:600}
+.php-box [aria-invalid="true"]{border-color:#b00020}
+.php-box fieldset{margin:0 0 12px;padding:8px 12px;border:1px solid #767676;border-radius:6px;min-width:0}
+.php-box legend{font-weight:700}
+body.theme-toi .php-box .loi,body.dark-mode .php-box .loi{color:#ff9e9e}
+body.theme-toi .php-box .tb-ok,body.dark-mode .php-box .tb-ok{color:#9be29b}

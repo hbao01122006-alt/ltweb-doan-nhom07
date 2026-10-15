@@ -8,94 +8,59 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     // ==========================================
-    // 1. DEVELOPER TERMINAL CLI MINI - CHONG XSS
+    // 1. DEVELOPER TERMINAL CLI MINI
     // ==========================================
     const termInput = document.getElementById('terminal-input');
     const termOutput = document.getElementById('terminal-output');
 
     if (termInput && termOutput) {
-
-        function inTerminal(noiDung, laLenh = false) {
-            const dong = document.createElement('div');
-
-            if (laLenh) {
-                const prompt = document.createElement('span');
-                prompt.className = 'prompt';
-                prompt.textContent = 'hau@dev:~$ ';
-                dong.appendChild(prompt);
-            } else {
-                dong.style.color = '#aaaaaa';
-                dong.style.marginBottom = '8px';
-                dong.style.whiteSpace = 'pre-line';
-            }
-
-            const span = document.createElement('span');
-            span.textContent = noiDung;
-            dong.appendChild(span);
-
-            termOutput.appendChild(dong);
-            termOutput.scrollTop = termOutput.scrollHeight;
-        }
-
         termInput.addEventListener('keydown', (e) => {
-            if (e.key !== 'Enter') return;
+            if (e.key === 'Enter') {
+                const cmd = termInput.value.trim().toLowerCase();
+                termInput.value = '';
 
-            const lenhGoc = termInput.value.trim();
-            const cmd = lenhGoc.toLowerCase();
+                if (cmd === '') return;
 
-            termInput.value = '';
+                let res = '';
+                switch (cmd) {
+                    case 'help':
+                        res = '📌 Danh sách lệnh khả dụng:\n' +
+                              ' • <b style="color:#00ff00;">skills</b>   : Xem kỹ năng lập trình\n' +
+                              ' • <b style="color:#00ff00;">projects</b> : Xem danh sách dự án\n' +
+                              ' • <b style="color:#00ff00;">contact</b>  : Thông tin liên hệ\n' +
+                              ' • <b style="color:#00ff00;">matrix</b>   : Bật hiệu ứng Hacker Matrix\n' +
+                              ' • <b style="color:#00ff00;">clear</b>    : Xóa màn hình terminal';
+                        break;
+                    case 'skills':
+                        res = '🚀 Kỹ năng: HTML5, CSS3, JavaScript, Python, C++, Java, Git & GitHub, Làm việc nhóm.';
+                        break;
+                    case 'projects':
+                        res = '🍔 FastFood Website (Nhóm 07) | 🐍 Snake Game (OpenGL) | 🛒 Shopping Online (C++)';
+                        break;
+                    case 'contact':
+                        res = '📧 Email: trunghautranho5@gmail.com | MSSV: 312024053';
+                        break;
+                    case 'matrix':
+                        res = '🟢 [MATRIX ACTIVATED] Đã bật chế độ Hacker thành công!';
+                        document.body.style.transition = 'background 0.5s ease';
+                        document.body.style.background = '#001100';
+                        setTimeout(() => {
+                            document.body.style.background = '';
+                        }, 3000);
+                        break;
+                    case 'clear':
+                        termOutput.innerHTML = '';
+                        return;
+                    default:
+                        res = `❌ Lệnh '${cmd}' không tồn tại. Gõ <b style="color:#00ff00;">help</b> để xem danh sách câu lệnh.`;
+                }
 
-            if (!cmd) return;
-
-            if (cmd === 'clear') {
-                termOutput.replaceChildren();
-                return;
+                termOutput.innerHTML += `<div><span class="prompt">hau@dev:~$</span> ${cmd}</div>`;
+                termOutput.innerHTML += `<div style="color: #aaaaaa; margin-bottom: 8px; white-space: pre-line;">${res}</div>`;
+                termOutput.scrollTop = termOutput.scrollHeight;
             }
-
-            inTerminal(lenhGoc, true);
-
-            let res = '';
-
-            switch (cmd) {
-                case 'help':
-                    res = '📌 Danh sách lệnh khả dụng:\n' +
-                          ' • skills   : Xem kỹ năng lập trình\n' +
-                          ' • projects : Xem danh sách dự án\n' +
-                          ' • contact  : Thông tin liên hệ\n' +
-                          ' • matrix   : Bật hiệu ứng Hacker Matrix\n' +
-                          ' • clear    : Xóa màn hình terminal';
-                    break;
-
-                case 'skills':
-                    res = '🚀 Kỹ năng: HTML5, CSS3, JavaScript, Python, C++, Java, Git & GitHub, Làm việc nhóm.';
-                    break;
-
-                case 'projects':
-                    res = '🍔 FastFood Website (Nhóm 07) | 🐍 Snake Game (OpenGL) | 🛒 Shopping Online (C++)';
-                    break;
-
-                case 'contact':
-                    res = '📧 Email: trunghautranho5@gmail.com | MSSV: 3120224053';
-                    break;
-
-                case 'matrix':
-                    res = '🟢 [MATRIX ACTIVATED] Đã bật chế độ Hacker thành công!';
-
-                    document.body.style.transition = 'background 0.5s ease';
-                    document.body.style.background = '#001100';
-
-                    setTimeout(() => {
-                        document.body.style.background = '';
-                    }, 3000);
-                    break;
-
-                default:
-                    res = `❌ Lệnh '${lenhGoc}' không tồn tại. Gõ help để xem danh sách câu lệnh.`;
-            }
-
-            inTerminal(res);
         });
     }
 
