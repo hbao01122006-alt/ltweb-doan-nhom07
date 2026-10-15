@@ -465,3 +465,15 @@ body.dark-mode #pet-bubble {
     height: 100%;
   }
 }
+/* BAI 5 - khu vuc PHP server-side */
+.php-box{grid-column:1/-1}.php-box input,.php-box select,.php-box textarea{max-width:100%;padding:8px;border:1px solid #767676;border-radius:6px}.php-box button{min-height:40px;padding:8px 12px;border:0;border-radius:6px;background:var(--mau-chinh,#b5122b);color:#fff;font-weight:700}.php-box form{margin-block:10px}.php-box img{object-fit:cover;border-radius:10px}
+
+/* Phần B (PHP): thông báo và lỗi biểu mẫu */
+.php-box input,.php-box textarea,.php-box select{box-sizing:border-box}
+.php-box .loi{color:#b00020;margin:4px 0 10px;font-weight:600}
+.php-box .tb-ok{color:#0b6b2a;font-weight:600}
+.php-box [aria-invalid="true"]{border-color:#b00020}
+.php-box fieldset{margin:0 0 12px;padding:8px 12px;border:1px solid #767676;border-radius:6px;min-width:0}
+.php-box legend{font-weight:700}
+body.theme-toi .php-box .loi,body.dark-mode .php-box .loi{color:#ff9e9e}
+body.theme-toi .php-box .tb-ok,body.dark-mode .php-box .tb-ok{color:#9be29b}
