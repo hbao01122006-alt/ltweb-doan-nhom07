@@ -1,5 +1,4 @@
 <?php
-// quan-tri.php - trang bao ve, liet ke lien he moi nhat va anh dinh kem.
 require __DIR__.'/inc/config.php'; require __DIR__.'/inc/bao-ve.php';
 use App\Data\KhoLienHe;
 $kho=new KhoLienHe(__DIR__.'/storage/lien-he.jsonl'); $ds=$kho->tatCa();
