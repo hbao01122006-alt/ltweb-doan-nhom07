@@ -1,6 +1,6 @@
 <?php
 // lien-he.php - kiem tra bieu mau o may chu, upload anh an toan, luu JSONL va PRG.
-require _DIR_ . '/inc/config.php';
+require __DIR__ . '/inc/config.php';
 use App\Data\KhoLienHe;
 
 $du=['hoten'=>'','email'=>'','sdt'=>'','noidung'=>'']; $loi=[]; $tenAnh=null;
@@ -20,18 +20,18 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
       if (!isset($choPhep[$mime])) $loi['anh']='Chỉ nhận ảnh JPG, PNG hoặc WebP.';
       elseif (!$loi) {
         $tenAnh=bin2hex(random_bytes(16)).'.'.$choPhep[$mime];
-        if (!move_uploaded_file((string)$tep['tmp_name'], _DIR_.'/uploads/'.$tenAnh)) $loi['anh']='Không lưu được ảnh tải lên.';
+        if (!move_uploaded_file((string)$tep['tmp_name'], __DIR__.'/uploads/'.$tenAnh)) $loi['anh']='Không lưu được ảnh tải lên.';
       }
     }
   }
   if (!$loi) {
-    $kho=new KhoLienHe(_DIR_.'/storage/lien-he.jsonl');
+    $kho=new KhoLienHe(__DIR__.'/storage/lien-he.jsonl');
     $kho->them(['thoiGian'=>date('Y-m-d H:i:s'),'hoTen'=>$du['hoten'],'email'=>$du['email'],'sdt'=>$du['sdt'],'noiDung'=>$du['noidung'],'anh'=>$tenAnh]);
     flash('lien_he','Đã gửi liên hệ, cảm ơn bạn!'); chuyenHuong('lien-he.php');
   }
 }
 $tb=flash('lien_he'); $tieuDe='Liên hệ & Đặt hàng'; $trang='lien-he'; $lopTrang='trang--lien-he';
-require _DIR_.'/inc/header.php';
+require __DIR__.'/inc/header.php';
 ?>
 <main class="trang__chinh lien-he__luoi"><h1 class="lien-he__tieu-de">Liên hệ &amp; Gửi yêu cầu</h1>
 <?php if($tb):?><p role="status" class="trang-thai"><?=e($tb)?></p><?php endif;?>
@@ -44,4 +44,4 @@ require _DIR_.'/inc/header.php';
 <p><label for="anh">Ảnh đính kèm (không bắt buộc, ≤ 2 MB)</label><br><input id="anh" name="anh" type="file" accept="image/jpeg,image/png,image/webp"><?php if(isset($loi['anh'])):?><span class="loi"><?=e($loi['anh'])?></span><?php endif;?></p>
 </fieldset><p class="lien-he__nhom-nut"><button type="submit">Gửi liên hệ</button><button type="reset">Nhập lại</button></p></form>
 <aside class="lien-he__thong-tin"><h2>Thông tin cửa hàng</h2><p>Foodspead - hệ thống đồ ăn nhanh trực tuyến</p><p>Hotline: 08888 214 88</p><p>Email: foodspead@example.com</p><p>Hỗ trợ: 08:00 - 22:00 mỗi ngày</p></aside></main>
-<?php require _DIR_.'/inc/footer.php'; ?>
+<?php require __DIR__.'/inc/footer.php'; ?>
