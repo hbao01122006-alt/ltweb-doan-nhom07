@@ -1,37 +1,168 @@
 <?php
-// gioithieu.php - trang ca nhan PHP cho Bai tap thuc hanh nhom so 5.
-// Dung header/footer chung cua nhom, giu CSS/JavaScript rieng va them 2 chuc nang server-side.
+// gioithieu.php - trang cá nhân của Lê Công Huy (3120224069), Bài tập nhóm 5 - Phần B.
+// Dùng chung inc/header.php và inc/footer.php của nhóm; giữ nguyên style.css và js/canhan.js riêng.
+// Chức năng 1: máy tính điểm học phần 0,2 x A1 + 0,3 x A2 + 0,5 x A3, kiểm tra điểm 0 - 10 ở máy chủ.
+// Chức năng 2: danh sách mục tiêu học tập lưu trong session (thêm, xóa một mục, xóa hết), PRG.
+// Cách thử: php -S localhost:8000, mở /thanhvien/3120224069_leconghuy/gioithieu.php rồi nhập điểm.
 require __DIR__ . '/../../inc/config.php';
 $goc = '../../';
 $lopTrang = 'trang-ca-nhan';
 $cssRien = 'style.css';
 $jsRien = 'js/canhan.js';
 
-// Chuc nang 1: may tinh diem hoc phan he 10 o may chu, PRG qua flash.
-if ($_SERVER['REQUEST_METHOD']==='POST' && ($_POST['chuc_nang']??'')==='gpa') {
-    $a1=filter_var($_POST['a1']??null,FILTER_VALIDATE_FLOAT); $a2=filter_var($_POST['a2']??null,FILTER_VALIDATE_FLOAT); $a3=filter_var($_POST['a3']??null,FILTER_VALIDATE_FLOAT);
-    $ok=$a1!==false&&$a2!==false&&$a3!==false&&$a1>=0&&$a1<=10&&$a2>=0&&$a2<=10&&$a3>=0&&$a3<=10;
-    flash('huy_gpa',$ok?'Điểm tổng kết: '.number_format(0.2*$a1+0.3*$a2+0.5*$a3,2):'Điểm phải nằm trong khoảng 0 đến 10.');
-    chuyenHuong('gioithieu.php');
+$lay = static fn(string $khoa): string => is_string($_POST[$khoa] ?? null) ? trim($_POST[$khoa]) : '';
+$hanhDong = $_SERVER['REQUEST_METHOD'] === 'POST' ? $lay('chuc_nang') : '';
+
+// ---------- Chức năng 1: máy tính điểm học phần ----------
+$xepLoai = static function (float $diem): string {
+    return match (true) {
+        $diem >= 8.5 => 'A',
+        $diem >= 8.0 => 'B+',
+        $diem >= 7.0 => 'B',
+        $diem >= 6.5 => 'C+',
+        $diem >= 5.5 => 'C',
+        $diem >= 5.0 => 'D+',
+        $diem >= 4.0 => 'D',
+        default => 'F',
+    };
+};
+$nhanDiem = ['a1' => 'A1', 'a2' => 'A2', 'a3' => 'A3'];
+$du = ['a1' => '', 'a2' => '', 'a3' => ''];
+$loiGpa = [];
+if ($hanhDong === 'gpa') {
+    $diem = [];
+    foreach ($nhanDiem as $khoa => $nhan) {
+        $du[$khoa] = $lay($khoa);
+        $chuan = str_replace(',', '.', $du[$khoa]);          // chấp nhận cả 7,5 lẫn 7.5
+        $so = filter_var($chuan, FILTER_VALIDATE_FLOAT);
+        if ($chuan === '') {
+            $loiGpa[$khoa] = "Hãy nhập điểm $nhan.";
+        } elseif (mb_strlen($chuan) > 6 || $so === false) {
+            $loiGpa[$khoa] = "Điểm $nhan phải là một số (ví dụ 7.5).";
+        } elseif ($so < 0 || $so > 10) {
+            $loiGpa[$khoa] = "Điểm $nhan phải nằm trong khoảng từ 0 đến 10.";
+        } else {
+            $diem[$khoa] = (float)$so;
+        }
+    }
+    if (!$loiGpa) {
+        $tong = round(0.2 * $diem['a1'] + 0.3 * $diem['a2'] + 0.5 * $diem['a3'], 2);
+        $_SESSION['huy_kq_gpa'] = $diem + ['tong' => $tong, 'loai' => $xepLoai($tong)];
+        chuyenHuong('gioithieu.php#php-diem');
+    }
 }
-// Chuc nang 2: muc tieu hoc tap luu trong session.
-if ($_SERVER['REQUEST_METHOD']==='POST' && ($_POST['chuc_nang']??'')==='muc-tieu') {
-    $mt=trim((string)($_POST['muc_tieu']??''));
-    if (mb_strlen($mt)<3 || mb_strlen($mt)>120) flash('huy_mt','Mục tiêu phải từ 3 đến 120 ký tự.');
-    else { $_SESSION['huy_muc_tieu']=$mt; flash('huy_mt','Đã lưu mục tiêu cho phiên hiện tại.'); }
-    chuyenHuong('gioithieu.php');
+$kqGpa = $_SESSION['huy_kq_gpa'] ?? null;                      // chỉ hiện đúng một lần
+unset($_SESSION['huy_kq_gpa']);
+if (!is_array($kqGpa)) $kqGpa = null;
+
+// ---------- Chức năng 2: mục tiêu học tập trong session ----------
+$dsMucTieu = [];
+foreach (is_array($_SESSION['huy_ds_muc_tieu'] ?? null) ? $_SESSION['huy_ds_muc_tieu'] : [] as $m) {
+    if (is_array($m) && is_string($m['id'] ?? null) && is_string($m['nd'] ?? null)) $dsMucTieu[] = $m;
 }
-$kqGpa=flash('huy_gpa'); $tbMt=flash('huy_mt'); $mucTieu=(string)($_SESSION['huy_muc_tieu']??'');
+const TOI_DA_MUC_TIEU = 8;
+$duMucTieu = '';
+$loiMucTieu = '';
+if ($hanhDong === 'them-muc-tieu') {
+    $duMucTieu = preg_replace('/\s+/u', ' ', $lay('muc_tieu')) ?? '';
+    $trung = false;
+    foreach ($dsMucTieu as $m) {
+        if (mb_strtolower($m['nd']) === mb_strtolower($duMucTieu)) $trung = true;
+    }
+    if ($duMucTieu === '') {
+        $loiMucTieu = 'Hãy nhập mục tiêu.';
+    } elseif (mb_strlen($duMucTieu) < 3 || mb_strlen($duMucTieu) > 120) {
+        $loiMucTieu = 'Mục tiêu phải từ 3 đến 120 ký tự.';
+    } elseif (count($dsMucTieu) >= TOI_DA_MUC_TIEU) {
+        $loiMucTieu = 'Chỉ lưu tối đa ' . TOI_DA_MUC_TIEU . ' mục tiêu, hãy xóa bớt trước.';
+    } elseif ($trung) {
+        $loiMucTieu = 'Mục tiêu này đã có trong danh sách.';
+    } else {
+        $dsMucTieu[] = ['id' => bin2hex(random_bytes(4)), 'nd' => $duMucTieu];
+        $_SESSION['huy_ds_muc_tieu'] = $dsMucTieu;
+        flash('huy_mt', 'Đã thêm mục tiêu.');
+        chuyenHuong('gioithieu.php#php-muc-tieu');
+    }
+} elseif ($hanhDong === 'xoa-muc-tieu') {
+    $id = $lay('id');
+    $con = array_values(array_filter($dsMucTieu, static fn(array $m): bool => $m['id'] !== $id));
+    if (preg_match('/^[a-f0-9]{8}$/', $id) !== 1 || count($con) === count($dsMucTieu)) {
+        flash('huy_mt', 'Không tìm thấy mục tiêu cần xóa.');
+    } else {
+        $_SESSION['huy_ds_muc_tieu'] = $con;
+        flash('huy_mt', 'Đã xóa mục tiêu.');
+    }
+    chuyenHuong('gioithieu.php#php-muc-tieu');
+} elseif ($hanhDong === 'xoa-het-muc-tieu') {
+    unset($_SESSION['huy_ds_muc_tieu']);
+    flash('huy_mt', 'Đã xóa toàn bộ mục tiêu.');
+    chuyenHuong('gioithieu.php#php-muc-tieu');
+}
+$tbMucTieu = flash('huy_mt');
 
 $tieuDe = 'Lê Công Huy';
 $trang = '';
 require __DIR__ . '/../../inc/header.php';
 ?>
 <main class="noi-dung">
-<section class="the php-box"><h2>PHP server-side: Tính điểm & mục tiêu session</h2><?php if($kqGpa):?><p role="status"><?=e($kqGpa)?></p><?php endif;?><form method="post"><input type="hidden" name="chuc_nang" value="gpa"><label>A1 <input name="a1" type="number" min="0" max="10" step="0.1" required></label> <label>A2 <input name="a2" type="number" min="0" max="10" step="0.1" required></label> <label>A3 <input name="a3" type="number" min="0" max="10" step="0.1" required></label> <button>Tính 0,2×A1 + 0,3×A2 + 0,5×A3</button></form><?php if($tbMt):?><p role="status"><?=e($tbMt)?></p><?php endif;?><form method="post"><input type="hidden" name="chuc_nang" value="muc-tieu"><label for="mt">Mục tiêu học tập</label><br><input id="mt" name="muc_tieu" maxlength="120" value="<?=e($mucTieu)?>" required> <button>Lưu trong session</button></form></section>
 
 
         <h1 class="tieu-de-chinh">Giới thiệu thành viên: Lê Công Huy</h1>
+
+<section class="the php-box" aria-labelledby="php-tieu-de">
+  <h2 id="php-tieu-de">Tính điểm học phần và mục tiêu học tập</h2>
+
+  <h3 id="php-diem">Máy tính điểm học phần</h3>
+  <p>Công thức: 0,2 × A1 + 0,3 × A2 + 0,5 × A3 (mỗi điểm từ 0 đến 10).</p>
+  <?php if ($kqGpa): ?>
+    <p class="tb-ok" role="status">Với A1 = <?= e($kqGpa['a1'] ?? '') ?>, A2 = <?= e($kqGpa['a2'] ?? '') ?>, A3 = <?= e($kqGpa['a3'] ?? '') ?>:
+      điểm học phần là <strong><?= e(number_format((float)($kqGpa['tong'] ?? 0), 2)) ?></strong>, xếp loại <strong><?= e($kqGpa['loai'] ?? '') ?></strong>.</p>
+  <?php endif; ?>
+  <form method="post" action="gioithieu.php#php-diem">
+    <input type="hidden" name="chuc_nang" value="gpa">
+    <?php foreach ($nhanDiem as $khoa => $nhan): ?>
+      <p>
+        <label for="php-<?= e($khoa) ?>">Điểm <?= e($nhan) ?></label><br>
+        <input id="php-<?= e($khoa) ?>" name="<?= e($khoa) ?>" type="text" inputmode="decimal" maxlength="6" required value="<?= e($du[$khoa]) ?>"<?= isset($loiGpa[$khoa]) ? ' aria-invalid="true" aria-describedby="php-loi-' . e($khoa) . '"' : '' ?>>
+      </p>
+      <?php if (isset($loiGpa[$khoa])): ?><p class="loi" id="php-loi-<?= e($khoa) ?>"><?= e($loiGpa[$khoa]) ?></p><?php endif; ?>
+    <?php endforeach; ?>
+    <button type="submit">Tính điểm</button>
+  </form>
+
+  <h3 id="php-muc-tieu">Mục tiêu học tập (lưu trong session)</h3>
+  <?php if ($tbMucTieu): ?><p class="tb-ok" role="status"><?= e($tbMucTieu) ?></p><?php endif; ?>
+  <form method="post" action="gioithieu.php#php-muc-tieu">
+    <input type="hidden" name="chuc_nang" value="them-muc-tieu">
+    <p>
+      <label for="php-mt">Mục tiêu mới (3 – 120 ký tự)</label><br>
+      <input id="php-mt" name="muc_tieu" type="text" maxlength="120" required value="<?= e($duMucTieu) ?>"<?= $loiMucTieu !== '' ? ' aria-invalid="true" aria-describedby="php-loi-mt"' : '' ?>>
+    </p>
+    <?php if ($loiMucTieu !== ''): ?><p class="loi" id="php-loi-mt"><?= e($loiMucTieu) ?></p><?php endif; ?>
+    <button type="submit">Thêm mục tiêu</button>
+  </form>
+  <?php if (!$dsMucTieu): ?>
+    <p>Chưa có mục tiêu nào.</p>
+  <?php else: ?>
+    <ul>
+    <?php foreach ($dsMucTieu as $m): ?>
+      <li>
+        <?= e($m['nd']) ?>
+        <form method="post" action="gioithieu.php#php-muc-tieu" style="display:inline">
+          <input type="hidden" name="chuc_nang" value="xoa-muc-tieu">
+          <input type="hidden" name="id" value="<?= e($m['id']) ?>">
+          <button type="submit" aria-label="Xóa mục tiêu: <?= e($m['nd']) ?>">Xóa</button>
+        </form>
+      </li>
+    <?php endforeach; ?>
+    </ul>
+    <form method="post" action="gioithieu.php#php-muc-tieu">
+      <input type="hidden" name="chuc_nang" value="xoa-het-muc-tieu">
+      <button type="submit">Xóa hết mục tiêu</button>
+    </form>
+  <?php endif; ?>
+</section>
+
 
         <!-- TIỆN ÍCH CÁ NHÂN LÊ CÔNG HUY -->
         <section class="the tien-ich-huy">
