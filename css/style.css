@@ -999,3 +999,6 @@ picture {
     line-height: 1.4;
   }
 }
+/* BTN6: form nhỏ nằm cùng dòng (nút Xóa, Đăng xuất) và nút trông như liên kết */
+.form-dong { display: inline; }
+.nut-link { background: none; border: 0; padding: 0; color: #fff; text-decoration: underline; cursor: pointer; font: inherit; }

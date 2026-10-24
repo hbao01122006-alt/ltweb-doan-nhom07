@@ -3,6 +3,7 @@
 // e() ma hoa du lieu truoc khi in HTML; vnd() dinh dang gia tien.
 function e(mixed $giaTri): string
 {
+    if (is_array($giaTri) || is_object($giaTri) && !method_exists($giaTri, '__toString')) return '';   // ten[]=x: không Warning
     return htmlspecialchars((string)$giaTri, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
@@ -37,4 +38,7 @@ if (!function_exists('mb_substr')) {
 }
 if (!function_exists('mb_stripos')) {
     function mb_stripos(string $haystack, string $needle, int $offset = 0, ?string $encoding = null): int|false { return stripos($haystack, $needle, $offset); }
+}
+if (!function_exists('mb_strtolower')) {
+    function mb_strtolower(string $chuoi, ?string $encoding = null): string { return strtolower($chuoi); }
 }

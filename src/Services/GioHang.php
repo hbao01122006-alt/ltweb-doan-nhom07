@@ -2,7 +2,6 @@
 // src/Services/GioHang.php - boc du lieu gio hang trong SESSION va tinh tong tien.
 namespace App\Services;
 
-use App\Data\KhoSanPham;
 use InvalidArgumentException;
 
 final class GioHang
@@ -39,14 +38,4 @@ final class GioHang
 
     public function xoaHet(): void { $_SESSION['gio'] = []; }
     public function soMon(): int { return array_sum($this->cacMuc()); }
-
-    public function tongTien(KhoSanPham $kho): int
-    {
-        $tong = 0;
-        foreach ($this->cacMuc() as $id => $sl) {
-            $sp = $kho->timTheoId((int)$id);
-            if ($sp !== null) $tong += $sp->gia * $sl;
-        }
-        return $tong;
-    }
 }

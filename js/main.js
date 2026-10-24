@@ -1,6 +1,6 @@
 // js/main.js — nạp ở mọi trang: đánh dấu có JavaScript, menu thu gọn
 // trên điện thoại (nút ☰, aria-expanded, Esc để đóng), số đếm yêu thích.
-import { capNhatSoDem } from './yeu-thich.js';
+import { capNhatSoDem, coYeuThich, doiYeuThich } from './yeu-thich.js';
 
 document.documentElement.classList.add('js');
 
@@ -33,3 +33,24 @@ document.querySelectorAll('#menu-chinh a').forEach((lienKet) => {
 });
 
 capNhatSoDem();
+
+
+function datNhanNutYeuThich(nut, daThich) {
+  const ten = nut.dataset.ten || 'món ăn';
+  nut.textContent = daThich ? '♥ Đã thích' : '♡ Yêu thích';
+  nut.setAttribute('aria-pressed', String(daThich));
+  nut.setAttribute('aria-label', `${daThich ? 'Bỏ yêu thích' : 'Thêm yêu thích'} ${ten}`);
+}
+
+document.querySelectorAll('[data-yeu-thich-id]').forEach((nut) => {
+  const id = Number(nut.dataset.yeuThichId);
+  if (Number.isInteger(id) && id > 0) datNhanNutYeuThich(nut, coYeuThich(id));
+});
+
+document.addEventListener('click', (suKien) => {
+  const nut = suKien.target.closest('[data-yeu-thich-id]');
+  if (!nut || nut.closest('#danh-sach-yeu-thich')) return;
+  const id = Number(nut.dataset.yeuThichId);
+  if (!Number.isInteger(id) || id < 1) return;
+  datNhanNutYeuThich(nut, doiYeuThich(id));
+});

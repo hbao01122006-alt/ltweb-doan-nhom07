@@ -29,6 +29,8 @@ if (is_file($autoload)) {
     });
 }
 require_once __DIR__ . '/ham.php';
+require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/xac-thuc.php';
 
 set_exception_handler(static function (Throwable $loi): void {
     error_log((string)$loi);

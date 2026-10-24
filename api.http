@@ -1,0 +1,57 @@
+# api.http - bộ request kiểm thử API (VS Code, extension REST Client): bấm "Send Request" từ trên xuống.
+# REST Client nhớ cookie phiên giữa các request nên request 3 - 9 dùng chung một giỏ hàng.
+@goc = http://localhost:8000
+
+### 1. Tìm kiếm -> 200 {"du_lieu": [...]}
+GET {{goc}}/api/san-pham.php?q=ga
+
+### 2. Tìm kiếm có dấu nháy -> 200
+GET {{goc}}/api/san-pham.php?q=Levi's
+
+### 3. Một món -> 200
+GET {{goc}}/api/san-pham.php?id=1
+
+### 4. Món không có -> 404 {"loi": "..."}
+GET {{goc}}/api/san-pham.php?id=999999
+
+### 5. id sai kiểu -> 400
+GET {{goc}}/api/san-pham.php?id=abc
+
+### 6. Thêm vào giỏ -> 200 {"so_mon": 2}
+POST {{goc}}/api/gio-hang.php
+Content-Type: application/json
+
+{"id": 1, "sl": 2}
+
+### 7. Xem giỏ -> 200
+GET {{goc}}/api/gio-hang.php
+
+### 8. Thân không phải JSON -> 400
+POST {{goc}}/api/gio-hang.php
+Content-Type: application/json
+
+{id: 1}
+
+### 9. Số lượng âm -> 422
+POST {{goc}}/api/gio-hang.php
+Content-Type: application/json
+
+{"id": 1, "sl": -3}
+
+### 10. Món không có -> 404
+POST {{goc}}/api/gio-hang.php
+Content-Type: application/json
+
+{"id": 999999, "sl": 1}
+
+### 11. Vượt tồn kho (món 10 hết hàng) -> 422
+POST {{goc}}/api/gio-hang.php
+Content-Type: application/json
+
+{"id": 10, "sl": 1}
+
+### 12. Sai phương thức -> 405, header Allow: GET, POST
+DELETE {{goc}}/api/gio-hang.php
+
+### 13. Sai phương thức ở API sản phẩm -> 405, header Allow: GET
+POST {{goc}}/api/san-pham.php
