@@ -3,17 +3,16 @@
 require __DIR__ . '/inc/config.php';
 use App\Data\KhoSanPham;
 
-$kho = new KhoSanPham(__DIR__ . '/data/san-pham.json');
-$noiBat = array_values(array_filter($kho->tatCa(), static fn($sp) => $sp->noiBat));
-$noiBat = array_slice($noiBat, 0, 4);
-$daXem = [];
-foreach (explode(',', $_COOKIE['da_xem'] ?? '') as $x) {
+$kho = new KhoSanPham(db());
+$noiBat = $kho->noiBat(4);
+$idsDaXem = [];
+foreach (explode(',', is_string($_COOKIE['da_xem'] ?? null) ? $_COOKIE['da_xem'] : '') as $x) {
     $id = filter_var($x, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
-    if ($id !== false) {
-        $sp = $kho->timTheoId((int)$id);
-        if ($sp !== null) $daXem[] = $sp;
-    }
+    if ($id !== false) $idsDaXem[] = (int)$id;
 }
+$mapDaXem = $kho->theoIds($idsDaXem);
+$daXem = [];
+foreach ($idsDaXem as $id) if (isset($mapDaXem[$id])) $daXem[] = $mapDaXem[$id];
 $tieuDe = 'Trang chủ';
 $trang = 'index';
 $lopTrang = 'trang--chu';

@@ -1,21 +1,17 @@
 <?php
-// gioithieu.php - trang cá nhân của Hoàng Gia Bảo (3120224008), Bài tập nhóm 5 - Phần B.
-// Dùng chung inc/header.php và inc/footer.php của nhóm; giữ nguyên style.css và js/canhan.js riêng.
-// Chức năng 1: sổ lưu bút - kiểm tra POST ở máy chủ, lưu storage/3120224008_luubut.jsonl, PRG.
-// Chức năng 2: bộ đếm lượt xem - mỗi phiên (session) chỉ tính một lần, số đếm lưu trong storage/.
-// Cách thử: php -S localhost:8000, mở /thanhvien/3120224008_hoanggiabao/gioithieu.php rồi gửi lời nhắn.
+// gioithieu.php - Trang cá nhân của Hoàng Gia Bảo, chứa hai chức năng CSDL MySQL theo yêu cầu bài tập.
+// Chức năng CSDL 1: sổ lưu bút MySQL có phân trang; chủ trang hoặc quản trị mới được xóa; POST dùng PRG.
+// Chức năng CSDL 2: bộ đếm lượt xem theo ngày bằng INSERT ... ON DUPLICATE KEY UPDATE và bảng 7 ngày gần nhất.
+// Cách thử: gửi lời nhắn rồi F5; ?trang=2; đăng nhập bao@foods.example / matkhau123 để thấy nút Xóa.
 require __DIR__ . '/../../inc/config.php';
 $goc = '../../';
 $lopTrang = 'trang-ca-nhan';
 $cssRien = 'style.css';
 $jsRien = 'js/canhan.js';
 
-$thuMucStorage = THU_MUC_GOC . '/storage';
-$tepLuuBut = $thuMucStorage . '/3120224008_luubut.jsonl';
-$tepDem = $thuMucStorage . '/3120224008_luotxem.txt';
-if (!is_dir($thuMucStorage)) {
-    mkdir($thuMucStorage, 0775, true);
-}
+const MSSV = '3120224008';
+$nd = nguoiDung();
+$laChuTrang = (new App\Data\KhoThanhVien(db()))->laChuTrang(MSSV, $nd ? (int) $nd['id'] : null) || ($nd['vai_tro'] ?? '') === 'quan_tri';
 
 // Đọc một ô POST dạng chuỗi đã cắt khoảng trắng; ô gửi dạng mảng (ten[]=x) coi như rỗng.
 $lay = static fn(string $khoa): string => is_string($_POST[$khoa] ?? null) ? trim($_POST[$khoa]) : '';
@@ -23,6 +19,19 @@ $lay = static fn(string $khoa): string => is_string($_POST[$khoa] ?? null) ? tri
 // ---------- Chức năng 1: sổ lưu bút ----------
 $du = ['ten' => '', 'loi_nhan' => ''];
 $loi = [];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $lay('chuc_nang') === 'xoa') {
+    $idXoa = filter_var($_POST['id'] ?? '', FILTER_VALIDATE_INT);
+    if (!$laChuTrang) {
+        http_response_code(403);
+        require __DIR__ . '/../../403.php';
+        exit;
+    }
+    if ($idXoa) {
+        db()->prepare('DELETE FROM tv_hoang_gia_bao WHERE id = ? AND mssv = ?')->execute([$idXoa, MSSV]);
+        flash('bao_luubut', 'Đã xóa lời nhắn.');
+    }
+    chuyenHuong('gioithieu.php');
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $lay('chuc_nang') === 'luu-but') {
     $du['ten'] = $lay('ten');
     $du['loi_nhan'] = str_replace("\r\n", "\n", $lay('loi_nhan'));
@@ -44,51 +53,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $lay('chuc_nang') === 'luu-but') {
     }
 
     if (!$loi) {
-        $dong = json_encode(
-            ['ten' => $du['ten'], 'loi_nhan' => $du['loi_nhan'], 'luc' => date('d/m/Y H:i')],
-            JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
-        );
-        if (file_put_contents($tepLuuBut, $dong . PHP_EOL, FILE_APPEND | LOCK_EX) === false) {
-            $loi['chung'] = 'Không ghi được lời nhắn, bạn thử lại sau nhé.';
-        } else {
-            flash('bao_luubut', 'Đã lưu lời nhắn của bạn, cảm ơn!');
-            chuyenHuong('gioithieu.php');          // PRG: bấm F5 không gửi lại
-        }
+        db()->prepare('INSERT INTO tv_hoang_gia_bao (mssv, ten_khach, loi_nhan) VALUES (?, ?, ?)')
+            ->execute([MSSV, $du['ten'], $du['loi_nhan']]);
+        flash('bao_luubut', 'Đã lưu lời nhắn của bạn, cảm ơn!');
+        chuyenHuong('gioithieu.php');          // PRG: bấm F5 không gửi lại
     }
 }
 $tbLuuBut = flash('bao_luubut');
 
-// Năm lời nhắn mới nhất (dòng cuối tệp là mới nhất)
-$dsLoiNhan = [];
-if (is_file($tepLuuBut)) {
-    $cacDong = file($tepLuuBut, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
-    foreach (array_reverse($cacDong) as $dong) {
-        $m = json_decode($dong, true);
-        if (is_array($m) && is_string($m['ten'] ?? null) && is_string($m['loi_nhan'] ?? null)) {
-            $dsLoiNhan[] = $m;
-            if (count($dsLoiNhan) === 5) break;
-        }
-    }
-}
+// Năm lời nhắn mỗi trang, mới nhất trước
+$st = db()->prepare('SELECT COUNT(*) FROM tv_hoang_gia_bao WHERE mssv = ?');
+$st->execute([MSSV]);
+$soTrang = max(1, (int) ceil($st->fetchColumn() / 5));
+$hienTai = filter_var($_GET['trang'] ?? 1, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'default' => 1]]);
+$hienTai = min((int) $hienTai, $soTrang);
+$st = db()->prepare('SELECT id, ten_khach, loi_nhan, thoi_gian FROM tv_hoang_gia_bao WHERE mssv = ?
+                     ORDER BY thoi_gian DESC, id DESC LIMIT 5 OFFSET ?');
+$st->execute([MSSV, ($hienTai - 1) * 5]);
+$dsLoiNhan = $st->fetchAll();
 
-// ---------- Chức năng 2: bộ đếm lượt xem (mỗi session chỉ tính một lần) ----------
-$luot = 0;
-$fp = fopen($tepDem, 'c+');
-if ($fp !== false) {
-    if (flock($fp, LOCK_EX)) {                      // khóa để hai request không ghi đè nhau
-        $luot = max(0, (int)trim((string)stream_get_contents($fp)));
-        if (empty($_SESSION['da_dem_3120224008'])) {
-            $luot++;
-            ftruncate($fp, 0);
-            rewind($fp);
-            fwrite($fp, (string)$luot);
-            fflush($fp);
-            $_SESSION['da_dem_3120224008'] = true;
-        }
-        flock($fp, LOCK_UN);
-    }
-    fclose($fp);
+// ---------- Chức năng 2: lượt xem theo ngày (mỗi session chỉ tính một lần) ----------
+if (empty($_SESSION['da_dem_' . MSSV])) {
+    db()->prepare('INSERT INTO tv_luot_xem (mssv, ngay, so_luot) VALUES (?, CURDATE(), 1)
+                   ON DUPLICATE KEY UPDATE so_luot = so_luot + 1')->execute([MSSV]);
+    $_SESSION['da_dem_' . MSSV] = true;
 }
+$st = db()->prepare('SELECT ngay, so_luot FROM tv_luot_xem WHERE mssv = ? ORDER BY ngay DESC LIMIT 7');
+$st->execute([MSSV]);
+$bay7Ngay = $st->fetchAll();
+$st = db()->prepare('SELECT COALESCE(SUM(so_luot), 0) FROM tv_luot_xem WHERE mssv = ?');
+$st->execute([MSSV]);
+$luot = (int) $st->fetchColumn();
 
 $tieuDe = 'Hoàng Gia Bảo';
 $trang = '';
@@ -104,6 +99,11 @@ require __DIR__ . '/../../inc/header.php';
 <section class="the php-box" aria-labelledby="php-tieu-de">
   <h2 id="php-tieu-de">Sổ lưu bút và lượt xem</h2>
   <p><strong>Lượt xem:</strong> <?= e(number_format($luot, 0, ',', '.')) ?> <small>(mỗi phiên chỉ tính một lần)</small></p>
+  <?php if ($bay7Ngay): ?>
+  <table><caption>Lượt xem 7 ngày gần nhất</caption><thead><tr><th scope="col">Ngày</th><th scope="col">Lượt</th></tr></thead><tbody>
+    <?php foreach ($bay7Ngay as $n): ?><tr><td><?= e($n['ngay']) ?></td><td><?= (int) $n['so_luot'] ?></td></tr><?php endforeach; ?>
+  </tbody></table>
+  <?php endif; ?>
 
   <h3>Để lại lời nhắn</h3>
   <?php if ($tbLuuBut): ?><p class="tb-ok" role="status"><?= e($tbLuuBut) ?></p><?php endif; ?>
@@ -123,15 +123,19 @@ require __DIR__ . '/../../inc/header.php';
     <button type="submit">Gửi lời nhắn</button>
   </form>
 
-  <h3>5 lời nhắn mới nhất</h3>
+  <h3>Lời nhắn (5 lời mỗi trang)</h3>
   <?php if (!$dsLoiNhan): ?>
     <p>Chưa có lời nhắn nào, hãy là người đầu tiên!</p>
   <?php else: ?>
     <ul>
     <?php foreach ($dsLoiNhan as $m): ?>
-      <li><strong><?= e($m['ten']) ?></strong>: <?= nl2br(e($m['loi_nhan'])) ?> <small>(<?= e($m['luc'] ?? '') ?>)</small></li>
+      <li><strong><?= e($m['ten_khach']) ?></strong>: <?= nl2br(e($m['loi_nhan'])) ?> <small>(<?= e($m['thoi_gian']) ?>)</small>
+        <?php if ($laChuTrang): ?><form method="post" action="gioithieu.php" class="form-dong"><input type="hidden" name="chuc_nang" value="xoa"><input type="hidden" name="id" value="<?= (int) $m['id'] ?>"><button type="submit">Xóa</button></form><?php endif; ?></li>
     <?php endforeach; ?>
     </ul>
+    <?php if ($soTrang > 1): ?><nav aria-label="Phân trang lưu bút"><p>
+      <?php for ($i = 1; $i <= $soTrang; $i++): ?><a href="?trang=<?= $i ?>"<?= $i === $hienTai ? ' aria-current="page"' : '' ?>><?= $i ?></a> <?php endfor; ?>
+    </p></nav><?php endif; ?>
   <?php endif; ?>
 </section>
 
