@@ -1,42 +1,68 @@
 <?php
-// dang-nhap.php - đăng nhập bằng email + password_verify; session chỉ lưu uid; một thông báo lỗi chung.
-// Thử: sai mật khẩu và email lạ nhận cùng một thông báo; đăng nhập đúng thì PHPSESSID đổi giá trị.
+// danh-sach.php - danh sach mon an tu MySQL, tim/loc/sap xep/phan trang qua GET.
 require __DIR__ . '/inc/config.php';
 
-use App\Data\KhoNguoiDung;
+use App\Data\KhoSanPham;
 
-$loi = '';
-$email = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $email = mb_strtolower(trim(is_string($_POST['email'] ?? null) ? $_POST['email'] : ''));
-  $matKhau = is_string($_POST['mat_khau'] ?? null) ? $_POST['mat_khau'] : '';
-  $kho = new KhoNguoiDung(db());
-  $tk = $kho->timTheoEmail($email);
-  if ($tk && password_verify($matKhau, $tk['mat_khau'])) {
-    if (password_needs_rehash($tk['mat_khau'], PASSWORD_DEFAULT)) {
-      $kho->capNhatMatKhau((int) $tk['id'], password_hash($matKhau, PASSWORD_DEFAULT));
-    }
-    session_regenerate_id(true);                       // chống session fixation
-    $_SESSION['uid'] = (int) $tk['id'];
-    $url = $_SESSION['url_sau_dang_nhap'] ?? 'index.php';
-    unset($_SESSION['url_sau_dang_nhap']);
-    chuyenHuong(is_string($url) && str_starts_with($url, '/') && !str_starts_with($url, '//') ? $url : 'index.php');
-  }
-  $loi = 'Email hoặc mật khẩu không đúng.';
+$kho = new KhoSanPham(db());
+$q = is_string($_GET['q'] ?? null) ? trim($_GET['q']) : '';   // q[]=x (mảng) coi như rỗng, không Warning
+if (mb_strlen($q) > 100) $q = mb_substr($q, 0, 100);
+$dm = filter_var($_GET['dm'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+$giaToiDa = filter_var($_GET['gia'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+$sx = is_string($_GET['sx'] ?? null) ? $_GET['sx'] : 'mac-dinh';
+$choPhepSapXep = ['mac-dinh', 'gia-tang', 'gia-giam', 'ten-az'];
+if (!in_array($sx, $choPhepSapXep, true)) $sx = 'mac-dinh';
+
+$loc = ['q' => $q, 'dm' => $dm ?: null, 'giaToiDa' => $giaToiDa ?: null];
+$moiTrang = 6;
+$tong = $kho->dem($loc);
+$soTrang = max(1, (int)ceil($tong / $moiTrang));
+$hienTai = filter_var($_GET['trang'] ?? 1, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'default' => 1]]);
+$hienTai = min((int)$hienTai, $soTrang);
+$mapSx = ['mac-dinh' => 'mac-dinh', 'gia-tang' => 'gia-tang', 'gia-giam' => 'gia-giam', 'ten-az' => 'ten'];
+$ds = $kho->trang($loc, $mapSx[$sx], $moiTrang, ($hienTai - 1) * $moiTrang);
+$dsDanhMuc = $kho->danhMuc();
+function lienKetTrang(int $so): string
+{
+  return '?' . http_build_query(array_merge($_GET, ['trang' => $so]));
 }
-$tb = flash('dang_ky');
-$tieuDe = 'Đăng nhập';
-$trang = '';
+$tieuDe = 'Thực đơn';
+$trang = 'danh-sach';
+$lopTrang = 'trang--danh-sach';
 require __DIR__ . '/inc/header.php';
 ?>
 <main class="trang__chinh">
-  <h1>Đăng nhập</h1>
-  <?php if ($tb): ?><p role="status"><?= e($tb) ?></p><?php endif; ?>
-  <?php if ($loi): ?><p class="loi" role="alert"><?= e($loi) ?></p><?php endif; ?>
-  <form method="post" class="the">
-    <p><label for="u">Email</label><br><input id="u" type="email" name="email" value="<?= e($email) ?>" required autocomplete="username"></p>
-    <p><label for="p">Mật khẩu</label><br><input id="p" name="mat_khau" type="password" required autocomplete="current-password"></p>
-    <button type="submit">Đăng nhập</button> <a href="dang-ky.php">Đăng ký</a>
+  <h1>Thực đơn thức ăn nhanh Foodspead</h1>
+  <form method="get" class="cong-cu-loc" role="search" style="display:grid">
+    <p><label for="q">Tìm món ăn:</label><br><input id="q" name="q" type="search" value="<?= e($q) ?>" placeholder="Ví dụ: gà rán, burger"></p>
+    <p><label for="dm">Danh mục:</label><br><select id="dm" name="dm">
+        <option value="">Tất cả danh mục</option><?php foreach ($dsDanhMuc as $d): ?><option value="<?= (int)$d['id'] ?>" <?= (int)$dm === (int)$d['id'] ? ' selected' : '' ?>><?= e($d['ten']) ?></option><?php endforeach; ?>
+      </select></p>
+    <p><label for="gia">Giá tối đa:</label><br><input id="gia" name="gia" type="number" min="1" value="<?= e($giaToiDa ?: '') ?>" placeholder="Ví dụ: 100000"></p>
+    <p><label for="sx">Sắp xếp:</label><br><select id="sx" name="sx">
+        <option value="mac-dinh" <?= $sx === 'mac-dinh' ? ' selected' : '' ?>>Mặc định</option>
+        <option value="gia-tang" <?= $sx === 'gia-tang' ? ' selected' : '' ?>>Giá tăng dần</option>
+        <option value="gia-giam" <?= $sx === 'gia-giam' ? ' selected' : '' ?>>Giá giảm dần</option>
+        <option value="ten-az" <?= $sx === 'ten-az' ? ' selected' : '' ?>>Tên A → Z</option>
+      </select></p>
+    <p><button type="submit">Lọc kết quả</button> <a href="danh-sach.php">Xóa bộ lọc</a></p>
   </form>
+  <p class="trang-thai">Hiển thị <?= count($ds) ?> / <?= $tong ?> món ăn.</p>
+  <div class="danh-sach__khoi luoi-the" id="ket-qua-tim-kiem">
+    <?php if (!$ds): ?><p>Không có món ăn nào phù hợp. Hãy thử từ khóa hoặc bộ lọc khác.</p><?php endif; ?>
+    <?php foreach ($ds as $sp): ?>
+      <article class="the-san-pham">
+        <h2 class="the-san-pham__tieu-de"><?= e($sp->ten) ?></h2>
+        <img class="the-san-pham__anh" src="<?= e($sp->anh) ?>" alt="<?= e($sp->anhMoTa) ?>" width="300" height="200" loading="lazy">
+        <p><?= e($sp->moTa) ?></p>
+        <p><strong>Giá: <?= e(vnd($sp->gia)) ?></strong><?= $sp->soLuongTon === 0 ? ' <span class="het-hang">(Hết hàng)</span>' : '' ?></p>
+        <p class="the-san-pham__hanh-dong"><a href="chi-tiet.php?id=<?= $sp->id ?>">Xem chi tiết món ăn</a> <button type="button" class="nut-yeu-thich" data-yeu-thich-id="<?= $sp->id ?>" data-ten="<?= e($sp->ten) ?>" aria-pressed="false">♡ Yêu thích</button></p>
+      </article>
+    <?php endforeach; ?>
+  </div>
+  <?php if ($soTrang > 1): ?><nav aria-label="Phân trang">
+      <p><?php for ($i = 1; $i <= $soTrang; $i++): ?><a href="<?= e(lienKetTrang($i)) ?>" <?= $i === $hienTai ? ' aria-current="page"' : '' ?>><?= $i ?></a><?= $i < $soTrang ? ' · ' : '' ?><?php endfor; ?></p>
+    </nav><?php endif; ?>
 </main>
+<script src="js/tim-kiem.js" defer></script>
 <?php require __DIR__ . '/inc/footer.php'; ?>
