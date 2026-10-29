@@ -1,11 +1,11 @@
 <?php
-// lien-he.php - kiem tra bieu mau o may chu, upload anh an toan, luu JSONL va PRG.
+// lien-he.php - kiem tra bieu mau o may chu, upload ảnh an toàn, lưu vào bảng lien_he (KhoLienHe) và PRG.
 require __DIR__ . '/inc/config.php';
 use App\Data\KhoLienHe;
 
 $du=['hoten'=>'','email'=>'','sdt'=>'','noidung'=>'']; $loi=[]; $tenAnh=null;
 if ($_SERVER['REQUEST_METHOD']==='POST') {
-  foreach ($du as $k=>$v) $du[$k]=trim((string)($_POST[$k]??''));
+  foreach ($du as $k=>$v) $du[$k]=is_string($_POST[$k]??null) ? trim($_POST[$k]) : '';
   if ($du['hoten']==='' || mb_strlen($du['hoten'])<2 || mb_strlen($du['hoten'])>80) $loi['hoten']='Họ tên phải từ 2 đến 80 ký tự.';
   if (!filter_var($du['email'], FILTER_VALIDATE_EMAIL)) $loi['email']='Email không hợp lệ.';
   if (!preg_match('/^(0|\+84)[0-9]{9,10}$/', $du['sdt'])) $loi['sdt']='Số điện thoại không hợp lệ.';
@@ -20,13 +20,13 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
       if (!isset($choPhep[$mime])) $loi['anh']='Chỉ nhận ảnh JPG, PNG hoặc WebP.';
       elseif (!$loi) {
         $tenAnh=bin2hex(random_bytes(16)).'.'.$choPhep[$mime];
-        if (!move_uploaded_file((string)$tep['tmp_name'], __DIR__.'/uploads/'.$tenAnh)) $loi['anh']='Không lưu được ảnh tải lên.';
+        if (!(is_dir(__DIR__.'/uploads') || mkdir(__DIR__.'/uploads', 0775, true)) || !move_uploaded_file((string)$tep['tmp_name'], __DIR__.'/uploads/'.$tenAnh)) { $loi['anh']='Không lưu được ảnh tải lên.'; $tenAnh=null; }
       }
     }
   }
   if (!$loi) {
-    $kho=new KhoLienHe(__DIR__.'/storage/lien-he.jsonl');
-    $kho->them(['thoiGian'=>date('Y-m-d H:i:s'),'hoTen'=>$du['hoten'],'email'=>$du['email'],'sdt'=>$du['sdt'],'noiDung'=>$du['noidung'],'anh'=>$tenAnh]);
+    $kho=new KhoLienHe(db());
+    $kho->them(['ho_ten'=>$du['hoten'],'email'=>$du['email'],'sdt'=>$du['sdt'],'noi_dung'=>$du['noidung'],'anh'=>$tenAnh]);
     flash('lien_he','Đã gửi liên hệ, cảm ơn bạn!'); chuyenHuong('lien-he.php');
   }
 }
