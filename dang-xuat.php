@@ -1,7 +1,8 @@
 <?php
-// dang-xuat.php - huy thong tin dang nhap trong session va quay ve trang dang nhap.
+// dang-xuat.php - đăng xuất; chỉ nhận POST (nút trong header). GET chỉ chuyển về trang chủ, không đổi gì.
 require __DIR__ . '/inc/config.php';
-unset($_SESSION['user']);
-session_regenerate_id(true);
-flash('dang_nhap','Bạn đã đăng xuất.');
-chuyenHuong('dang-nhap.php');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    unset($_SESSION['uid']);
+    session_regenerate_id(true);
+}
+chuyenHuong('index.php');
