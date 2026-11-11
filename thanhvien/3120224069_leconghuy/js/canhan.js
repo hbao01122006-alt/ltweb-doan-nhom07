@@ -1,3 +1,4 @@
+document.getElementById('form-tinh-gpa')?.addEventListener('submit', (event) => event.preventDefault());
 /**
  * Script trang cá nhân - Lê Công Huy
  * Chức năng:
@@ -99,11 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
             else { diemChuu = 'F'; diemHe4 = 0.0; }
 
             ketQuaGpa.style.color = 'var(--chu)';
-            ketQuaGpa.innerHTML = `
-                📊 <strong>Kết quả dự tính của Huy:</strong><br>
-                - Điểm hệ 10: <strong>${diemHe10.toFixed(2)}</strong><br>
-                - Điểm chữ: <strong>${diemChuu}</strong> | Điểm hệ 4 (GPA): <strong>${diemHe4.toFixed(1)}</strong>
-            `;
+            ketQuaGpa.textContent = `📊 Kết quả dự tính của Huy:\n- Điểm hệ 10: ${diemHe10.toFixed(2)}\n- Điểm chữ: ${diemChuu} | Điểm hệ 4 (GPA): ${diemHe4.toFixed(1)}`;
         });
     }
 

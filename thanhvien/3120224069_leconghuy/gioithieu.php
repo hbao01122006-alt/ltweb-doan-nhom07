@@ -39,7 +39,7 @@ $st->execute([MSSV]); $tkDiem=$st->fetch();
 // Chức năng 2: mục tiêu học tập chuyển từ session Bài 5 sang bảng MySQL.
 $duMucTieu=''; $loiMucTieu='';
 if(in_array($hanhDong,['them-muc-tieu','doi-muc-tieu','xoa-muc-tieu','xoa-het-muc-tieu'],true)){
-    if(!$laChuTrang){ http_response_code(403); require __DIR__.'/../../403.php'; exit; }
+    if(!$laChuTrang){ ghiLogBaoMat('cam_truy_cap', ['trang' => parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/']); http_response_code(403); require __DIR__.'/../../403.php'; exit; }
     if($hanhDong==='them-muc-tieu'){
         $duMucTieu=preg_replace('/\s+/u',' ',$lay('muc_tieu'))??'';
         if(mb_strlen($duMucTieu)<3||mb_strlen($duMucTieu)>120) $loiMucTieu='Mục tiêu phải từ 3 đến 120 ký tự.';
@@ -71,7 +71,7 @@ $tieuDe='Lê Công Huy'; $trang=''; require __DIR__.'/../../inc/header.php';
   <h2 id="php-tieu-de">Điểm học phần và mục tiêu bằng MySQL</h2>
   <h3 id="php-diem">1. Máy tính điểm học phần + lịch sử CSDL</h3>
   <?php if($tbDiem): ?><p class="tb-ok" role="status"><?= e($tbDiem) ?></p><?php endif; ?>
-  <form method="post" action="gioithieu.php#php-diem"><input type="hidden" name="chuc_nang" value="gpa">
+  <form method="post" action="gioithieu.php#php-diem"><?= csrfField() ?><input type="hidden" name="chuc_nang" value="gpa">
     <?php foreach($nhanDiem as $k=>$nhan): ?><p><label for="php-<?= e($k) ?>">Điểm <?= e($nhan) ?></label><br><input id="php-<?= e($k) ?>" name="<?= e($k) ?>" type="text" inputmode="decimal" maxlength="6" required value="<?= e($du[$k]) ?>"></p><?php if(isset($loiGpa[$k])): ?><p class="loi" role="alert"><?= e($loiGpa[$k]) ?></p><?php endif; ?><?php endforeach; ?>
     <button type="submit">Tính và lưu điểm</button>
   </form>
@@ -80,9 +80,9 @@ $tieuDe='Lê Công Huy'; $trang=''; require __DIR__.'/../../inc/header.php';
 
   <h3 id="php-muc-tieu">2. Mục tiêu học tập lưu MySQL</h3>
   <?php if($tbMucTieu): ?><p class="tb-ok" role="status"><?= e($tbMucTieu) ?></p><?php endif; ?>
-  <?php if($laChuTrang): ?><form method="post" action="gioithieu.php#php-muc-tieu"><input type="hidden" name="chuc_nang" value="them-muc-tieu"><p><label for="php-mt">Mục tiêu mới</label><br><input id="php-mt" name="muc_tieu" maxlength="120" required value="<?= e($duMucTieu) ?>"></p><?php if($loiMucTieu): ?><p class="loi" role="alert"><?= e($loiMucTieu) ?></p><?php endif; ?><button type="submit">Thêm mục tiêu</button></form><?php else: ?><p><small>Đăng nhập đúng tài khoản chủ trang để quản lý mục tiêu.</small></p><?php endif; ?>
-  <?php if(!$dsMucTieu): ?><p>Chưa có mục tiêu.</p><?php else: ?><ul><?php foreach($dsMucTieu as $m): ?><li><?= e($m['muc_tieu']) ?> — <?= (int)$m['hoan_thanh']===1?'Đã xong':'Đang làm' ?><?php if($laChuTrang): ?> <form method="post" action="gioithieu.php#php-muc-tieu" class="form-dong"><input type="hidden" name="id" value="<?= e($m['id']) ?>"><button name="chuc_nang" value="doi-muc-tieu" type="submit">Đổi trạng thái</button><button name="chuc_nang" value="xoa-muc-tieu" type="submit">Xóa</button></form><?php endif; ?></li><?php endforeach; ?></ul><?php endif; ?>
-  <?php if($laChuTrang && $dsMucTieu): ?><form method="post" action="gioithieu.php#php-muc-tieu"><button name="chuc_nang" value="xoa-het-muc-tieu" type="submit">Xóa hết mục tiêu</button></form><?php endif; ?>
+  <?php if($laChuTrang): ?><form method="post" action="gioithieu.php#php-muc-tieu"><?= csrfField() ?><input type="hidden" name="chuc_nang" value="them-muc-tieu"><p><label for="php-mt">Mục tiêu mới</label><br><input id="php-mt" name="muc_tieu" maxlength="120" required value="<?= e($duMucTieu) ?>"></p><?php if($loiMucTieu): ?><p class="loi" role="alert"><?= e($loiMucTieu) ?></p><?php endif; ?><button type="submit">Thêm mục tiêu</button></form><?php else: ?><p><small>Đăng nhập đúng tài khoản chủ trang để quản lý mục tiêu.</small></p><?php endif; ?>
+  <?php if(!$dsMucTieu): ?><p>Chưa có mục tiêu.</p><?php else: ?><ul><?php foreach($dsMucTieu as $m): ?><li><?= e($m['muc_tieu']) ?> — <?= (int)$m['hoan_thanh']===1?'Đã xong':'Đang làm' ?><?php if($laChuTrang): ?> <form method="post" action="gioithieu.php#php-muc-tieu" class="form-dong"><?= csrfField() ?><input type="hidden" name="id" value="<?= e($m['id']) ?>"><button name="chuc_nang" value="doi-muc-tieu" type="submit">Đổi trạng thái</button><button name="chuc_nang" value="xoa-muc-tieu" type="submit">Xóa</button></form><?php endif; ?></li><?php endforeach; ?></ul><?php endif; ?>
+  <?php if($laChuTrang && $dsMucTieu): ?><form method="post" action="gioithieu.php#php-muc-tieu"><?= csrfField() ?><button name="chuc_nang" value="xoa-het-muc-tieu" type="submit">Xóa hết mục tiêu</button></form><?php endif; ?>
 </section>
 
         <!-- TIỆN ÍCH CÁ NHÂN LÊ CÔNG HUY -->
@@ -125,7 +125,7 @@ $tieuDe='Lê Công Huy'; $trang=''; require __DIR__.'/../../inc/header.php';
 
                 <form id="form-tinh-gpa"
                       class="form-gpa"
-                      onsubmit="return false;">
+                      >
 
                     <div class="hang-nhap">
                         <label for="diem-chuyen-can">

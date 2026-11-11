@@ -42,3 +42,22 @@ if (!function_exists('mb_stripos')) {
 if (!function_exists('mb_strtolower')) {
     function mb_strtolower(string $chuoi, ?string $encoding = null): string { return strtolower($chuoi); }
 }
+
+// Gia tri tham so mang/doi tuong bi loai bo; khong ep kieu thanh "Array".
+function chuoi(mixed $v): string
+{
+    return is_string($v) ? $v : '';
+}
+
+// Chi ghi ten su kien, IP, uid va cac thong tin can thiet; TUYET DOI khong ghi bi mat.
+function ghiLogBaoMat(string $suKien, array $chiTiet = []): void
+{
+    $hopLe = ['csrf_sai', 'cam_truy_cap', 'dang_nhap_sai'];
+    if (!in_array($suKien, $hopLe, true)) return;
+    $chiTiet = array_intersect_key($chiTiet, array_flip(['trang', 'email']));
+    $chiTiet['ip'] = $_SERVER['REMOTE_ADDR'] ?? '-';
+    $chiTiet['uid'] = $_SESSION['uid'] ?? null;
+    $dong = date('Y-m-d H:i:s') . ' ' . $suKien . ' '
+          . json_encode($chiTiet, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL;
+    error_log($dong, 3, THU_MUC_GOC . '/logs/bao-mat.log');
+}

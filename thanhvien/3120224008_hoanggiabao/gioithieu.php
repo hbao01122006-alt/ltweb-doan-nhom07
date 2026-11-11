@@ -78,9 +78,23 @@ if (empty($_SESSION['da_dem_' . MSSV])) {
                    ON DUPLICATE KEY UPDATE so_luot = so_luot + 1')->execute([MSSV]);
     $_SESSION['da_dem_' . MSSV] = true;
 }
-$st = db()->prepare('SELECT ngay, so_luot FROM tv_luot_xem WHERE mssv = ? ORDER BY ngay DESC LIMIT 7');
+// Chỉ lấy lượt xem thuộc 7 ngày lịch gần nhất (bao gồm hôm nay).
+// Dùng ngày của MySQL để thống nhất với giá trị CURDATE() khi ghi lượt xem.
+$st = db()->prepare('SELECT ngay, so_luot FROM tv_luot_xem
+                     WHERE mssv = ? AND ngay BETWEEN DATE_SUB(CURDATE(), INTERVAL 6 DAY) AND CURDATE()');
 $st->execute([MSSV]);
-$bay7Ngay = $st->fetchAll();
+$luotTheoNgay = [];
+foreach ($st->fetchAll() as $n) {
+    $luotTheoNgay[(string) $n['ngay']] = (int) $n['so_luot'];
+}
+
+// Hiển thị đủ 7 ngày liên tục; ngày chưa có lượt xem sẽ hiện 0.
+$homNay = new DateTimeImmutable((string) db()->query('SELECT CURDATE()')->fetchColumn());
+$bay7Ngay = [];
+for ($i = 0; $i < 7; $i++) {
+    $ngay = $homNay->modify("-{$i} days")->format('Y-m-d');
+    $bay7Ngay[] = ['ngay' => $ngay, 'so_luot' => $luotTheoNgay[$ngay] ?? 0];
+}
 $st = db()->prepare('SELECT COALESCE(SUM(so_luot), 0) FROM tv_luot_xem WHERE mssv = ?');
 $st->execute([MSSV]);
 $luot = (int) $st->fetchColumn();

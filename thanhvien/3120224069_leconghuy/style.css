@@ -451,3 +451,5 @@ img {
 .php-box legend{font-weight:700}
 body.theme-toi .php-box .loi,body.dark-mode .php-box .loi{color:#ff9e9e}
 body.theme-toi .php-box .tb-ok,body.dark-mode .php-box .tb-ok{color:#9be29b}
+
+#ket-qua-gpa { white-space: pre-line; }
