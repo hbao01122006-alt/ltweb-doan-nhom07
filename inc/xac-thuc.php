@@ -67,3 +67,4 @@ function dangXuat(): void
     }
     session_destroy();
 }
+// adv

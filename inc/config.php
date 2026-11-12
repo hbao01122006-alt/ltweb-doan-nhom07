@@ -16,10 +16,10 @@ set_exception_handler(static function (Throwable $e): void {
     $duong = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
     if (str_contains($duong, '/api/')) {
         header('Content-Type: application/json; charset=utf-8');
-        echo json_encode(['loi' => 'Lỗi máy chủ'], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['loi - config.php:19' => 'Lỗi máy chủ'], JSON_UNESCAPED_UNICODE);
     } elseif (defined('DEBUG') && DEBUG) {
         header('Content-Type: text/html; charset=utf-8');
-        echo '<pre>' . htmlspecialchars((string) $e, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</pre>';
+        echo '<pre> - config.php:22' . htmlspecialchars((string) $e, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</pre>';
     } else {
         require THU_MUC_GOC . '/500.php';
     }
@@ -79,7 +79,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && !csrfHopLe()) {
     http_response_code(403);
     if (str_contains(strtolower($_SERVER['CONTENT_TYPE'] ?? ''), 'json')) {
         header('Content-Type: application/json; charset=utf-8');
-        echo json_encode(['loi' => $loi], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['loi - config.php:82' => $loi], JSON_UNESCAPED_UNICODE);
     } else {
         header('Content-Type: text/plain; charset=utf-8');
         echo $loi;
@@ -87,3 +87,4 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && !csrfHopLe()) {
     exit;
 }
 
+// adv 
