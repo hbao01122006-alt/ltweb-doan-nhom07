@@ -493,3 +493,7 @@ img {
 .php-box legend{font-weight:700}
 body.theme-toi .php-box .loi,body.dark-mode .php-box .loi{color:#ff9e9e}
 body.theme-toi .php-box .tb-ok,body.dark-mode .php-box .tb-ok{color:#9be29b}
+
+.terminal-loi-chao { color: #ffc928; }
+.terminal-lenh { color: #00ff00; }
+.terminal-reply { color: #aaa; margin-bottom: 8px; white-space: pre-line; }

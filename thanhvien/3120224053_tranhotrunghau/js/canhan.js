@@ -27,11 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 switch (cmd) {
                     case 'help':
                         res = '📌 Danh sách lệnh khả dụng:\n' +
-                              ' • <b style="color:#00ff00;">skills</b>   : Xem kỹ năng lập trình\n' +
-                              ' • <b style="color:#00ff00;">projects</b> : Xem danh sách dự án\n' +
-                              ' • <b style="color:#00ff00;">contact</b>  : Thông tin liên hệ\n' +
-                              ' • <b style="color:#00ff00;">matrix</b>   : Bật hiệu ứng Hacker Matrix\n' +
-                              ' • <b style="color:#00ff00;">clear</b>    : Xóa màn hình terminal';
+                              ' • skills   : Xem kỹ năng lập trình\n' +
+                              ' • projects : Xem danh sách dự án\n' +
+                              ' • contact  : Thông tin liên hệ\n' +
+                              ' • matrix   : Bật hiệu ứng Hacker Matrix\n' +
+                              ' • clear    : Xóa màn hình terminal';
                         break;
                     case 'skills':
                         res = '🚀 Kỹ năng: HTML5, CSS3, JavaScript, Python, C++, Java, Git & GitHub, Làm việc nhóm.';
@@ -51,14 +51,21 @@ document.addEventListener('DOMContentLoaded', () => {
                         }, 3000);
                         break;
                     case 'clear':
-                        termOutput.innerHTML = '';
+                        termOutput.replaceChildren();
                         return;
                     default:
-                        res = `❌ Lệnh '${cmd}' không tồn tại. Gõ <b style="color:#00ff00;">help</b> để xem danh sách câu lệnh.`;
+                        res = `❌ Lệnh '${cmd}' không tồn tại. Gõ help để xem danh sách câu lệnh.`;
                 }
 
-                termOutput.innerHTML += `<div><span class="prompt">hau@dev:~$</span> ${cmd}</div>`;
-                termOutput.innerHTML += `<div style="color: #aaaaaa; margin-bottom: 8px; white-space: pre-line;">${res}</div>`;
+                const dongLenh = document.createElement('div');
+                const dauNhac = document.createElement('span');
+                dauNhac.className = 'prompt';
+                dauNhac.textContent = 'hau@dev:~$ ';
+                dongLenh.append(dauNhac, document.createTextNode(cmd));
+                const dongKetQua = document.createElement('div');
+                dongKetQua.className = 'terminal-reply';
+                dongKetQua.textContent = res;
+                termOutput.append(dongLenh, dongKetQua);
                 termOutput.scrollTop = termOutput.scrollHeight;
             }
         });

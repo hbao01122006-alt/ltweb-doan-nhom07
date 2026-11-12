@@ -57,7 +57,7 @@ $duNgayThi = '';
 $loiNgayThi = '';
 if ($hanhDong === 'ngay-thi' || $hanhDong === 'xoa-ngay-thi') {
     if (!$laChuTrang) {
-        http_response_code(403);
+        ghiLogBaoMat('cam_truy_cap', ['trang' => parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/']); http_response_code(403);
         require __DIR__ . '/../../403.php';
         exit;
     }
@@ -99,7 +99,7 @@ require __DIR__ . '/../../inc/header.php';
   <h3 id="php-quiz">1. Trắc nghiệm PHP từ CSDL</h3>
   <?php if ($tbQuiz): ?><p class="tb-ok" role="status"><?= e($tbQuiz) ?></p><?php endif; ?>
   <?php if (!$cauHoi): ?><p>Chưa có câu hỏi trong CSDL.</p><?php else: ?>
-  <form method="post" action="gioithieu.php#php-quiz">
+  <form method="post" action="gioithieu.php#php-quiz"><?= csrfField() ?>
     <input type="hidden" name="chuc_nang" value="quiz">
     <?php foreach ($cauHoi as $stt => $ch): $id=(int)$ch['id']; ?>
       <fieldset>
@@ -122,13 +122,13 @@ require __DIR__ . '/../../inc/header.php';
   <?php if ($tbNgayThi): ?><p class="tb-ok" role="status"><?= e($tbNgayThi) ?></p><?php endif; ?>
   <?php if ($ngayThi): ?><p>Ngày thi đang lưu: <strong><?= e($ngayThi->format('d/m/Y')) ?></strong> — còn <?= e((string)$soNgayCon) ?> ngày.</p><?php else: ?><p>Chưa lưu ngày thi.</p><?php endif; ?>
   <?php if ($laChuTrang): ?>
-  <form method="post" action="gioithieu.php#php-ngay-thi">
+  <form method="post" action="gioithieu.php#php-ngay-thi"><?= csrfField() ?>
     <input type="hidden" name="chuc_nang" value="ngay-thi">
     <p><label for="php-ngay-thi-input">Ngày thi</label><br><input id="php-ngay-thi-input" name="ngay_thi" type="date" required value="<?= e($duNgayThi !== '' ? $duNgayThi : ($ngayThi ? $ngayThi->format('Y-m-d') : '')) ?>"></p>
     <?php if ($loiNgayThi): ?><p class="loi" role="alert"><?= e($loiNgayThi) ?></p><?php endif; ?>
     <button type="submit">Lưu ngày thi</button>
   </form>
-  <?php if ($ngayThi): ?><form method="post" action="gioithieu.php#php-ngay-thi"><input type="hidden" name="chuc_nang" value="xoa-ngay-thi"><button type="submit">Xóa ngày thi</button></form><?php endif; ?>
+  <?php if ($ngayThi): ?><form method="post" action="gioithieu.php#php-ngay-thi"><?= csrfField() ?><input type="hidden" name="chuc_nang" value="xoa-ngay-thi"><button type="submit">Xóa ngày thi</button></form><?php endif; ?>
   <?php else: ?><p><small>Đăng nhập đúng tài khoản chủ trang để thay đổi ngày thi.</small></p><?php endif; ?>
 </section>
 
@@ -196,7 +196,7 @@ require __DIR__ . '/../../inc/header.php';
                 </div>
                 <div id="terminal-output" class="terminal-output">
                     <div><span class="prompt">hau@dev:~$</span> welcome</div>
-                    <div style="color: #ffc928;">💻 Chào mừng bạn! Gõ <b style="color:#00ff00;">help</b> để xem danh sách câu lệnh.</div>
+                    <div class="terminal-loi-chao">💻 Chào mừng bạn! Gõ <b class="terminal-lenh">help</b> để xem danh sách câu lệnh.</div>
                 </div>
                 <div class="terminal-input-line">
                     <span class="prompt">hau@dev:~$</span>
