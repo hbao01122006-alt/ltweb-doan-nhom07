@@ -1,0 +1,81 @@
+# REST Client - KHONG luu token/cookie that o tep nay.
+# Truoc khi chay: vao trang dang nhap, lay cookie PHPSESSID + csrf tu meta cung phien.
+# Co the dung curl -b va trinh duyet; phai chuyen gia tri bien thu cong khi chay.
+@base = http://localhost:8000
+@sid = THAY_COOKIE_CUA_CHINH_BAN
+@csrf = THAY_TOKEN_CUNG_PHIEN
+
+### 1. GET dau trang
+GET {{base}}/index.php
+
+### 2. POST thieu csrf -> 403
+POST {{base}}/dang-nhap.php
+Content-Type: application/x-www-form-urlencoded
+
+email=demo%40foods.example&mat_khau=sai
+
+### 3. API thieu token -> 403 JSON
+POST {{base}}/api/gio-hang.php
+Content-Type: application/json
+
+{"id":1,"sl":1}
+
+### 4. API co token va phien dung -> 200 (khi mon con ton)
+POST {{base}}/api/gio-hang.php
+Cookie: PHPSESSID={{sid}}
+Content-Type: application/json
+X-CSRF-Token: {{csrf}}
+
+{"id":1,"sl":1}
+
+### 5. GET dang xuat -> 405
+GET {{base}}/dang-xuat.php
+
+### 6. GET xoa-san-pham -> 405
+GET {{base}}/xoa-san-pham.php?id=1
+
+### 7. Tham so mang -> khong 500
+GET {{base}}/chi-tiet.php?id[]=1
+
+### 8. Khach sua trang thai don -> 403 (can dang nhap tai khoan khach)
+POST {{base}}/don-hang.php
+Cookie: PHPSESSID={{sid}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf}}&id=1&trang_thai=hoan_tat
+
+### 9. 13. GET dat hang khong tao don (xac minh DB truoc/sau)
+GET {{base}}/dat-hang.php?xac_nhan=1
+
+# Cac ca con lai (session fixation, het han, CSP, APP_DEBUG, htaccess Apache,
+# DB user quyen toi thieu, 5 lan dang nhap sai, quyen chu trang, v.v.)
+# can thuc hien bang DevTools / phpMyAdmin, ghi ket qua THUC TE vao bao cao.
+
+### 10. POST san-pham, CSRF hop le -> 405 Allow: GET
+POST {{base}}/api/san-pham.php
+Cookie: PHPSESSID={{sid}}
+X-CSRF-Token: {{csrf}}
+
+### 11. POST gio-hang, so luong vuot gioi han 20 -> 422 (mon con ton kho)
+POST {{base}}/api/gio-hang.php
+Cookie: PHPSESSID={{sid}}
+Content-Type: application/json
+X-CSRF-Token: {{csrf}}
+
+{"id":1,"sl":21}
+
+### 12. GET danh-sach tham so mang -> khong loi 500
+GET {{base}}/danh-sach.php?q[]=ao
+
+### 13. GET trang ca nhan tham so mang -> khong loi 500
+GET {{base}}/thanhvien/3120224008_hoanggiabao/gioithieu.php?trang[]=1
+
+### 14. Khach xoa loi nhan chu trang Bao -> 403 (sid/csrf phai cua khach, khong phai chu trang)
+POST {{base}}/thanhvien/3120224008_hoanggiabao/gioithieu.php
+Cookie: PHPSESSID={{sid}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf}}&chuc_nang=xoa&id=1
+
+# Ca Apache, cookie HttpOnly/SameSite, session timeout, 5 lan sai/429 va DB 
+# phai kiem chung tren trinh duyet + XAMPP/MySQL; KHONG ghi ket qua gia.

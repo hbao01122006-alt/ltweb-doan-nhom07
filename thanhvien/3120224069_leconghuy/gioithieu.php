@@ -6,7 +6,7 @@
 require __DIR__ . '/../../inc/config.php';
 $goc='../../'; $lopTrang='trang-ca-nhan'; $cssRien='style.css'; $jsRien='js/canhan.js';
 const MSSV='3120224069';
-$lay=static fn(string $k): string => is_string($_POST[$k] ?? null) ? trim($_POST[$k]) : '';
+$lay=static fn(string $k): string => trim(chuoi($_POST[$k] ?? ''));
 $hanhDong=$_SERVER['REQUEST_METHOD']==='POST' ? $lay('chuc_nang') : '';
 $nd=nguoiDung();
 $laChuTrang=(new App\Data\KhoThanhVien(db()))->laChuTrang(MSSV,$nd?(int)$nd['id']:null)||($nd['vai_tro']??'')==='quan_tri';
