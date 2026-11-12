@@ -11,7 +11,10 @@ document.querySelectorAll('.them-gio-form').forEach((form) => {
     try {
       const phanHoi = await fetch('api/gio-hang.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.content || '',
+        },
         body: JSON.stringify({ id: Number(form.elements.id.value), sl: Number(form.elements.so_luong.value) }),
       });
       const json = await phanHoi.json();

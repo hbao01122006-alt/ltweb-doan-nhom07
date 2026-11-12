@@ -10,19 +10,43 @@ $cssRien = 'style.css';
 $jsRien = 'js/canhan.js';
 
 const MSSV = '3120224008';
+
+// Bộ đếm lượt xem dùng chung gioithieu.php. Chỉ yêu cầu POST có CSRF mới ghi CSDL.
+// GET ?hanh_dong=luot-xem chỉ trả 405; GET trang cá nhân thông thường chỉ đọc dữ liệu.
+if (($_GET['hanh_dong'] ?? null) === 'luot-xem') {
+    header('Content-Type: application/json; charset=utf-8');
+    if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
+        http_response_code(405);
+        header('Allow: POST');
+        echo json_encode(['loi' => 'Chỉ chấp nhận POST'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+    if (empty($_SESSION['da_dem_' . MSSV])) {
+        db()->prepare('INSERT INTO tv_luot_xem (mssv, ngay, so_luot) VALUES (?, CURDATE(), 1)
+                       ON DUPLICATE KEY UPDATE so_luot = so_luot + 1')->execute([MSSV]);
+        $_SESSION['da_dem_' . MSSV] = true;
+    }
+    $st = db()->prepare('SELECT COALESCE(SUM(so_luot), 0) FROM tv_luot_xem WHERE mssv = ?');
+    $st->execute([MSSV]);
+    echo json_encode(['tong' => (int) $st->fetchColumn()], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 $nd = nguoiDung();
 $laChuTrang = (new App\Data\KhoThanhVien(db()))->laChuTrang(MSSV, $nd ? (int) $nd['id'] : null) || ($nd['vai_tro'] ?? '') === 'quan_tri';
 
 // Đọc một ô POST dạng chuỗi đã cắt khoảng trắng; ô gửi dạng mảng (ten[]=x) coi như rỗng.
 $lay = static fn(string $khoa): string => is_string($_POST[$khoa] ?? null) ? trim($_POST[$khoa]) : '';
 
+// Ten va loi nhan co the chua cac ky tu < > " ' & de kiem thu XSS.
+// Khong loc bo HTML tai dau vao; bat buoc e() va nl2br(e()) khi in ra.
 // ---------- Chức năng 1: sổ lưu bút ----------
 $du = ['ten' => '', 'loi_nhan' => ''];
 $loi = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $lay('chuc_nang') === 'xoa') {
     $idXoa = filter_var($_POST['id'] ?? '', FILTER_VALIDATE_INT);
     if (!$laChuTrang) {
-        http_response_code(403);
+        ghiLogBaoMat('cam_truy_cap', ['trang' => parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/']); http_response_code(403);
         require __DIR__ . '/../../403.php';
         exit;
     }
@@ -40,8 +64,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $lay('chuc_nang') === 'luu-but') {
         $loi['ten'] = 'Hãy nhập tên của bạn.';
     } elseif (mb_strlen($du['ten']) < 2 || mb_strlen($du['ten']) > 50) {
         $loi['ten'] = 'Tên phải từ 2 đến 50 ký tự.';
-    } elseif (preg_match('/^[\p{L}\p{N}][\p{L}\p{N} ._\'-]*$/u', $du['ten']) !== 1) {
-        $loi['ten'] = 'Tên chỉ gồm chữ, số, dấu cách và các ký tự . _ \' -';
+    } elseif (preg_match('//u', $du['ten']) !== 1) {
+        $loi['ten'] = 'Tên phải sử dụng UTF-8 hợp lệ.';
+    } elseif (preg_match('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', $du['ten']) === 1) {
+        $loi['ten'] = 'Tên không được chứa ký tự điều khiển.';
     }
 
     if ($du['loi_nhan'] === '') {
@@ -72,12 +98,7 @@ $st = db()->prepare('SELECT id, ten_khach, loi_nhan, thoi_gian FROM tv_hoang_gia
 $st->execute([MSSV, ($hienTai - 1) * 5]);
 $dsLoiNhan = $st->fetchAll();
 
-// ---------- Chức năng 2: lượt xem theo ngày (mỗi session chỉ tính một lần) ----------
-if (empty($_SESSION['da_dem_' . MSSV])) {
-    db()->prepare('INSERT INTO tv_luot_xem (mssv, ngay, so_luot) VALUES (?, CURDATE(), 1)
-                   ON DUPLICATE KEY UPDATE so_luot = so_luot + 1')->execute([MSSV]);
-    $_SESSION['da_dem_' . MSSV] = true;
-}
+// ---------- Chức năng 2: GET chỉ đọc; POST ?hanh_dong=luot-xem ghi lượt xem (ở đầu tệp). ----------
 // Chỉ lấy lượt xem thuộc 7 ngày lịch gần nhất (bao gồm hôm nay).
 // Dùng ngày của MySQL để thống nhất với giá trị CURDATE() khi ghi lượt xem.
 $st = db()->prepare('SELECT ngay, so_luot FROM tv_luot_xem
@@ -112,7 +133,7 @@ require __DIR__ . '/../../inc/header.php';
 
 <section class="the php-box" aria-labelledby="php-tieu-de">
   <h2 id="php-tieu-de">Sổ lưu bút và lượt xem</h2>
-  <p><strong>Lượt xem:</strong> <?= e(number_format($luot, 0, ',', '.')) ?> <small>(mỗi phiên chỉ tính một lần)</small></p>
+  <p><strong>Lượt xem:</strong> <span data-tong-luot><?= e(number_format($luot, 0, ',', '.')) ?></span> <small>(mỗi phiên chỉ tính một lần)</small></p>
   <?php if ($bay7Ngay): ?>
   <table><caption>Lượt xem 7 ngày gần nhất</caption><thead><tr><th scope="col">Ngày</th><th scope="col">Lượt</th></tr></thead><tbody>
     <?php foreach ($bay7Ngay as $n): ?><tr><td><?= e($n['ngay']) ?></td><td><?= (int) $n['so_luot'] ?></td></tr><?php endforeach; ?>
@@ -122,7 +143,7 @@ require __DIR__ . '/../../inc/header.php';
   <h3>Để lại lời nhắn</h3>
   <?php if ($tbLuuBut): ?><p class="tb-ok" role="status"><?= e($tbLuuBut) ?></p><?php endif; ?>
   <?php if (isset($loi['chung'])): ?><p class="loi" role="alert"><?= e($loi['chung']) ?></p><?php endif; ?>
-  <form method="post" action="gioithieu.php">
+  <form method="post" action="gioithieu.php"><?= csrfField() ?>
     <input type="hidden" name="chuc_nang" value="luu-but">
     <p>
       <label for="php-ten">Tên của bạn</label><br>
@@ -144,7 +165,7 @@ require __DIR__ . '/../../inc/header.php';
     <ul>
     <?php foreach ($dsLoiNhan as $m): ?>
       <li><strong><?= e($m['ten_khach']) ?></strong>: <?= nl2br(e($m['loi_nhan'])) ?> <small>(<?= e($m['thoi_gian']) ?>)</small>
-        <?php if ($laChuTrang): ?><form method="post" action="gioithieu.php" class="form-dong"><input type="hidden" name="chuc_nang" value="xoa"><input type="hidden" name="id" value="<?= (int) $m['id'] ?>"><button type="submit">Xóa</button></form><?php endif; ?></li>
+        <?php if ($laChuTrang): ?><form method="post" action="gioithieu.php" class="form-dong"><?= csrfField() ?><input type="hidden" name="chuc_nang" value="xoa"><input type="hidden" name="id" value="<?= (int) $m['id'] ?>"><button type="submit">Xóa</button></form><?php endif; ?></li>
     <?php endforeach; ?>
     </ul>
     <?php if ($soTrang > 1): ?><nav aria-label="Phân trang lưu bút"><p>
