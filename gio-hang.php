@@ -9,7 +9,7 @@ $gio = new GioHang();
 $loi = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $hanhDong = (string)($_POST['hanh_dong'] ?? '');
+    $hanhDong = chuoi($_POST['hanh_dong'] ?? '');
     try {
         if (in_array($hanhDong, ['xoa_tat_ca', 'xoa-het'], true)) {
             $gio->xoaHet();
@@ -41,6 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             flash('gio', 'Đã thêm món vào giỏ hàng.');
         } elseif (in_array($hanhDong, ['cap_nhat','cap-nhat'], true)) {
+            if ($soLuong > $spChon->soLuongTon) {
+                throw new InvalidArgumentException('Không đủ hàng: món này chỉ còn ' . $spChon->soLuongTon . ' suất.');
+            }
             $gio->capNhat((int)$id, (int)$soLuong);
             flash('gio', 'Đã cập nhật số lượng món ăn.');
         } else {
@@ -70,11 +73,11 @@ require __DIR__ . '/inc/header.php';
 <?php else: ?>
 <div class="bang-boc"><table><caption>Các món trong giỏ hàng</caption><thead><tr><th scope="col">Món ăn</th><th scope="col">Đơn giá</th><th scope="col">Số lượng</th><th scope="col">Thành tiền</th><th scope="col">Thao tác</th></tr></thead><tbody>
 <?php foreach ($cacMuc as $idMon=>$sl): if (!isset($map[$idMon])) continue; $sp=$map[$idMon]; ?>
-<tr><td><a href="chi-tiet.php?id=<?= (int)$idMon ?>"><?= e($sp->ten) ?></a></td><td><?= e(vnd($sp->gia)) ?></td><td><form action="gio-hang.php" method="post"><input type="hidden" name="hanh_dong" value="cap_nhat"><input type="hidden" name="id" value="<?= (int)$idMon ?>"><label>Số lượng <input type="number" name="so_luong" min="1" max="20" value="<?= (int)$sl ?>" required></label><button type="submit">Cập nhật</button></form></td><td><?= e(vnd($sp->gia*$sl)) ?></td><td><form action="gio-hang.php" method="post"><input type="hidden" name="hanh_dong" value="xoa"><input type="hidden" name="id" value="<?= (int)$idMon ?>"><button type="submit">Xóa</button></form></td></tr>
+<tr><td><a href="chi-tiet.php?id=<?= (int)$idMon ?>"><?= e($sp->ten) ?></a></td><td><?= e(vnd($sp->gia)) ?></td><td><form action="gio-hang.php" method="post"><?= csrfField() ?><input type="hidden" name="hanh_dong" value="cap_nhat"><input type="hidden" name="id" value="<?= (int)$idMon ?>"><label>Số lượng <input type="number" name="so_luong" min="1" max="20" value="<?= (int)$sl ?>" required></label><button type="submit">Cập nhật</button></form></td><td><?= e(vnd($sp->gia*$sl)) ?></td><td><form action="gio-hang.php" method="post"><?= csrfField() ?><input type="hidden" name="hanh_dong" value="xoa"><input type="hidden" name="id" value="<?= (int)$idMon ?>"><button type="submit">Xóa</button></form></td></tr>
 <?php endforeach; ?>
 </tbody></table></div>
 <p><strong>Tổng tiền: <?= e(vnd($tongTien)) ?></strong></p>
-<form action="gio-hang.php" method="post"><input type="hidden" name="hanh_dong" value="xoa_tat_ca"><button type="submit">Xóa toàn bộ giỏ hàng</button></form>
+<form action="gio-hang.php" method="post"><?= csrfField() ?><input type="hidden" name="hanh_dong" value="xoa_tat_ca"><button type="submit">Xóa toàn bộ giỏ hàng</button></form>
 <p><a href="danh-sach.php">Tiếp tục mua sắm</a></p>
 <p><a href="dat-hang.php"><strong>Tiến hành đặt hàng</strong></a></p>
 <?php endif; ?>

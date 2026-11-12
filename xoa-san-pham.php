@@ -3,12 +3,12 @@
 require __DIR__ . '/inc/config.php';
 use App\Data\KhoSanPham;
 
-yeuCauQuyen('quan_tri');
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     header('Allow: POST');
     exit('Method Not Allowed');
 }
+yeuCauQuyen('quan_tri');
 $id = filter_var($_POST['id'] ?? '', FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
 if (!$id) {
     flash('qt', 'Mã món không hợp lệ.');

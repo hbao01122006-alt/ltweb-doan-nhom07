@@ -10,11 +10,6 @@ $trang = 'yeu-thich';
 $lopTrang = 'trang--yeu-thich';
 require __DIR__ . '/inc/header.php';
 ?>
-<style>
-/* Trang yeu thich: mac dinh an tat ca, chi JS danh dau mon da thich moi duoc hien. */
-.trang--yeu-thich [data-the-yeu-thich-id] { display: none !important; }
-.trang--yeu-thich [data-the-yeu-thich-id].dang-yeu-thich { display: flex !important; }
-</style>
 <main class="trang__chinh">
   <h1>Danh sách yêu thích</h1>
   <p>Các món bạn đánh dấu yêu thích trên thiết bị này sẽ xuất hiện ở đây.</p>

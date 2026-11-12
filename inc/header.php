@@ -20,7 +20,7 @@ $menu = [
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Foodspead - website đặt đồ ăn nhanh của Nhóm 07">
   <title><?= e($tieuDe) ?> | Foodspead</title>
-  <script>document.documentElement.classList.add('js');</script>
+  <meta name="csrf-token" content="<?= csrfToken() ?>">
   <link rel="stylesheet" href="<?= e($goc) ?>css/style.css">
   <?php if (!empty($cssRien)): ?><link rel="stylesheet" href="<?= e($cssRien) ?>"><?php endif; ?>
 </head>
@@ -28,12 +28,12 @@ $menu = [
 <header class="trang__dau">
   <p><strong>Foodspead - Ngon Mỗi Ngày, Giao Nhanh Tận Nơi</strong></p>
   <p>Hệ thống đặt đồ ăn nhanh trực tuyến - Nhóm 07</p>
-  <p class="trang__yeu-thich" style="display:block"><a href="<?= e($goc) ?>yeu-thich.php">♥ Yêu thích (<span data-dem-yeu-thich>0</span>)</a></p>
+  <p class="trang__yeu-thich" ><a href="<?= e($goc) ?>yeu-thich.php">♥ Yêu thích (<span data-dem-yeu-thich>0</span>)</a></p>
   <div class="trang__tai-khoan">
     <?php $ndHeader = nguoiDung(); if ($ndHeader): ?>
-      Xin chào, <strong><?= e($ndHeader['ho_ten']) ?></strong> · <form method="post" action="<?= e($goc) ?>dang-xuat.php" class="form-dong"><button type="submit" class="nut-link">Đăng xuất</button></form>
+      Xin chào, <strong><?= e($ndHeader['ho_ten']) ?></strong> · <form method="post" action="<?= e($goc) ?>dang-xuat.php" class="form-dong"><?= csrfField() ?><button type="submit" class="nut-link">Đăng xuất</button></form>
     <?php else: ?>
-      <a href="<?= e($goc) ?>dang-nhap.php" style="color:#fff">Đăng nhập</a> · <a href="<?= e($goc) ?>dang-ky.php" style="color:#fff">Đăng ký</a>
+      <a href="<?= e($goc) ?>dang-nhap.php" class="tai-khoan-link">Đăng nhập</a> · <a href="<?= e($goc) ?>dang-ky.php" class="tai-khoan-link">Đăng ký</a>
     <?php endif; ?>
   </div>
 </header>

@@ -414,3 +414,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+// Gia tri thong ke view khong duoc thay doi qua GET, chi POST + CSRF cung phien.
+document.addEventListener('DOMContentLoaded', async () => {
+  const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
+  const tong = document.querySelector('[data-tong-luot]');
+  if (!csrf || !tong) return;
+  try {
+    const res = await fetch('gioithieu.php?hanh_dong=luot-xem', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf },
+      body: '{}',
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (Number.isInteger(data.tong)) tong.textContent = data.tong.toLocaleString('vi-VN');
+  } catch (error) {
+    console.warn('Không ghi nhận được lượt xem', error);
+  }
+});

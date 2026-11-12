@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 <main class="trang__chinh">
   <h1>Xác nhận đặt hàng</h1>
   <p>Đơn hàng sẽ trừ tồn kho trong một giao dịch MySQL.</p>
-  <form method="post"><button type="submit">Đặt hàng</button></form>
+  <form method="post"><?= csrfField() ?><button type="submit">Đặt hàng</button></form>
   <p><a href="gio-hang.php">Quay lại giỏ hàng</a></p>
 </main>
     <?php
