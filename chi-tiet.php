@@ -32,7 +32,7 @@ require __DIR__ . '/inc/header.php';
 <section class="chi-tiet__muc">
 <h2>Hình ảnh sản phẩm</h2>
 <figure><img class="chi-tiet__anh" src="<?= e($sp->anh) ?>" alt="<?= e($sp->anhMoTa) ?>" width="450" height="300"><figcaption><?= e($sp->ten) ?> của Foodspead</figcaption></figure>
-<form method="post" action="gio-hang.php" class="them-gio-form">
+<form method="post" action="gio-hang.php" class="them-gio-form"><?= csrfField() ?>
 <input type="hidden" name="id" value="<?= $sp->id ?>">
 <label for="sl">Số lượng:</label> <input id="sl" name="so_luong" type="number" min="1" max="20" value="1" required>
 <button type="submit" name="hanh_dong" value="them"<?= $sp->soLuongTon === 0 ? ' disabled' : '' ?>>Thêm vào giỏ</button>

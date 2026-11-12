@@ -10,6 +10,7 @@ $kho = new KhoDonHang(db());
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$laAdmin) {                                    // đổi trạng thái chỉ dành cho quản trị
+        ghiLogBaoMat('cam_truy_cap', ['trang' => parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/']);
         http_response_code(403);
         require __DIR__ . '/403.php';
         exit;
@@ -71,7 +72,7 @@ require __DIR__ . '/inc/header.php';
           <td><?= e(vnd((int) $r['tong'])) ?></td>
           <td><?= e($r['trang_thai']) ?>
             <?php if ($laAdmin): ?>
-              <form method="post">
+              <form method="post"><?= csrfField() ?>
                 <input type="hidden" name="id" value="<?= (int) $r['id'] ?>">
                 <label>Trạng thái mới <select name="trang_thai">
                   <?php foreach (KhoDonHang::TRANG_THAI as $x): ?><option<?= $x === $r['trang_thai'] ? ' selected' : '' ?>><?= e($x) ?></option><?php endforeach; ?>

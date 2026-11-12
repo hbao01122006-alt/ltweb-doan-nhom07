@@ -31,7 +31,7 @@ require __DIR__ . '/inc/header.php';
 ?>
 <main class="trang__chinh">
   <h1>Đăng ký tài khoản</h1>
-  <form method="post" class="the">
+  <form method="post" class="the"><?= csrfField() ?>
     <p><label for="ht">Họ tên</label><br>
       <input id="ht" name="ho_ten" value="<?= e($du['ho_ten']) ?>" maxlength="100" required autocomplete="name">
       <?php if (isset($loi['ho_ten'])): ?><span class="loi" role="alert"><?= e($loi['ho_ten']) ?></span><?php endif; ?></p>

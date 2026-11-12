@@ -11,8 +11,12 @@ $loi = [];
 $f = ['ten' => '', 'danh_muc_id' => 0, 'gia' => '', 'ton_kho' => 0, 'mo_ta' => ''];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     [$du, $loi] = kiemTraSanPham($_POST, $kho->idDanhMuc());
-    [$anh, $loiAnh] = xuLyAnhTaiLen($_FILES['anh'] ?? null);
-    if ($loiAnh) $loi['anh'] = $loiAnh;
+    // Chỉ lưu ảnh vào uploads/ khi các ô còn lại hợp lệ: tránh ảnh rác khi form lỗi.
+    $anh = null;
+    if (!$loi) {
+        [$anh, $loiAnh] = xuLyAnhTaiLen($_FILES['anh'] ?? null);
+        if ($loiAnh) $loi['anh'] = $loiAnh;
+    }
     if (!$loi) {
         $id = $kho->them($du, $anh ?? 'images/logo.png');
         flash('qt', 'Đã thêm món #' . $id . '.');

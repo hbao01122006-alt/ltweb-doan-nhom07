@@ -33,7 +33,7 @@ require __DIR__ . '/inc/header.php';
 ?>
 <main class="trang__chinh">
   <h1>Thực đơn thức ăn nhanh Foodspead</h1>
-  <form method="get" class="cong-cu-loc" role="search" style="display:grid">
+  <form method="get" class="cong-cu-loc" role="search" >
     <p><label for="q">Tìm món ăn:</label><br><input id="q" name="q" type="search" value="<?= e($q) ?>" placeholder="Ví dụ: gà rán, burger"></p>
     <p><label for="dm">Danh mục:</label><br><select id="dm" name="dm">
         <option value="">Tất cả danh mục</option><?php foreach ($dsDanhMuc as $d): ?><option value="<?= (int)$d['id'] ?>" <?= (int)$dm === (int)$d['id'] ? ' selected' : '' ?>><?= e($d['ten']) ?></option><?php endforeach; ?>

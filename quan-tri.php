@@ -33,7 +33,7 @@ require __DIR__ . '/inc/header.php';
         <td><?= (int) $r['id'] ?></td><td><?= e($r['ten']) ?></td><td><?= e($r['danh_muc']) ?></td>
         <td><?= e(vnd((int) $r['gia'])) ?></td><td><?= (int) $r['ton_kho'] ?></td>
         <td><a href="sua-san-pham.php?id=<?= (int) $r['id'] ?>">Sửa</a>
-          <form method="post" action="xoa-san-pham.php" class="form-dong" onsubmit="return confirm('Xóa món này?')">
+          <form method="post" action="xoa-san-pham.php" class="form-dong" data-xac-nhan="Xóa món này?"><?= csrfField() ?>
             <input type="hidden" name="id" value="<?= (int) $r['id'] ?>"><button type="submit">Xóa</button>
           </form></td>
       </tr>

@@ -12,10 +12,11 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
   if ($du['noidung']==='' || mb_strlen($du['noidung'])<5 || mb_strlen($du['noidung'])>1000) $loi['noidung']='Nội dung phải từ 5 đến 1000 ký tự.';
   $tep=$_FILES['anh']??null;
   if (is_array($tep) && ($tep['error']??UPLOAD_ERR_NO_FILE)!==UPLOAD_ERR_NO_FILE) {
-    if (($tep['error']??UPLOAD_ERR_OK)!==UPLOAD_ERR_OK) $loi['anh']='Tải ảnh lên không thành công.';
-    elseif (($tep['size']??0)>2*1024*1024) $loi['anh']='Ảnh không được lớn hơn 2 MB.';
+    if (!is_int($tep['error']??null) || $tep['error']!==UPLOAD_ERR_OK) $loi['anh']='Tải ảnh lên không thành công.';
+    elseif (!is_int($tep['size']??null) || $tep['size']>2*1024*1024) $loi['anh']='Ảnh không được lớn hơn 2 MB.';
+    elseif (!is_string($tep['tmp_name']??null) || !is_uploaded_file($tep['tmp_name'])) $loi['anh']='Tệp tải lên không hợp lệ.';
     else {
-      $finfo=new finfo(FILEINFO_MIME_TYPE); $mime=$finfo->file((string)$tep['tmp_name']);
+      $finfo=new finfo(FILEINFO_MIME_TYPE); $mime=$finfo->file($tep['tmp_name']);
       $choPhep=['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp'];
       if (!isset($choPhep[$mime])) $loi['anh']='Chỉ nhận ảnh JPG, PNG hoặc WebP.';
       elseif (!$loi) {
@@ -35,7 +36,7 @@ require __DIR__.'/inc/header.php';
 ?>
 <main class="trang__chinh lien-he__luoi"><h1 class="lien-he__tieu-de">Liên hệ &amp; Gửi yêu cầu</h1>
 <?php if($tb):?><p role="status" class="trang-thai"><?=e($tb)?></p><?php endif;?>
-<form class="lien-he__bieu-mau" method="post" enctype="multipart/form-data" novalidate>
+<form class="lien-he__bieu-mau" method="post" enctype="multipart/form-data" novalidate><?= csrfField() ?>
 <fieldset><legend>Thông tin liên hệ</legend>
 <p><label for="hoten">Họ và tên (*)</label><br><input id="hoten" name="hoten" value="<?=e($du['hoten'])?>" maxlength="80" required><?php if(isset($loi['hoten'])):?><span class="loi"><?=e($loi['hoten'])?></span><?php endif;?></p>
 <p><label for="email">Email (*)</label><br><input id="email" type="email" name="email" value="<?=e($du['email'])?>" required><?php if(isset($loi['email'])):?><span class="loi"><?=e($loi['email'])?></span><?php endif;?></p>

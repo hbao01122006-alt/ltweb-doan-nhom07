@@ -1,6 +1,9 @@
 # api.http - bộ request kiểm thử API (VS Code, extension REST Client): bấm "Send Request" từ trên xuống.
-# REST Client nhớ cookie phiên giữa các request nên request 3 - 9 dùng chung một giỏ hàng.
+# Dùng PHPSESSID và CSRF của CÙNG một phiên khi test POST/GET giỏ hàng. Không lưu giá trị thật vào Git.
 @goc = http://localhost:8000
+# GET trang de lay PHPSESSID va input hidden csrf, dan gia tri vao bien KHI CHAY.
+@sid = DIEN_PHPSESSID_CUA_CUNG_PHIEN
+@csrf = DIEN_MA_CSRF_CUA_CUNG_PHIEN
 
 ### 1. Tìm kiếm -> 200 {"du_lieu": [...]}
 GET {{goc}}/api/san-pham.php?q=ga
@@ -19,34 +22,45 @@ GET {{goc}}/api/san-pham.php?id=abc
 
 ### 6. Thêm vào giỏ -> 200 {"so_mon": 2}
 POST {{goc}}/api/gio-hang.php
+Cookie: PHPSESSID={{sid}}
 Content-Type: application/json
+X-CSRF-Token: {{csrf}}
 
 {"id": 1, "sl": 2}
 
 ### 7. Xem giỏ -> 200
 GET {{goc}}/api/gio-hang.php
+Cookie: PHPSESSID={{sid}}
 
 ### 8. Thân không phải JSON -> 400
 POST {{goc}}/api/gio-hang.php
+Cookie: PHPSESSID={{sid}}
 Content-Type: application/json
+X-CSRF-Token: {{csrf}}
 
 {id: 1}
 
 ### 9. Số lượng âm -> 422
 POST {{goc}}/api/gio-hang.php
+Cookie: PHPSESSID={{sid}}
 Content-Type: application/json
+X-CSRF-Token: {{csrf}}
 
 {"id": 1, "sl": -3}
 
 ### 10. Món không có -> 404
 POST {{goc}}/api/gio-hang.php
+Cookie: PHPSESSID={{sid}}
 Content-Type: application/json
+X-CSRF-Token: {{csrf}}
 
 {"id": 999999, "sl": 1}
 
 ### 11. Vượt tồn kho (món 10 hết hàng) -> 422
 POST {{goc}}/api/gio-hang.php
+Cookie: PHPSESSID={{sid}}
 Content-Type: application/json
+X-CSRF-Token: {{csrf}}
 
 {"id": 10, "sl": 1}
 
@@ -55,3 +69,5 @@ DELETE {{goc}}/api/gio-hang.php
 
 ### 13. Sai phương thức ở API sản phẩm -> 405, header Allow: GET
 POST {{goc}}/api/san-pham.php
+Cookie: PHPSESSID={{sid}}
+X-CSRF-Token: {{csrf}}
