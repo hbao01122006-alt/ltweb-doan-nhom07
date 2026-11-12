@@ -34,7 +34,11 @@ require_once $autoload;
 
 $dotenv = Dotenv\Dotenv::createImmutable(THU_MUC_GOC);
 $dotenv->load();
+// DB_PASSWORD phai duoc khai bao, nhung duoc phep rong tren XAMPP (root khong mat khau).
 $dotenv->required(['DB_HOST', 'DB_DATABASE', 'DB_USERNAME']);
+if (!array_key_exists('DB_PASSWORD', $_ENV)) {
+    throw new RuntimeException('Thieu bien DB_PASSWORD trong .env (cho phep gia tri rong).');
+}
 define('DEBUG', ($_ENV['APP_DEBUG'] ?? '') === 'true');
 
 ini_set('display_errors', DEBUG ? '1' : '0');
