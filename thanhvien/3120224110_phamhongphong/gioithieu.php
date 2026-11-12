@@ -6,7 +6,7 @@
 require __DIR__ . '/../../inc/config.php';
 $goc='../../'; $lopTrang='trang-ca-nhan'; $cssRien='style.css'; $jsRien='js/canhan.js';
 const MSSV='3120224110';
-$lay=static fn(string $k): string => is_string($_POST[$k]??null)?trim($_POST[$k]):'';
+$lay=static fn(string $k): string => trim(chuoi($_POST[$k] ?? ''));
 $hanhDong=$_SERVER['REQUEST_METHOD']==='POST'?$lay('chuc_nang'):'';
 $nd=nguoiDung();
 $laChuTrang=(new App\Data\KhoThanhVien(db()))->laChuTrang(MSSV,$nd?(int)$nd['id']:null)||($nd['vai_tro']??'')==='quan_tri';
@@ -20,7 +20,7 @@ $loiAnh='';
 $tongQuaLon=$_SERVER['REQUEST_METHOD']==='POST'&&!$_POST&&!$_FILES&&(int)($_SERVER['CONTENT_LENGTH']??0)>0;
 if($tongQuaLon) $loiAnh='Dữ liệu gửi lên quá lớn, ảnh tối đa 2 MB.';
 elseif($hanhDong==='avatar'||$hanhDong==='xoa-avatar'){
-    if(!$laChuTrang){ http_response_code(403); require __DIR__.'/../../403.php'; exit; }
+    if(!$laChuTrang){ ghiLogBaoMat('cam_truy_cap', ['trang' => parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/']); http_response_code(403); require __DIR__.'/../../403.php'; exit; }
     if($hanhDong==='xoa-avatar'){
         if(str_starts_with($duongDanAnh,'uploads/phong_')){ $tep=THU_MUC_GOC.'/'.$duongDanAnh; if(is_file($tep)) unlink($tep); }
         db()->prepare('INSERT INTO tv_pham_hong_phong_anh (mssv,duong_dan) VALUES (?,?) ON DUPLICATE KEY UPDATE duong_dan=VALUES(duong_dan), cap_nhat=CURRENT_TIMESTAMP')->execute([MSSV,$anhMacDinh]);
@@ -81,11 +81,11 @@ $tieuDe='Phạm Hồng Phong'; $trang=''; require __DIR__.'/../../inc/header.php
   <h3 id="php-avatar">1. Ảnh đại diện có trạng thái lưu CSDL</h3>
   <p><img src="<?= e($goc.$duongDanAnh) ?>" alt="Ảnh đại diện hiện tại" width="120" height="120"></p>
   <?php if($tbAnh): ?><p class="tb-ok" role="status"><?= e($tbAnh) ?></p><?php endif; ?>
-  <?php if($laChuTrang): ?><form method="post" action="gioithieu.php#php-avatar" enctype="multipart/form-data"><input type="hidden" name="chuc_nang" value="avatar"><p><label for="php-avatar-file">Chọn JPG, PNG hoặc WebP, tối đa 2 MB</label><br><input id="php-avatar-file" name="avatar" type="file" accept="image/jpeg,image/png,image/webp" required></p><?php if($loiAnh): ?><p class="loi" role="alert"><?= e($loiAnh) ?></p><?php endif; ?><button type="submit">Tải ảnh lên</button></form><form method="post" action="gioithieu.php#php-avatar"><button name="chuc_nang" value="xoa-avatar" type="submit">Dùng ảnh mặc định</button></form><?php else: ?><p><small>Chỉ chủ trang được thay ảnh đại diện.</small></p><?php endif; ?>
+  <?php if($laChuTrang): ?><form method="post" action="gioithieu.php#php-avatar" enctype="multipart/form-data"><?= csrfField() ?><input type="hidden" name="chuc_nang" value="avatar"><p><label for="php-avatar-file">Chọn JPG, PNG hoặc WebP, tối đa 2 MB</label><br><input id="php-avatar-file" name="avatar" type="file" accept="image/jpeg,image/png,image/webp" required></p><?php if($loiAnh): ?><p class="loi" role="alert"><?= e($loiAnh) ?></p><?php endif; ?><button type="submit">Tải ảnh lên</button></form><form method="post" action="gioithieu.php#php-avatar"><?= csrfField() ?><button name="chuc_nang" value="xoa-avatar" type="submit">Dùng ảnh mặc định</button></form><?php else: ?><p><small>Chỉ chủ trang được thay ảnh đại diện.</small></p><?php endif; ?>
 
   <h3 id="php-thong-ke">2. Thống kê văn bản và lịch sử CSDL</h3>
   <?php if($tbThongKe): ?><p class="tb-ok" role="status"><?= e($tbThongKe) ?></p><?php endif; ?>
-  <form method="post" action="gioithieu.php#php-thong-ke"><input type="hidden" name="chuc_nang" value="thong-ke"><p><label for="php-van-ban">Văn bản, tối đa 1000 ký tự</label><br><textarea id="php-van-ban" name="van_ban" rows="5" maxlength="1000" required><?= e($duVanBan) ?></textarea></p><?php if($loiVanBan): ?><p class="loi" role="alert"><?= e($loiVanBan) ?></p><?php endif; ?><button type="submit">Thống kê và lưu</button></form>
+  <form method="post" action="gioithieu.php#php-thong-ke"><?= csrfField() ?><input type="hidden" name="chuc_nang" value="thong-ke"><p><label for="php-van-ban">Văn bản, tối đa 1000 ký tự</label><br><textarea id="php-van-ban" name="van_ban" rows="5" maxlength="1000" required><?= e($duVanBan) ?></textarea></p><?php if($loiVanBan): ?><p class="loi" role="alert"><?= e($loiVanBan) ?></p><?php endif; ?><button type="submit">Thống kê và lưu</button></form>
   <p>Đã lưu <?= e($tongHop['so_lan']) ?> lần; trung bình <?= e(number_format((float)$tongHop['tb_tu'],1,',','.')) ?> từ; dài nhất <?= e($tongHop['max_tu']) ?> từ.</p>
   <?php if($kqThongKe): $top=json_decode((string)$kqThongKe['tu_hay_gap'],true); ?><div class="tb-ok"><p>Kết quả gần nhất (<?= e($kqThongKe['thoi_gian']) ?>):</p><ul><li><?= e($kqThongKe['so_ky_tu']) ?> ký tự; <?= e($kqThongKe['so_tu']) ?> từ; <?= e($kqThongKe['so_cau']) ?> câu</li><li>Từ dài nhất: <?= e($kqThongKe['tu_dai_nhat']) ?></li><?php if(is_array($top)): foreach($top as $x): if(is_array($x)&&count($x)>=2): ?><li>Từ gặp nhiều: <?= e($x[0]) ?> — <?= e($x[1]) ?> lần</li><?php endif; endforeach; endif; ?></ul></div><?php endif; ?>
 </section>
