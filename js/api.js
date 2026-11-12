@@ -9,9 +9,13 @@ export async function taiJSON(url) {
 }
 
 export async function guiJSON(url, duLieu) {
+  const headers = { 'Content-Type': 'application/json; charset=UTF-8' };
+  if (new URL(url, location.href).origin === location.origin) {
+    headers['X-CSRF-Token'] = document.querySelector('meta[name="csrf-token"]')?.content || '';
+  }
   const res = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+    headers,
     body: JSON.stringify(duLieu),
   });
   if (!res.ok) throw new Error(`HTTP ${res.status} khi gửi tới ${url}`);

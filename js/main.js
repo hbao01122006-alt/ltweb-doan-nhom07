@@ -54,3 +54,10 @@ document.addEventListener('click', (suKien) => {
   if (!Number.isInteger(id) || id < 1) return;
   datNhanNutYeuThich(nut, doiYeuThich(id));
 });
+
+// Xac nhan thao tac nguy hiem ma khong dung su kien onsubmit noi tuyen.
+document.querySelectorAll('form[data-xac-nhan]').forEach((form) => {
+  form.addEventListener('submit', (event) => {
+    if (!window.confirm(form.dataset.xacNhan || 'Bạn có chắc chắn?')) event.preventDefault();
+  });
+});
