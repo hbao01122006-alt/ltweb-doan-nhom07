@@ -26,7 +26,7 @@ $duKn = ['ten' => '', 'nhom' => 'web', 'mo_ta' => '', 'muc_do' => '3'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $chuc = $lay('chuc_nang');
     if (in_array($chuc, ['theme', 'them-ky-nang', 'xoa-ky-nang'], true) && !$laChuTrang) {
-        http_response_code(403);
+        ghiLogBaoMat('cam_truy_cap', ['trang' => parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/']); http_response_code(403);
         require __DIR__ . '/../../403.php';
         exit;
     }
@@ -101,9 +101,9 @@ require __DIR__ . '/../../inc/header.php';
             <p><label for="php-sx">Sắp xếp</label><br><select id="php-sx" name="sx"><?php foreach ($dsSapXep as $ma => $nhan): ?><option value="<?= e($ma) ?>" <?= $ma === $sapXep ? ' selected' : '' ?>><?= e($nhan) ?></option><?php endforeach; ?></select></p><button type="submit">Tìm / lọc</button>
         </form>
         <p>Tìm thấy <?= e((string)count($kyNangLoc)) ?> kỹ năng.</p>
-        <?php if (!$kyNangLoc): ?><p>Không có kỹ năng phù hợp.</p><?php else: ?><ul><?php foreach ($kyNangLoc as $k): ?><li><strong><?= e($k['ten']) ?></strong> — <?= e($dsNhom[$k['nhom']] ?? $k['nhom']) ?> — mức <?= e($k['muc_do']) ?>/5: <?= e($k['mo_ta']) ?><?php if ($laChuTrang): ?> <form method="post" action="gioithieu.php?<?= e($truyVan) ?>#php-ky-nang" class="form-dong"><input type="hidden" name="chuc_nang" value="xoa-ky-nang"><input type="hidden" name="id" value="<?= e($k['id']) ?>"><button type="submit">Xóa</button></form><?php endif; ?></li><?php endforeach; ?></ul><?php endif; ?>
+        <?php if (!$kyNangLoc): ?><p>Không có kỹ năng phù hợp.</p><?php else: ?><ul><?php foreach ($kyNangLoc as $k): ?><li><strong><?= e($k['ten']) ?></strong> — <?= e($dsNhom[$k['nhom']] ?? $k['nhom']) ?> — mức <?= e($k['muc_do']) ?>/5: <?= e($k['mo_ta']) ?><?php if ($laChuTrang): ?> <form method="post" action="gioithieu.php?<?= e($truyVan) ?>#php-ky-nang" class="form-dong"><?= csrfField() ?><input type="hidden" name="chuc_nang" value="xoa-ky-nang"><input type="hidden" name="id" value="<?= e($k['id']) ?>"><button type="submit">Xóa</button></form><?php endif; ?></li><?php endforeach; ?></ul><?php endif; ?>
         <?php if ($laChuTrang): ?><h4>Thêm kỹ năng</h4>
-            <form method="post" action="gioithieu.php?<?= e($truyVan) ?>#php-ky-nang"><input type="hidden" name="chuc_nang" value="them-ky-nang">
+            <form method="post" action="gioithieu.php?<?= e($truyVan) ?>#php-ky-nang"><?= csrfField() ?><input type="hidden" name="chuc_nang" value="them-ky-nang">
                 <p><label for="kn-ten">Tên</label><br><input id="kn-ten" name="ten" maxlength="100" required value="<?= e($duKn['ten']) ?>"></p><?php if (isset($loiKyNang['ten'])): ?><p class="loi"><?= e($loiKyNang['ten']) ?></p><?php endif; ?><p><label for="kn-nhom">Nhóm</label><br><select id="kn-nhom" name="nhom_kn"><?php foreach ($dsNhom as $ma => $nhan): if ($ma === 'tat-ca') continue; ?><option value="<?= e($ma) ?>" <?= $duKn['nhom'] === $ma ? ' selected' : '' ?>><?= e($nhan) ?></option><?php endforeach; ?></select></p>
                 <p><label for="kn-mo-ta">Mô tả</label><br><input id="kn-mo-ta" name="mo_ta" maxlength="300" required value="<?= e($duKn['mo_ta']) ?>"></p>
                 <p><label for="kn-muc">Mức độ 1-5</label><br><input id="kn-muc" name="muc_do" type="number" min="1" max="5" value="<?= e($duKn['muc_do']) ?>"></p><button type="submit">Thêm kỹ năng</button>
@@ -113,7 +113,7 @@ require __DIR__ . '/../../inc/header.php';
 
         <h3 id="php-theme">2. Giao diện sáng / tối lưu CSDL</h3>
         <?php if ($tbTheme): ?><p class="tb-ok" role="status"><?= e($tbTheme) ?></p><?php endif; ?><p>Giao diện đang lưu: <strong><?= $theme === 'toi' ? 'Tối' : 'Sáng' ?></strong>.</p>
-        <?php if ($laChuTrang): ?><form method="post" action="gioithieu.php?<?= e($truyVan) ?>#php-theme"><input type="hidden" name="chuc_nang" value="theme"><button name="theme" value="sang" type="submit">Giao diện sáng</button><button name="theme" value="toi" type="submit">Giao diện tối</button></form><?php else: ?><p><small>Chỉ chủ trang được đổi giao diện đã lưu.</small></p><?php endif; ?>
+        <?php if ($laChuTrang): ?><form method="post" action="gioithieu.php?<?= e($truyVan) ?>#php-theme"><?= csrfField() ?><input type="hidden" name="chuc_nang" value="theme"><button name="theme" value="sang" type="submit">Giao diện sáng</button><button name="theme" value="toi" type="submit">Giao diện tối</button></form><?php else: ?><p><small>Chỉ chủ trang được đổi giao diện đã lưu.</small></p><?php endif; ?>
     </section>
 
     <!-- BẢNG ĐIỀU KHIỂN TƯƠNG TÁC -->

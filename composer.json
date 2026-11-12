@@ -1,8 +1,9 @@
 {
   "name": "nhom07/ltweb-doan",
-  "description": "Bai tap thuc hanh nhom so 6 - Foodspead MySQL/PDO",
+  "description": "Bai tap nhom 7 - gia co bao mat Foodspead",
   "require": {
-    "php": ">=8.1"
+    "php": ">=8.1",
+    "vlucas/phpdotenv": "^5.6"
   },
   "autoload": {
     "psr-4": {
