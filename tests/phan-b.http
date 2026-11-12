@@ -1,0 +1,202 @@
+# BAI TAP 7 - PHAN B - 5 ca/phia thanh vien (25 ca de chay tren localhost cua nhom).
+# Day la KICH BAN KIEM THU, KHONG PHAI ket qua da chay. Luon ghi ket qua thuc te vao bao cao.
+# REST Client trong VS Code. Khong luu gia tri cookie, CSRF, mat khau vao tep/Git.
+# Dang nhap tung tai khoan bang trinh duyet; lay PHPSESSID va csrf-token CUNG PHIEN.
+# @sid_owner / @csrf_owner: phien CHU TRANG dang test.
+# @sid_other / @csrf_other: phien KHACH KHONG PHAI CHU TRANG (hoac mot chu trang khac).
+# Chuan bi id_dong_ngoai: dong thuoc mssv KHAC trong CUNG BANG (xem HUONG_DAN_PHAN_B.md).
+@base = http://localhost:8000
+@sid_owner = THAY_COOKIE_CHU_TRANG_CUNG_PHIEN
+@csrf_owner = THAY_CSRF_CHU_TRANG_CUNG_PHIEN
+@sid_other = THAY_COOKIE_KHACH_CUNG_PHIEN
+@csrf_other = THAY_CSRF_KHACH_CUNG_PHIEN
+@id_ngoai = THAY_ID_DONG_THUOC_MSSV_KHAC
+
+# ================== HOANG GIA BAO ==================
+# BAO-01 XSS: phai luu duoc HTML nhu du lieu, trang hien nguyen van <b>Binh</b>
+# va ky tu " ' &; HTML source phai la &lt;b&gt;, KHONG co the b thuc thi.
+### BAO-01 XSS / luu but
+POST {{base}}/thanhvien/3120224008_hoanggiabao/gioithieu.php
+Cookie: PHPSESSID={{sid_owner}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_owner}}&chuc_nang=luu-but&ten=%3Cb%3EB%C3%ACnh%3C%2Fb%3E&loi_nhan=%3Cb%3EB%C3%ACnh%3C%2Fb%3E%20%22%20%27%20%26%20kiem%20tra
+
+# BAO-02: 403, khong them dong, log csrf_sai.
+### BAO-02 CSRF thieu
+POST {{base}}/thanhvien/3120224008_hoanggiabao/gioithieu.php
+Content-Type: application/x-www-form-urlencoded
+
+chuc_nang=luu-but&ten=Demo&loi_nhan=Khong%20co%20csrf
+
+# BAO-03: 403, log cam_truy_cap (dang nhap nguoi khac; dung CSRF cua ho).
+### BAO-03 Khach xoa loi nhan
+POST {{base}}/thanhvien/3120224008_hoanggiabao/gioithieu.php
+Cookie: PHPSESSID={{sid_other}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_other}}&chuc_nang=xoa&id=1
+
+# BAO-04: 302 nhung KHONG xoa dong mssv khac: SQL co AND mssv = ?.
+# Can tao dong thuoc mssv khac trong tv_hoang_gia_bao (SQL chi tren may minh).
+### BAO-04 Chu trang thu xoa ID dong khac MSSV
+POST {{base}}/thanhvien/3120224008_hoanggiabao/gioithieu.php
+Cookie: PHPSESSID={{sid_owner}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_owner}}&chuc_nang=xoa&id={{id_ngoai}}
+
+# BAO-05: 200, khong Warning/TypeError/500.
+### BAO-05 Tham so mang
+GET {{base}}/thanhvien/3120224008_hoanggiabao/gioithieu.php?trang[]=1
+
+# ================== TRAN HO TRUNG HAU ==================
+# HAU-01: ngay thi la DATE, input HTML phai bi tu choi an toan; khong in ma HTML.
+### HAU-01 XSS tai dau vao ngay thi khong hop le
+POST {{base}}/thanhvien/3120224053_tranhotrunghau/gioithieu.php
+Cookie: PHPSESSID={{sid_owner}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_owner}}&chuc_nang=ngay-thi&ngay_thi=%3Cb%3Etest%3C%2Fb%3E
+
+### HAU-02 CSRF thieu -> 403
+POST {{base}}/thanhvien/3120224053_tranhotrunghau/gioithieu.php
+Content-Type: application/x-www-form-urlencoded
+
+chuc_nang=xoa-ngay-thi
+
+### HAU-03 Tai khoan khac xoa ngay thi -> 403
+POST {{base}}/thanhvien/3120224053_tranhotrunghau/gioithieu.php
+Cookie: PHPSESSID={{sid_other}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_other}}&chuc_nang=xoa-ngay-thi
+
+# HAU-04: HAU khong co thao tac ID. Dung tai khoan chu trang KHAC
+# lam yeu cau doi ngay cua HAU; phai 403 va KHONG sua hang mssv HAU.
+### HAU-04 Khong doi duoc du lieu chu trang khac
+POST {{base}}/thanhvien/3120224053_tranhotrunghau/gioithieu.php
+Cookie: PHPSESSID={{sid_other}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_other}}&chuc_nang=ngay-thi&ngay_thi=2027-01-01
+
+### HAU-05 Tham so dang mang -> khong 500
+POST {{base}}/thanhvien/3120224053_tranhotrunghau/gioithieu.php
+Cookie: PHPSESSID={{sid_owner}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_owner}}&chuc_nang=ngay-thi&ngay_thi%5B%5D=2027-01-01
+
+# ================== LE CONG HUY ==================
+### HUY-01 XSS tai muc tieu; sau PRG trang phai hien NGUYEN VAN chuoi HTML
+POST {{base}}/thanhvien/3120224069_leconghuy/gioithieu.php
+Cookie: PHPSESSID={{sid_owner}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_owner}}&chuc_nang=them-muc-tieu&muc_tieu=%3Cb%3EH%E1%BB%8Dc%3C%2Fb%3E%20%22%20%27%20%26%20an%20toan
+
+### HUY-02 CSRF thieu -> 403
+POST {{base}}/thanhvien/3120224069_leconghuy/gioithieu.php
+Content-Type: application/x-www-form-urlencoded
+
+chuc_nang=xoa-het-muc-tieu
+
+### HUY-03 Khach xoa muc tieu -> 403
+POST {{base}}/thanhvien/3120224069_leconghuy/gioithieu.php
+Cookie: PHPSESSID={{sid_other}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_other}}&chuc_nang=xoa-muc-tieu&id=1
+
+# HUY-04: Chuan bi dong mssv khac trong tv_le_cong_huy_muc_tieu.
+# Kiem tra DB truoc/sau: phai khong xoa.
+### HUY-04 Chu trang thu xoa ID khac MSSV -> dong van con
+POST {{base}}/thanhvien/3120224069_leconghuy/gioithieu.php
+Cookie: PHPSESSID={{sid_owner}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_owner}}&chuc_nang=xoa-muc-tieu&id={{id_ngoai}}
+
+### HUY-05 Gia tri mang -> khong 500
+POST {{base}}/thanhvien/3120224069_leconghuy/gioithieu.php
+Cookie: PHPSESSID={{sid_owner}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_owner}}&chuc_nang=gpa&a1%5B%5D=8&a2=8&a3=8
+
+# ================== PHAM HONG PHONG ==================
+### PHONG-01 XSS trong van ban; hien HTML da escape, khong script
+POST {{base}}/thanhvien/3120224110_phamhongphong/gioithieu.php
+Cookie: PHPSESSID={{sid_owner}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_owner}}&chuc_nang=thong-ke&van_ban=%3Cb%3EB%C3%ACnh%3C%2Fb%3E%20%22%20%27%20%26%20an%20toan
+
+### PHONG-02 CSRF thieu -> 403
+POST {{base}}/thanhvien/3120224110_phamhongphong/gioithieu.php
+Content-Type: application/x-www-form-urlencoded
+
+chuc_nang=xoa-avatar
+
+### PHONG-03 Khach thu xoa avatar -> 403
+POST {{base}}/thanhvien/3120224110_phamhongphong/gioithieu.php
+Cookie: PHPSESSID={{sid_other}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_other}}&chuc_nang=xoa-avatar
+
+# PHONG-04: Khong co ID trong chuc nang avatar. Tai khoan chu trang KHAC
+# thu thay trang thai avatar cua Phong; phai 403, CSDL khong doi.
+### PHONG-04 Khong doi duoc avatar trang khac
+POST {{base}}/thanhvien/3120224110_phamhongphong/gioithieu.php
+Cookie: PHPSESSID={{sid_other}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_other}}&chuc_nang=xoa-avatar
+
+### PHONG-05 Gia tri mang -> khong 500
+POST {{base}}/thanhvien/3120224110_phamhongphong/gioithieu.php
+Cookie: PHPSESSID={{sid_owner}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_owner}}&chuc_nang=thong-ke&van_ban%5B%5D=Thu
+
+# ================== NGUYEN HUU TAI ==================
+### TAI-01 XSS trong mo ta ky nang, hien HTML da escape
+POST {{base}}/thanhvien/3120224126_nguyenhuutai/gioithieu.php
+Cookie: PHPSESSID={{sid_owner}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_owner}}&chuc_nang=them-ky-nang&ten=Thu%20XSS&nhom_kn=web&mo_ta=%3Cb%3EB%C3%ACnh%3C%2Fb%3E%20%22%20%27%20%26&muc_do=3
+
+### TAI-02 CSRF thieu -> 403
+POST {{base}}/thanhvien/3120224126_nguyenhuutai/gioithieu.php
+Content-Type: application/x-www-form-urlencoded
+
+chuc_nang=xoa-ky-nang&id=1
+
+### TAI-03 Khach xoa ky nang -> 403
+POST {{base}}/thanhvien/3120224126_nguyenhuutai/gioithieu.php
+Cookie: PHPSESSID={{sid_other}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_other}}&chuc_nang=xoa-ky-nang&id=1
+
+# TAI-04: tao dong mssv khac trong tv_nguyen_huu_tai_ky_nang.
+# POST chu trang TAI voi ID ngoai khong duoc xoa dong.
+### TAI-04 Thu xoa ID khac MSSV
+POST {{base}}/thanhvien/3120224126_nguyenhuutai/gioithieu.php
+Cookie: PHPSESSID={{sid_owner}}
+Content-Type: application/x-www-form-urlencoded
+
+csrf={{csrf_owner}}&chuc_nang=xoa-ky-nang&id={{id_ngoai}}
+
+### TAI-05 Tham so GET dang mang -> khong 500
+GET {{base}}/thanhvien/3120224126_nguyenhuutai/gioithieu.php?q[]=x&sx[]=ten-az&nhom[]=web
+
+# Luu y:
+# - Dung lai phep thu chu trang khi chuyen giua 5 trang: phai thay sid_owner/csrf_owner dung tai khoan.
+# - Dia chi mau localhost chi co gia tri tren may nhom.
+# - SQL id ngoai: xem tests/HUONG_DAN_PHAN_B.md, xac nhan dong con trong DB sau request.
+# - KHONG tu danh dau DAT neu chua co response, log va so sanh DB thuc te.
