@@ -18,7 +18,9 @@ report '04b GET dang-xuat' "$BASE/dang-xuat.php"
 report '08 tham so mang danh-sach' -g "$BASE/danh-sach.php?q[]=ao"
 report '08b tham so mang chi-tiet' -g "$BASE/chi-tiet.php?id[]=1"
 report '08c trang ca nhan mang' -g "$BASE/thanhvien/3120224008_hoanggiabao/gioithieu.php?trang[]=1"
-report '10 tep noi bo (php -S bo qua .htaccess)' "$BASE/inc/db.php"
+report '10 tep noi bo (router can 403)' "$BASE/inc/db.php"
+report '10b .env (router can 403)' "$BASE/.env"
+report '10c composer.json (router can 403)' "$BASE/composer.json"
 report '13 FoodSpead: GET dat-hang khong tao don' "$BASE/dat-hang.php?xac_nhan=1"
 if [[ -n "${PHPSESSID:-}" && -n "${CSRF_TOKEN:-}" ]]; then
   # Chu y: bat buoc dung cookie va token CUNG MOT phien; khong ghi gia tri ra log.

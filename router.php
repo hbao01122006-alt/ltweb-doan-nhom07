@@ -1,4 +1,3 @@
-
 <?php
 // ======================================
 // 1. KIEM TRA DUONG DAN YEU CAU
@@ -38,6 +37,13 @@ $privateDir = preg_match(
     $lowerPath
 );
 
+// Chan file co the thuc thi duoc trong thu muc uploads/ khi dung php -S.
+// (Apache su dung uploads/.htaccess de thuc hien cung chinh sach.)
+$uploadsExecutable = preg_match(
+    '~(^|/)uploads/(?:[^/]+/)*[^/]+\.(?:php[0-9]*|phtml|phar|cgi|pl|py|sh)(?:\.|$)~',
+    $lowerPath
+);
+
 // Chan file cau hinh va file nhay cam
 $privateFile = preg_match(
     '~(^|/)(composer\.json|composer\.lock|router\.php|api\.http|phpunit\.xml)(/|$)~',
@@ -54,6 +60,7 @@ if (
     $hiddenFile ||
     $privateDir ||
     $privateFile ||
+    $uploadsExecutable ||
     $privateExtension
 ) {
     http_response_code(403);

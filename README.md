@@ -5,7 +5,7 @@ Website đặt đồ ăn nhanh viết bằng PHP thuần + PDO + MySQL/MariaDB (
 ## Cài đặt và chạy
 Cần: PHP >= 8.1 (bật `pdo_mysql`, `mbstring`, `fileinfo`), MySQL hoặc MariaDB, Composer.
 
-1. `composer install` (gói `vlucas/phpdotenv`; nếu có `composer.lock` cũ, chạy `composer update vlucas/phpdotenv` rồi commit `composer.lock` mới, không đưa `vendor/` lên Git)
+1. Chạy `composer install` từ thư mục gốc (đã có `composer.lock` khóa phiên bản `vlucas/phpdotenv`; không đưa `vendor/` lên Git).
 2. Tạo CSDL `ltweb_nhom07` (xóa và tạo lại từ đầu): phpMyAdmin → Import `database/schema.sql`, rồi Import `database/seed.sql`; hoặc gõ lệnh trong Git Bash / cmd (mysql của XAMPP ở `C:\xampp\mysql\bin`):
    ```
    mysql -u root < database/schema.sql
@@ -13,9 +13,9 @@ Cần: PHP >= 8.1 (bật `pdo_mysql`, `mbstring`, `fileinfo`), MySQL hoặc Mari
    ```
 3. Sao chép `.env.example` thành `.env` (`copy .env.example .env` trên Windows), điều chỉnh `DB_HOST`, tài khoản, mật khẩu. Mặc định `APP_DEBUG=true` trên máy cá nhân; trên hosting đặt `APP_DEBUG=false`.
 4. (Tùy chọn, khuyến khích) Chạy `database/tai-khoan.sql` bằng root, **đổi mật khẩu giữ chỗ thành mật khẩu mạnh** và sửa `.env` thành `DB_USERNAME=nhom07_app`. Tài khoản này chỉ có quyền `SELECT, INSERT, UPDATE, DELETE` trên `ltweb_nhom07.*`.
-5. `php -S localhost:8000` rồi mở http://localhost:8000 (hoặc chép thư mục vào `htdocs` của XAMPP).
+5. **Chạy từ thư mục gốc**: `php -S localhost:8000 -t . router.php`, rồi mở http://localhost:8000. Router chặn truy cập các tệp nội bộ khi chạy bằng `php -S`. Hoặc chép thư mục vào `htdocs` của XAMPP để Apache áp dụng `.htaccess`.
 
-`inc/db.php` đọc thông tin kết nối qua `.env`, không chứa mật khẩu. `APP_DEBUG=false` cho trang lỗi 500 thân thiện; PHP lỗi ghi tại `logs/php-error.log`. Không commit `.env`, `vendor/`, `logs/*.log`. Lưu ý `php -S` **không đọc** `.htaccess`: chỉ dùng nội bộ trên máy cá nhân; thử bảo vệ Apache trong `htdocs` XAMPP (bật `AllowOverride All`).
+`inc/db.php` đọc thông tin kết nối qua `.env`, không chứa mật khẩu. `APP_DEBUG=false` cho trang lỗi 500 thân thiện; `DB_PASSWORD` phai ton tai trong `.env` (co the rong tren XAMPP); PHP lỗi ghi tại `logs/php-error.log`. Không commit `.env`, `vendor/`, `logs/*.log`. Lưu ý `php -S` **không đọc** `.htaccess`: khi dùng máy chủ PHP tích hợp, **phải truyền `router.php` như bước 5**; chỉ dùng nội bộ trên máy cá nhân. Thử bảo vệ Apache trong `htdocs` XAMPP (bật `AllowOverride All`).
 
 ## Tài khoản thử (mật khẩu: `matkhau123`)
 - `admin@foods.example`: quan_tri - vào `quan-tri.php`
@@ -69,7 +69,7 @@ Zip không chứa `.git` và `vendor/`. Trên kho thật nhóm cần gắn thẻ
 - `yeu-thich.php` không còn chèn `<style>` giữa phần tử `body`; quy tắc CSS đã chuyển về `css/style.css`.
 - Công thức tính điểm giữ **10–30–60**, nhất quán với PHP, JS và `database/seed.sql`; báo cáo hiệu đính trong `Nhom07_Baitap6_hieu_dinh.pdf` đã sửa nội dung không khớp và đánh dấu chứng cứ ảnh cần chụp lại. Số commit không thể xác minh từ ZIP (không chứa `.git`), nên không đoán số mới.
 - Kịch bản kiểm thử Phần C ở `kiemtra/phan-c/` (giao dịch không/ có rollback; tạo hai tài khoản cùng mật khẩu; đổi ID để thử 403/404). **Chưa phải kết quả thực nghiệm đã chạy.**
-- Sau khi thiết lập MySQL theo README và khởi động `php -S localhost:8000`, chạy `bash kiemtra/smoke-menu.sh http://localhost:8000` và các kiểm thử Phần C theo hướng dẫn. Cần chụp ảnh minh chứng thật và kiểm thử lại 14 ca trước khi nộp. CSRF token và giới hạn đăng nhập sai đã được bổ sung trong mã nguồn Bài 7; cần chạy kiểm thử phủ định thật để xác nhận hoạt động.
+- Sau khi thiết lập MySQL theo README và khởi động `php -S localhost:8000 -t . router.php`, chạy `bash kiemtra/smoke-menu.sh http://localhost:8000` và các kiểm thử Phần C theo hướng dẫn. Cần chụp ảnh minh chứng thật và kiểm thử lại 14 ca trước khi nộp. CSRF token và giới hạn đăng nhập sai đã được bổ sung trong mã nguồn Bài 7; cần chạy kiểm thử phủ định thật để xác nhận hoạt động.
 
 
 ## Chương 7 - Bảo mật (bản đã cập nhật từ ZIP Bài 6)
@@ -88,14 +88,14 @@ Zip không chứa `.git` và `vendor/`. Trên kho thật nhóm cần gắn thẻ
 
 - **Lưu ý:** ZIP này không chứa lịch sử Git, không chứa `vendor/`; không thể xác minh mã commit, tag `btn6`, kết quả `git diff --stat btn6 HEAD` hoặc `composer audit` từ ZIP. Nhóm phải tự thực hiện sau khi đưa các thay đổi vào kho Git chính thức.
 - Thêm tag `btn6` trỏ đúng commit Bài 6 **trước khi commit các sửa đổi của Bài 7**. Chia commit theo biện pháp/người phụ trách, không dùng chung danh tính người commit.
-- Chạy `composer install`, `composer audit`, `php -l` trên tất cả PHP, rồi chạy cả `php -S localhost:8000` và Apache XAMPP. Chạy `bash tests/bao-mat.sh` chỉ trên localhost và dùng `tests/bao-mat.http`.
+- Chạy `composer install`, `composer audit`, `php -l` trên tất cả PHP, rồi chạy cả `php -S localhost:8000 -t . router.php` và Apache XAMPP. Chạy `bash tests/bao-mat.sh` chỉ trên localhost và dùng `tests/bao-mat.http`.
 - DevTools → Network/Headers: kiểm tra CSP, HttpOnly, SameSite; Console: không còn lỗi CSP; thư mục logs: đủ `csrf_sai`, `cam_truy_cap`, `dang_nhap_sai` và không lộ mật khẩu, PHPSESSID hay mã CSRF.
 - Để chạy API POST có CSRF: mở trang bằng trình duyệt, lấy `csrf` từ meta `csrf-token` hoặc input form và cookie `PHPSESSID` **của cùng phiên**, gửi cả `Cookie` và `X-CSRF-Token`; tuyệt đối không lưu giá trị thật vào `api.http` / shell script hoặc Git.
 - Kiểm tra `GET /dang-xuat.php` và `GET /xoa-san-pham.php?id=1` trả 405; gửi POST thiếu CSRF trả 403; 5 lần đăng nhập sai thì lần 6 trả 429; quyền quản trị viên và chủ trang cá nhân vẫn phải kiểm tra riêng.
 - **Kiểm thử phủ định phải chạy thực tế** và ghi mã trạng thái, câu trả lời, ảnh DevTools, giá trị CSDL/trích log vào báo cáo; không dùng kết quả mẫu thay bằng chứng thực nghiệm.
 - `git ls-files .env` và `git log --all --oneline -- .env` phải không in ra gì. Nếu từng đẩy bí mật lên Git, phải thay mật khẩu/khóa ngay; xóa file ở commit sau không loại khỏi lịch sử.
 - API ngoài đang dùng: `api.open-meteo.com` (trang chủ) được khai báo trong CSP `connect-src`; tệp JS mẫu `js/trang-lien-he.js` không được nạp vào trang nên không khai báo JSONPlaceholder. Không dùng wildcard hay `'unsafe-inline'`.
-- Tệp `composer.lock` cũ trong ZIP Bài 6 không chứa `vlucas/phpdotenv`, vì vậy đã bỏ để tránh khóa phiên bản sai; **chạy `composer update` hoặc `composer install` có mạng** rồi commit `composer.lock` sinh mới trước khi nộp.
+- `composer.lock` trong bản Bài 7 đã chứa `vlucas/phpdotenv` và phải được giữ lại. Chạy `composer install` và `composer audit` trước khi nộp; chỉ cập nhật `composer.lock` khi có thay đổi dependency đã kiểm tra.
 
 ### Git và an toàn nộp bài
 

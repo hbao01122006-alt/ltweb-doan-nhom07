@@ -56,7 +56,7 @@ require __DIR__ . '/inc/header.php';
         <img class="the-san-pham__anh" src="<?= e($sp->anh) ?>" alt="<?= e($sp->anhMoTa) ?>" width="300" height="200" loading="lazy">
         <p><?= e($sp->moTa) ?></p>
         <p><strong>Giá: <?= e(vnd($sp->gia)) ?></strong><?= $sp->soLuongTon === 0 ? ' <span class="het-hang">(Hết hàng)</span>' : '' ?></p>
-        <p class="the-san-pham__hanh-dong"><a href="chi-tiet.php?id=<?= $sp->id ?>">Xem chi tiết món ăn</a> <button type="button" class="nut-yeu-thich" data-yeu-thich-id="<?= $sp->id ?>" data-ten="<?= e($sp->ten) ?>" aria-pressed="false">♡ Yêu thích</button></p>
+        <p class="the-san-pham__hanh-dong"><a href="chi-tiet.php?id=<?= (int) $sp->id ?>">Xem chi tiết món ăn</a> <button type="button" class="nut-yeu-thich" data-yeu-thich-id="<?= (int) $sp->id ?>" data-ten="<?= e($sp->ten) ?>" aria-pressed="false">♡ Yêu thích</button></p>
       </article>
     <?php endforeach; ?>
   </div>

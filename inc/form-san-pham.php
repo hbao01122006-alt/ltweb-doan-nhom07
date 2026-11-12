@@ -4,6 +4,7 @@
 $o = static fn(string $k): string => isset($loi[$k]) ? '<span class="loi" role="alert">' . e($loi[$k]) . '</span>' : '';
 ?>
 <form method="post" enctype="multipart/form-data" class="the">
+  <?= csrfField() ?>
   <p><label for="ten">Tên món</label><br>
     <input id="ten" name="ten" value="<?= e($f['ten'] ?? '') ?>" maxlength="200" required> <?= $o('ten') ?></p>
   <p><label for="dm">Danh mục</label><br>
