@@ -11,7 +11,7 @@ $jsRien = 'js/canhan.js';
 const MSSV = '3120224053';
 
 date_default_timezone_set('Asia/Ho_Chi_Minh');
-$lay = static fn(string $khoa): string => is_string($_POST[$khoa] ?? null) ? trim($_POST[$khoa]) : '';
+$lay = static fn(string $khoa): string => trim(chuoi($_POST[$khoa] ?? ''));
 $hanhDong = $_SERVER['REQUEST_METHOD'] === 'POST' ? $lay('chuc_nang') : '';
 $nd = nguoiDung();
 $laChuTrang = (new App\Data\KhoThanhVien(db()))->laChuTrang(MSSV, $nd ? (int)$nd['id'] : null) || ($nd['vai_tro'] ?? '') === 'quan_tri';
@@ -32,7 +32,7 @@ if ($hanhDong === 'quiz') {
     foreach ($cauHoi as $ch) {
         $id = (int)$ch['id'];
         $khoa = 'q_' . $id;
-        $v = is_string($_POST[$khoa] ?? null) ? $_POST[$khoa] : '';
+        $v = chuoi($_POST[$khoa] ?? '');
         if (!in_array($v, ['a', 'b', 'c', 'd'], true)) $loiQuiz[$id] = 'Hãy chọn một đáp án.';
         else $traLoi[$id] = $v;
     }
