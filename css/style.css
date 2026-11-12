@@ -1002,3 +1002,14 @@ picture {
 /* BTN6: form nhỏ nằm cùng dòng (nút Xóa, Đăng xuất) và nút trông như liên kết */
 .form-dong { display: inline; }
 .nut-link { background: none; border: 0; padding: 0; color: #fff; text-decoration: underline; cursor: pointer; font: inherit; }
+
+
+/* Trang yêu thích: CSS đặt trong stylesheet, không chèn thẻ <style> trong body. */
+/* Trang yeu thich: mac dinh an tat ca, chi JS danh dau mon da thich moi duoc hien. */
+.trang--yeu-thich [data-the-yeu-thich-id] { display: none !important; }
+.trang--yeu-thich [data-the-yeu-thich-id].dang-yeu-thich { display: flex !important; }
+
+/* Chung: thay the cac style noi tuyen khi bat CSP. */
+.trang__yeu-thich { display: block; }
+.tai-khoan-link { color: #fff; }
+.cong-cu-loc { display: grid; }
